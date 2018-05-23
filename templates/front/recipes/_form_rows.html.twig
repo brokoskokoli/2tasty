@@ -1,0 +1,87 @@
+
+{% import 'front/common/arrayCollection.html.twig' as arrayCollection %}
+
+{{ form_row(form.title) }}
+
+
+{{ arrayCollection.start('images', 'title.images', [
+    {class: 'col-md-8', field: form.images.vars.prototype.imageFile},
+    {class: 'col-md-3', field: form.images.vars.prototype.altText},
+]) }}
+
+{% for image in form.images %}
+    {{ arrayCollection.line([
+        {class: 'col-md-8', field: image.imageFile},
+        {class: 'col-md-3', field: image.altText},
+    ]) }}
+{% endfor %}
+
+{{ arrayCollection.end(form.images) }}
+
+{{ form_row(form.summary) }}
+{{ form_row(form.portions) }}
+
+{{ arrayCollection.start('ingredients', 'title.ingredients', [
+    {class: 'col-md-3 stXautoComplete', field: form.recipeIngredients.vars.prototype.ingredient, autocomplete: ingredientList  },
+    {class: 'col-md-2', field: form.recipeIngredients.vars.prototype.amount},
+    {class: 'col-md-2', field: form.recipeIngredients.vars.prototype.unit},
+    {class: 'col-md-4', field: form.recipeIngredients.vars.prototype.text},
+]) }}
+
+{% for ingredient in form.recipeIngredients %}
+    {{ arrayCollection.line([
+        {class: 'col-md-3 stXautoComplete', field: ingredient.ingredient, autocomplete: ingredientList},
+        {class: 'col-md-2', field: ingredient.amount},
+        {class: 'col-md-2', field: ingredient.unit},
+        {class: 'col-md-4', field: ingredient.text},
+    ]) }}
+{% endfor %}
+
+{{ arrayCollection.end(form.recipeIngredients) }}
+
+{{ arrayCollection.start('recipeSteps', 'title.steps', [
+    {class: 'col-md-9', field: form.recipeSteps.vars.prototype.text},
+    {class: 'col-md-3', field: form.recipeSteps.vars.prototype.duration},
+]) }}
+
+{% for step in form.recipeSteps %}
+    {{ arrayCollection.line([
+        {class: 'col-md-9', field: step.text},
+        {class: 'col-md-3', field: step.duration},
+    ]) }}
+{% endfor %}
+
+{{ arrayCollection.end(form.recipeSteps) }}
+
+
+{{ arrayCollection.start('recipeHints', 'title.hints', [
+    {class: 'col-md-11', field: form.recipeHints.vars.prototype.text},
+]) }}
+
+{% for hint in form.recipeHints %}
+    {{ arrayCollection.line([
+        {class: 'col-md-11', field: hint.text},
+    ]) }}
+{% endfor %}
+
+{{ arrayCollection.end(form.recipeHints) }}
+
+
+{{ arrayCollection.start('recipeAlternatives', 'title.recipeAlternatives', [
+    {class: 'col-md-11', field: form.recipeAlternatives.vars.prototype.text},
+]) }}
+
+{% for alternative in form.recipeAlternatives %}
+    {{ arrayCollection.line([
+        {class: 'col-md-11', field: alternative.text},
+    ]) }}
+{% endfor %}
+
+{{ arrayCollection.end(form.recipeAlternatives) }}
+
+
+{{ form_row(form.recipeTags, {'attr' : {'class': 'stXtokenField', 'data-availabeTokens': recipeTags|join('|')}}) }}
+
+{{ form_row(form.private) }}
+
+

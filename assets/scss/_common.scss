@@ -1,0 +1,83 @@
+
+@font-face {
+  font-family: Quicksand;
+  src: url(../font/Quicksand-Regular.otf);
+}
+
+body {
+  font-family: Quicksand, sans-serif;
+}
+
+.addButton {
+  width: 100%;
+  text-align: center;
+
+
+  button {
+    width: 100%;
+    margin: 1em 0;
+  }
+}
+
+span.details {
+  font-size: 80%;
+}
+
+i.center-icons {
+  position: absolute;
+  top: 50%;
+  margin-top: -10px;
+  z-index: 5;
+  display: inline-block;
+}
+
+div.deleteButton {
+  margin-top: 25px;
+  padding-left: 20px;
+}
+
+
+p.spacer-medium {
+  height: 20px;
+  margin: 0;
+  padding: 0;
+}
+
+
+/**
+Autocomplete
+ */
+.stXautoComplete>.form-group {
+  position: relative;
+}
+
+.ui-autocomplete>li {
+  padding: 5px;
+  cursor: pointer;
+  background-color: #fff;
+  border-bottom: 1px solid #d4d4d4;
+}
+.ui-autocomplete>li>div {
+  cursor: pointer;
+  background-color: #fff;
+}
+
+/**
+Images
+ */
+
+.recipe_list_with_details {
+  min-height: 150px;
+  border-bottom: lighten($text-color, 50%) 1px solid;
+  margin-top: 1em;
+  margin-bottom: 1em;
+
+  img.smallimage {
+    height:130px;
+  }
+
+}
+
+label.required:after {
+  content: "  *";
+}

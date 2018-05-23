@@ -1,0 +1,38 @@
+{% extends 'front/layout.html.twig' %}
+
+{% block body_id 'recipes_edit' %}
+
+{% block main %}
+    <h1>{{ 'title.edit_recipe'|trans({'%id%': recipe.id}) }}</h1>
+
+    {{ include('front/recipes/_form.html.twig', {
+        form: form,
+        button_label: 'action.save'|trans,
+        include_back_to_home_link: true,
+        ingredientList: ingredientList,
+        recipeTags: recipeTags
+    }, with_context = false) }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script>
+        require("assets{{ asset('js/pages/recipes/edit_new.js') }}");
+    </script>
+{% endblock %}
+
+{% block sidebar %}
+    <div class="section">
+        <a href="{{ path('recipes_show', {slug: recipe.slug}) }}" class="btn btn-lg btn-block btn-success">
+            <i class="fa fa-eye" aria-hidden="true"></i> {{ 'action.show_recipe'|trans }}
+        </a>
+    </div>
+
+    <div class="section actions">
+        {{ include('front/recipes/_delete_form.html.twig', {recipe: recipe}, with_context = false) }}
+    </div>
+
+    {{ parent() }}
+{% endblock %}
+

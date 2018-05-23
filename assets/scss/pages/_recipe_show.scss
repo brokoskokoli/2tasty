@@ -1,0 +1,36 @@
+#recipes_show {
+
+  .recipe {
+
+    .steps {
+      p {
+        margin-bottom: 0;
+      }
+
+      div {
+        margin-bottom: 1.5em;
+      }
+    }
+
+    .images {
+      img {
+        width: 30%;
+      }
+
+    }
+
+  }
+
+  .recipe-comment {
+    margin-top: 20px;
+  }
+
+  #recipe-add-comment {
+
+    textarea {
+      height: 7em;
+    }
+
+  }
+
+}

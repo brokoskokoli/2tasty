@@ -1,0 +1,150 @@
+title:
+  ingredients: Zutaten
+  edit_recipe: Rezept bearbeiten
+  recipes_new: Neues Rezept erstellen
+  images: Bilder
+  steps: Zubereitungsschritte
+  hints: 'Hinweise & Tipps'
+  recipeAlternatives: 'Variationen'
+  recipe_list: Rezeptliste
+  add_comment: Kommentar erstellen
+  forgot_password: Passwort vergessen
+  login: Login
+  recipeTags: Tags
+  ingredient_display: Zutatenanzeige
+  edit_profile: 'Profil bearbeiten'
+  ingredientDisplayPreferenceOverrides: Zutateneinstellungen
+
+
+label:
+  title: Titel
+  alternative_text: Alternativer Text
+  summary: Beschreibung
+  portions: Portionen
+  ingredient: Zutat
+  amount: Menge
+  unit: Einheit
+  step: Beschreibung
+  duration: Dauer
+  hint: Hinweis
+  recipeTags: Tags
+  private: Privates Rezept (oder noch nicht fertig zum veröffentlichen)
+  create_recipe: Erstelle Rezept
+  recipe_image: ''
+  created_at: 'Erstellt am:'
+  actions: Aktionen
+  content: Inhalt
+  fullname: Kompletter Name
+  username: Benutzername
+  password: Passwort
+  password_repeat: Passwort wiederholen
+  email: Emailadresse
+  ingredient_display_preference: Zutatenanzeige
+  profile_image: Profilbild
+
+action:
+  back_to_list: Zurück zur Liste
+  show_recipe: Rezept anzeigen
+  edit_recipe: Rezept bearbeiten
+  cancel: Abbrechen
+  delete_recipe: Rezept löschen
+  create_recipe: Neues Rezept erstellen
+  rss: RSS Feed abonnieren
+  publish_comment: Kommentar veröffentlichen
+  sign_in: Einloggen
+  forgot_password: Passwort vergessen
+  request_password: Passwort anfordern
+  reset_password: Passwort zurücksetzen
+  save_and_create_new: Rezept speichern und danach noch eins erstellen!
+  download_recipe_pdf: Als PDF herunterladen
+
+dialogs:
+  delete_recipe:
+    title: Rezept löschen
+    body: Möchtest du dieses Rezept wirklich löschen?
+
+form:
+  defaultvalue:
+    ingredient: '-- Zutat wählen--'
+    unit: '-- Einheit wählen--'
+    ingredient_view: '-- Anzeige wählen--'
+
+menuentries:
+  addIngredients: Zutaten hinzufügen
+  admin:
+    easyadmin: Easyadmin
+
+rss:
+  title: RSS Feed abonnieren
+
+
+menu:
+  toggle_nav: ''
+  recipe_list: 'Rezeptliste'
+  homepage: News
+  admin_menu: Admin
+  search: ''
+  logout: ''
+  login: Login
+  choose_language: ''
+  recipe_of_the_day: Mein Rezept des Tages
+  new_quick: Ich möchte schnell ein Foto von einem Rezept hochladen
+  my_profile: ''
+
+help:
+  app_description: |
+    <strong>Version 0.5</strong> <br>
+    - Seite zur Profilverwaltung<br>
+    <br>
+    <strong>Version 0.4</strong> <br>
+    - Quicklinks im Footer<br>
+    - Logo hinzugefügt und Aussehen optimiert<br>
+    - Bilder im PDF Export<br>
+    <br>
+    <strong>Version 0.3</strong> <br>
+    - PDF Download für Rezepte<br>
+    <br>
+
+  more_information: |
+    Bei Fehlern und Vorschlägen wende dich bitte an <a href="https://github.com/brokoskokoli/myfood/issues">das Githubdirectory</a>
+  mit_license: MIT-Lizenz
+
+static:
+  durations:
+    minutes: Minute(n)
+
+messages:
+  recipe_modified: Die Änderungen wurden gespeichert
+  no_comments: Erstelle den ersten Kommentar!
+  password_not_equal: Die Passwörter sind nicht gleich
+  password_min_length: Das Passwort muss mindestens 8 Zeichen lang sein
+  password_no_number: Das Passwort muss mindestens eine Zahl enthalten
+  forgot_password_mail_send: Wir haben dir eine Email geschickt!
+  reset_password: Dein Password wurde erfolgreich geändert!
+  no_recipes_found: Erstelle dein erstes Rezept!
+  recipe_created: Rezept erstellt!
+  profile_modified: Profil geändert!
+
+page:
+  forgot_password:
+    text: Bitte trage unten deine Emailadresse ein, damit wir dir die Anweisungen per Mail zuschicken können.
+  reset_password:
+    text: Bitte gebe dein neues Passwort unten zweimal ein.
+
+
+emails:
+  subjectprefix: '[MyFood] '
+  forgot_password:
+    subject: Passwort zurücksetzen
+    text: |
+      Hallo %name%,
+      Bitte klicke auf folgenden Link um dein Passwort zurückzusetzen:
+      <a href="%url%">%url%</a>
+
+      Dein treuer Server :-)
+
+
+ingredient_preferences:
+  Native: Wie im Rezept
+  German: In Kilogramm und Litern
+  US: In Unzen und Cups

@@ -1,0 +1,35 @@
+#recipes_edit {
+
+  h3 {
+    margin-top: 50px;
+  }
+
+  .images {
+    img {
+      width: 70px;
+    }
+
+    .vich-image {
+      display: flex;
+      flex-wrap: wrap;
+      align-content: center;
+
+      input {
+        margin: 15px;
+      }
+    }
+
+  }
+
+  .recipeSteps {
+
+    >.row {
+      margin-bottom: 20px;
+    }
+
+    textarea {
+      height: 116px;
+    }
+  }
+
+}

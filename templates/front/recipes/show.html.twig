@@ -1,0 +1,80 @@
+{% extends 'front/layout.html.twig' %}
+
+{% block body_id 'recipes_show' %}
+
+{% block main %}
+
+    {{ include('front/recipes/_recipe.html.twig') }}
+
+
+    <div id="recipe-add-comment" class="well">
+        {# The 'IS_AUTHENTICATED_FULLY' role ensures that the user has entered
+        his/her credentials (login + password) during this session. If he/she
+        is automatically logged via the 'Remember Me' functionality, he/she won't
+        be able to add a comment.
+        See https://symfony.com/doc/current/cookbook/security/remember_me.html#forcing-the-user-to-re-authenticate-before-accessing-certain-resources
+        #}
+        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+            {{ render(controller('App\\Controller\\CommentsController:commentForm', {'id': recipe.id})) }}
+        {% else %}
+            <p>
+                <a class="btn btn-success" href="{{ path('security_login') }}">
+                    <i class="fa fa-sign-in" aria-hidden="true"></i> {{ 'action.sign_in'|trans }}
+                </a>
+                {{ 'recipe.to_publish_a_comment'|trans }}
+            </p>
+        {% endif %}
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-10 col-md-offset-1">
+        {% for comment in recipe.comments %}
+            <div class="row recipe-comment">
+                <a name="comment_{{ comment.id }}"></a>
+                <h4 class="col-sm-3">
+                    <strong>{{ comment.author.fullName }}</strong>
+                    <strong>{{ comment.publishedAt|localizeddate('medium', 'short', null, 'UTC') }}</strong>
+                </h4>
+                <div class="col-sm-9">
+                    {{ comment.content|md2html }}
+                </div>
+            </div>
+        {% else %}
+            <div class="recipe-comment">
+                <p>{{ 'messages.no_comments'|trans }}</p>
+            </div>
+        {% endfor %}
+        </div>
+
+    </div>
+
+{% endblock %}
+
+{% block sidebar %}
+    {% if is_granted('edit', recipe) %}
+        <div class="section">
+            <a class="btn btn-lg btn-block btn-success" href="{{ path('recipes_edit', {id: recipe.id}) }}">
+                <i class="fa fa-edit" aria-hidden="true"></i> {{ 'action.edit_recipe'|trans }}
+            </a>
+        </div>
+
+        <div class="section">
+            {{ include('front/recipes/_delete_form.html.twig', {recipe: recipe}, with_context = false) }}
+        </div>
+        <hr>
+    {% endif %}
+
+    <div class="section">
+        <a class="btn btn-lg btn-block btn-success" href="{{ path('recipes_recipe_download_pdf', {slug: recipe.slug}) }}">
+            <i class="fa fa-download" aria-hidden="true"></i> {{ 'action.download_recipe_pdf'|trans }}
+        </a>
+    </div>
+
+
+
+    {# the parent() function includes the contents defined by the parent template
+      ('base.html.twig') for this block ('sidebar'). This is a very convenient way
+      to share common contents in different templates #}
+    {{ parent() }}
+{% endblock %}

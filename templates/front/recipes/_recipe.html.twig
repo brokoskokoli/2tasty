@@ -1,0 +1,69 @@
+<div class="recipe">
+
+    <h1>{{ recipe.title }}</h1>
+    <p>&nbsp;</p>
+
+    {% if recipe.author.id != app.user.id %}
+        <p class="recipe-metadata">
+            <span class="metadata"><i class="fa fa-user"></i> {{ recipe.author.fullName }}</span>
+            <span class="metadata"><i
+                        class="fa fa-calendar"></i> {{ recipe.createdAt|localizeddate('long', 'medium', null, 'UTC') }}</span>
+        </p>
+    {% endif %}
+
+
+    {% set images = [] %}
+    {% for image in recipe.images %}
+        {% set images = images|merge([vich_uploader_asset(image, 'imageFile')]) %}
+    {% endfor %}
+
+    {{ bootstrap_carousel(images)|raw }}
+
+
+    <br>
+    {{ recipe.summary|default('')|md2html }}
+
+    <p>{{ 'label.portions'|trans }} : {{ recipe.portions }}</p>
+
+    <p class="spacer-medium">&nbsp;</p>
+    <div class="ingredients">
+        <h2>{{ 'title.ingredients'|trans }}</h2>
+        <ul>
+            {% for ingredient in recipe.recipeIngredients %}
+                <li>{{ ingredient|ingredientText }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    <p class="spacer-medium">&nbsp;</p>
+    <div class="steps">
+        <h2>{{ 'title.steps'|trans }}</h2>
+        <ol>
+            {% for step in recipe.recipeSteps %}
+                <li><p>{{ step.text }}</p><span class="details">{{ step.duration }} {{ 'static.durations.minutes'|trans }}</span></li>
+            {% endfor %}
+        </ol>
+    </div>
+
+    <p class="spacer-medium">&nbsp;</p>
+    <div class="hints">
+        <h2>{{ 'title.hints'|trans }}</h2>
+        {% for hint in recipe.recipeHints %}
+            <div class="panel panel-default">
+                <div class="panel-body">{{ hint.text }}</div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <p class="spacer-medium">&nbsp;</p>
+    <div class="alternatives">
+        <h2>{{ 'title.recipeAlternatives'|trans }}</h2>
+        {% for alternative in recipe.recipeAlternatives %}
+            <div class="panel panel-default">
+                <div class="panel-body">{{ alternative.text }}</div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <p class="spacer-medium">&nbsp;</p>
+    {{ include('front/recipes/_recipe_tags.html.twig') }}
+</div>

@@ -1,0 +1,35 @@
+
+{% macro start(indicator, title, header) %}
+    <h3>{{ title|trans }}</h3>
+    <div class="row">
+        <div class="col-md-12">
+            {% set prototype %}
+                <div class="row">
+                    {% for head in header %}
+                    <div class="{{ head.class }}" {% if head.autocomplete is defined %}data-autocomplete="{{ head.autocomplete|join('|') }}"{% endif %}>
+                        {{ form_row(head.field) }}
+                    </div>
+                    {% endfor %}
+                </div>
+            {% endset %}
+            <div class="{{ indicator }} symfonyArrayCollection" data-prototype="{{ prototype|e('html_attr') }}">
+{% endmacro %}
+
+
+{% macro end(element) %}
+            </div>
+            {% do element.setRendered %}
+        </div>
+    </div>
+{% endmacro %}
+
+
+{% macro line(fields) %}
+    <div class="row">
+        {% for field in fields %}
+            <div class="{{ field.class }}" {% if field.autocomplete is defined %}data-autocomplete="{{ field.autocomplete|join('|') }}"{% endif %}>
+                {{ form_row(field.field) }}
+            </div>
+        {% endfor %}
+    </div>
+{% endmacro %}

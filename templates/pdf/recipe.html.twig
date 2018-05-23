@@ -1,0 +1,82 @@
+
+<style>
+
+    div.smallimage {
+        width: 150px;
+        box-sizing: border-box;
+        display: inline-block;
+    }
+    div.smallimage img{
+         width: 150px;
+         box-sizing: border-box;
+         display: inline-block;
+     }
+</style>
+<div class="recipe">
+
+    <h1>{{ recipe.title }}</h1>
+
+    {% if recipe.images|length > 0 %}
+    <div class="bigimage">
+        <img src="{{ vich_uploader_asset(recipe.images[0], 'imageFile') }}">
+    </div>
+    {% endif %}
+
+    <p class="recipe-metadata">{{ recipe.author.fullName }} - {{ recipe.createdAt|localizeddate('long', 'medium', null, 'UTC') }}</p>
+
+    {{ recipe.summary|md2html }}
+
+    <p>{{ 'label.portions'|trans }} : {{ recipe.portions }}</p>
+    <p>{{ 'title.recipeTags'|trans }} : {{ recipe.recipeTags|join(', ') }}</p>
+
+    <div class="ingredients">
+        <h2>{{ 'title.ingredients'|trans }}</h2>
+        <ul>
+            {% for ingredient in recipe.recipeIngredients %}
+                <li>{{ ingredient|ingredientText }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="steps">
+        <h2>{{ 'title.steps'|trans }}</h2>
+        <ol>
+            {% for step in recipe.recipeSteps %}
+                <li><p>{{ step.text }}</p><span class="details">{{ step.duration }} {{ 'static.durations.minutes'|trans }}</span></li>
+            {% endfor %}
+        </ol>
+    </div>
+
+    <div class="hints">
+        <h2>{{ 'title.hints'|trans }}</h2>
+        {% for hint in recipe.recipeHints %}
+            <div class="panel panel-default">
+                <div class="panel-body">{{ hint.text }}</div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="alternatives">
+        <h2>{{ 'title.recipeAlternatives'|trans }}</h2>
+        {% for alternative in recipe.recipeAlternatives %}
+            <div class="panel panel-default">
+                <div class="panel-body">{{ alternative.text }}</div>
+            </div>
+        {% endfor %}
+    </div>
+
+
+
+    {% if recipe.images|length > 0 %}
+        <h2>{{ 'title.images'|trans }}</h2>
+        {% set first = true %}
+        {% for image in recipe.images %}
+            {% if first %}
+                {% set first = false %}
+            {% else %}
+                <div class="smallimage">
+                    <img src="{{ vich_uploader_asset(image, 'imageFile') }}" alt="{{ image.altText }}">
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+</div>

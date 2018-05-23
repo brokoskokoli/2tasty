@@ -1,0 +1,67 @@
+{% extends 'front/layout.html.twig' %}
+
+{% block body_id 'recipes_new' %}
+
+{% block main %}
+    <h1>{{ 'title.recipes_new'|trans }}</h1>
+
+
+    {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+
+
+    {% if quick %}
+
+        {% import 'front/common/arrayCollection.html.twig' as arrayCollection %}
+        {{ form_row(form.title) }}
+
+        {{ arrayCollection.start('images', 'title.images', [
+            {class: 'col-md-8', field: form.images.vars.prototype.imageFile},
+            {class: 'col-md-3', field: form.images.vars.prototype.altText},
+        ]) }}
+
+        {{ arrayCollection.line([
+            {class: 'col-md-8', field: form.images[0].imageFile},
+            {class: 'col-md-3', field: form.images[0].altText},
+        ]) }}
+
+        {{ arrayCollection.end(form.images) }}
+
+
+        {{ form_row(form.private, {'attr': {'checked': 'checked'}}) }}
+
+        {% do form.recipeIngredients.setRendered %}
+        {% do form.recipeSteps.setRendered %}
+        {% do form.recipeHints.setRendered %}
+        {% do form.recipeAlternatives.setRendered %}
+        {% do form.recipeTags.setRendered %}
+        {% do form.portions.setRendered %}
+        {% do form.summary.setRendered %}
+
+    {% else %}
+        {{ include('front/recipes/_form_rows.html.twig', {
+                form: form,
+                ingredientList: ingredientList,
+                recipeTags: recipeTags
+            }, with_context = false) }}
+    {% endif %}
+    <button type="submit" class="btn btn-primary">
+        <i class="fa fa-save" aria-hidden="true"></i> {{ 'label.create_recipe'|trans }}
+    </button>
+    {{ form_widget(form.saveAndCreateNew, {label: 'action.save_and_create_new', attr: {class: 'btn btn-primary'}}) }}
+    <a href="{{ path('recipes_news') }}" class="btn btn-link">
+        <i class="fa fa-list-alt" aria-hidden="true"></i> {{ 'action.back_to_list'|trans }}
+    </a>
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block sidebar %}
+    {{ parent() }}
+{% endblock %}
+
+{% block javascripts %}
+
+    {{ parent() }}
+    <script>
+        require("assets{{ asset('js/pages/recipes/edit_new.js') }}");
+    </script>
+{% endblock %}

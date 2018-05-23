@@ -1,0 +1,48 @@
+{% extends 'front/layout.html.twig' %}
+
+{% import 'front/common/arrayCollection.html.twig' as arrayCollection %}
+{% block body_id 'user_my_profile' %}
+
+{% block main %}
+    <h1>{{ 'title.edit_profile'|trans }}</h1>
+    {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+
+
+    {{ form_row(form.fullName) }}
+    {{ form_row(form.username) }}
+    {{ form_row(form.email) }}
+    {{ form_row(form.imageFile) }}
+
+    <h2>{{ 'title.ingredient_display'|trans }}</h2>
+    {{ form_row(form.ingredientDisplayPreference) }}
+
+    {{ arrayCollection.start('ingredientDisplayPreferenceOverrides', 'title.ingredientDisplayPreferenceOverrides', [
+        {class: 'col-md-6', field: form.ingredientDisplayPreferenceOverrides.vars.prototype.ingredient},
+        {class: 'col-md-5', field: form.ingredientDisplayPreferenceOverrides.vars.prototype.unit},
+    ]) }}
+
+    {% for override in form.ingredientDisplayPreferenceOverrides %}
+        {{ arrayCollection.line([
+            {class: 'col-md-6', field: override.ingredient},
+            {class: 'col-md-5', field: override.unit},
+        ]) }}
+    {% endfor %}
+
+    {{ arrayCollection.end(form.ingredientDisplayPreferenceOverrides) }}
+    {{ form_end(form) }}
+    {% if user.imageFile is defined %}
+    <img class="profileimage" src="{{ vich_uploader_asset(user, 'imageFile') }}">
+    {% endif %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        require("assets{{ asset('js/pages/user/my_profile.js') }}");
+    </script>
+{% endblock %}
+
+{% block sidebar %}
+    {{ parent() }}
+{% endblock %}
+

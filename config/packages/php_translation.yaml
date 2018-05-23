@@ -1,0 +1,24 @@
+translation:
+    locales: ["de","en","fr"]
+    edit_in_place:
+        enabled: false
+        config_name: app
+    configs:
+        app:
+            dirs: ["%kernel.project_dir%/templates", "%kernel.project_dir%/src"]
+            output_dir: "%kernel.project_dir%/translations"
+            excluded_names: ["*TestCase.php", "*Test.php"]
+            excluded_dirs: [cache, data, logs]
+            local_storage: ["app.translations"]
+
+
+#services:
+#    php_translation.storage.xlf_loader:
+#      class: Symfony\Component\Translation\Loader\YamlFileLoader
+#      tags:
+#        - { name: translation.loader, alias: xlf }
+#
+#    php_translation.storage.xlf_dumper:
+#      class: Symfony\Component\Translation\Dumper\YamlFileDumper
+#      tags:
+#        - { name: translation.dumper, alias: xlf }

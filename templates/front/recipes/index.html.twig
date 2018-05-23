@@ -1,0 +1,46 @@
+{% extends 'front/layout.html.twig' %}
+
+{% block body_id 'recipes_news' %}
+
+{% block main %}
+    {% for recipe in recipes %}
+        <article class="recipe_list_with_details">
+            <div class="row">
+                <div class="col-md-8">
+                    <h2>
+                        <a href="{{ path('recipes_show', {slug: recipe.slug}) }}">
+                            {{ recipe.title }}
+                        </a>
+                    </h2>
+
+                    <p class="recipe-metadata">
+                        <span class="metadata"><i class="fa fa-calendar"></i> {{ recipe.createdAt|localizeddate('long', 'medium', null, 'UTC') }}</span>
+                        <span class="metadata"><i class="fa fa-user"></i> {{ recipe.author.fullName }}</span>
+                    </p>
+
+                    {{ recipe.summary|default('')|md2html }}
+
+                    {{ include('front/recipes/_recipe_tags.html.twig') }}
+                </div>
+                <div class="col-md-4">
+                    {% if recipe.images|length > 0 %}
+                        <img class="smallimage" src="{{ vich_uploader_asset(recipe.images[0], 'imageFile') }}">
+                    {% endif %}
+                </div>
+            </div>
+        </article>
+    {% else %}
+        <div class="well">{{ 'recipe.no_recipes_found'|trans }}</div>
+    {% endfor %}
+
+    {% if recipes.haveToPaginate %}
+        <div class="navigation text-center">
+            {{ pagerfanta(recipes, 'twitter_bootstrap3_translated', {routeName: 'recipes_news_paginated'}) }}
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block sidebar %}
+    {{ parent() }}
+    {{ include('front/recipes/_rss.html.twig') }}
+{% endblock %}
