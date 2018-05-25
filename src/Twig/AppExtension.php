@@ -54,7 +54,9 @@ class AppExtension extends AbstractExtension
                                 $locales)
     {
         $this->parser = $parser;
-        $this->user = $tokenStorage->getToken()->getUser();
+        if (!empty($tokenStorage->getToken())) {
+            $this->user = $tokenStorage->getToken()->getUser();
+        }
         $this->ingredientService = $ingredientService;
         $this->localeCodes = explode('|', $locales);
     }
@@ -91,7 +93,7 @@ class AppExtension extends AbstractExtension
     public function ingredientText(RecipeIngredient $recipeIngredient): string
     {
 
-        $result = $this->ingredientService->getTranslatedCalculatedIngredient($recipeIngredient, $this->user->getIngredientDisplayPreference());
+        $result = $this->ingredientService->getTranslatedCalculatedIngredientText($recipeIngredient, $this->user);
 
         if ($result != '') {
             $result .= ' - ';

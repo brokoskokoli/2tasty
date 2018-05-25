@@ -5,6 +5,8 @@ namespace App\Service;
 use App\Entity\Ingredient;
 use App\Entity\RecipeIngredient;
 use App\Entity\RefIngredientDisplayPreference;
+use App\Entity\RefUnit;
+use App\Entity\User;
 use App\IngredientCalculator\IngredientCalculator;
 use App\IngredientCalculator\IngredientCalculatorBase;
 use Doctrine\ORM\EntityManagerInterface;
@@ -51,18 +53,60 @@ class IngredientService
         }, $entries);
     }
 
-    public function getCalculatedIngredient(RecipeIngredient $recipeIngredient, ?RefIngredientDisplayPreference $preference = null)
+    public function getReadableIngredientText(RecipeIngredient $recipeIngredient)
     {
-        $calculator =  IngredientCalculator::getCalculator($preference, $this->em, $this->translator);
-        return $calculator->calculate($recipeIngredient);
+        $result = '';
+
+        if ($recipeIngredient->getAmount()) {
+            $result .= $recipeIngredient->getAmount() . ' ';
+        }
+        if ($recipeIngredient->getUnit()) {
+            $result .= $this->translator->trans($recipeIngredient->getUnit()->getName()) . ' ';
+        }
+
+        return $result;
     }
 
-    public function getTranslatedCalculatedIngredient(RecipeIngredient $recipeIngredient, ?RefIngredientDisplayPreference $preference = null)
+    public function getUserPreferenceIngredientDisplayDefault(Ingredient $ingredient, RefIngredientDisplayPreference $preference) : RefUnit
     {
-        $result = $this->getCalculatedIngredient($recipeIngredient, $preference);
+        $calculator = IngredientCalculator::getCalculator($preference, $this->em, $this->translator);
+        return $calculator->getDefault($ingredient);
+    }
+
+    public function getUserIngredientPreferenceUnit(Ingredient $ingredient, ?User $user) : ?RefUnit
+    {
+        if (!$ingredient) {
+            return null;
+        }
+
+        foreach ($user->getIngredientDisplayPreferenceOverrides() as $override) {
+            if ($override->getIngredient() === $ingredient) {
+                return $override->getUnit();
+            }
+        }
+
+        return $this->getUserPreferenceIngredientDisplayDefault($ingredient, $user->getIngredientDisplayPreference());
+    }
+
+    public function getCalculatedIngredientAmountText(RecipeIngredient $recipeIngredient, ?User $user = null)
+    {
+        if ($recipeIngredient->getIngredient()) {
+            $preferenceUnit = $this->getUserIngredientPreferenceUnit($recipeIngredient->getIngredient(), $user);
+
+            if ($preferenceUnit !== $recipeIngredient->getUnit()) {
+                IngredientCalculator::calculateToUnit($recipeIngredient, $preferenceUnit);
+            }
+        }
+
+        return $this->getReadableIngredientText($recipeIngredient);
+    }
+
+    public function getTranslatedCalculatedIngredientText(RecipeIngredient $recipeIngredient, ?User $user = null)
+    {
+        $result = $this->getCalculatedIngredientAmountText($recipeIngredient, $user);
 
         if ($recipeIngredient->getIngredient()) {
-            $result .= $this->translator->trans($recipeIngredient->getIngredient()->getName()) . ' ';
+            $result .= $this->translator->trans($recipeIngredient->getIngredient()->getName());
         }
 
         return $result;

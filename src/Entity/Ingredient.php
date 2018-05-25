@@ -56,7 +56,7 @@ class Ingredient
 
     /**
      * @var bool
-     * @ORM\Column(type="boolean", options={"default" = 0})
+     * @ORM\Column(type="boolean", nullable=true)
      */
     private $liquid;
 
@@ -165,7 +165,7 @@ class Ingredient
     /**
      * @return float
      */
-    public function getDensity(): float
+    public function getDensity(): ?float
     {
         return $this->density;
     }
@@ -174,7 +174,7 @@ class Ingredient
      * @param float $density
      * @return Ingredient
      */
-    public function setDensity(float $density): Ingredient
+    public function setDensity(?float $density): Ingredient
     {
         $this->density = $density;
         return $this;

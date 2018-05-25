@@ -2,8 +2,10 @@
 
 namespace App\IngredientCalculator;
 
+use App\Entity\Ingredient;
 use App\Entity\RecipeIngredient;
 use App\Entity\RefIngredientDisplayPreference;
+use App\Entity\RefUnit;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -33,17 +35,13 @@ class IngredientCalculatorBase
         $this->translator = $translator;
     }
 
-    public function calculate(RecipeIngredient $recipeIngredient)
+    /**
+     * @param Ingredient $ingredient
+     * @return RefUnit
+     * @throws \Doctrine\ORM\ORMException
+     */
+    public function getDefault(Ingredient $ingredient)
     {
-        $result = '';
-
-        if ($recipeIngredient->getAmount()) {
-            $result .= $recipeIngredient->getAmount() . ' ';
-        }
-        if ($recipeIngredient->getUnit()) {
-            $result .= $this->translator->trans($recipeIngredient->getUnit()->getName()) . ' ';
-        }
-
-        return $result;
+        return $this->em->getReference(RefUnit::class, RefUnit::REF_UNIT_KG);
     }
 }

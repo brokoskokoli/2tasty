@@ -2,22 +2,20 @@
 
 namespace App\IngredientCalculator;
 
+use App\Entity\Ingredient;
 use App\Entity\RecipeIngredient;
+use App\Entity\RefUnit;
 
 class IngredientCalculatorNative extends IngredientCalculatorBase
 {
-    public function calculate(RecipeIngredient $recipeIngredient)
+    /**
+     * @param Ingredient $ingredient
+     * @return null|object
+     * @throws \Doctrine\ORM\ORMException
+     */
+    public function getDefault(Ingredient $ingredient)
     {
-        $result = '';
-
-        if ($recipeIngredient->getAmount()) {
-            $result .= $recipeIngredient->getAmount() . ' ';
-        }
-        if ($recipeIngredient->getUnit()) {
-            $result .= $this->translator->trans($recipeIngredient->getUnit()->getName()) . ' ';
-        }
-
-        return $result;
+        return $this->em->getReference(RefUnit::class, RefUnit::REF_UNIT_US_CUP);
     }
 
 

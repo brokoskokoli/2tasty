@@ -11,14 +11,32 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
--- Export de données de la table myfood.ref_ingredient_display_preference : ~3 rows (environ)
+-- Export de la structure de la table myfood. ref_ingredient_display_preference
+DROP TABLE IF EXISTS `ref_ingredient_display_preference`;
+CREATE TABLE IF NOT EXISTS `ref_ingredient_display_preference` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- Export de données de la table myfood.ref_ingredient_display_preference : ~2 rows (environ)
 DELETE FROM `ref_ingredient_display_preference`;
 /*!40000 ALTER TABLE `ref_ingredient_display_preference` DISABLE KEYS */;
 INSERT INTO `ref_ingredient_display_preference` (`id`, `name`) VALUES
-	(1, 'ingredient_preferences.native'),
-	(2, 'ingredient_preferences.german'),
-	(3, 'ingredient_preferences.us');
+	(1, 'ingredient_preferences.Native'),
+	(2, 'ingredient_preferences.German'),
+	(3, 'ingredient_preferences.US');
 /*!40000 ALTER TABLE `ref_ingredient_display_preference` ENABLE KEYS */;
+
+-- Export de la structure de la table myfood. ref_unit
+DROP TABLE IF EXISTS `ref_unit`;
+CREATE TABLE IF NOT EXISTS `ref_unit` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `factor_to_liter` double DEFAULT NULL,
+  `factor_to_kg` double DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- Export de données de la table myfood.ref_unit : ~11 rows (environ)
 DELETE FROM `ref_unit`;
@@ -29,7 +47,7 @@ INSERT INTO `ref_unit` (`id`, `name`, `factor_to_liter`, `factor_to_kg`) VALUES
 	(3, 'g', NULL, 0.001),
 	(4, 'ml', 0.001, NULL),
 	(5, 'l', 1, NULL),
-	(6, 'oz', 0.0295735, NULL),
+	(6, 'oz', NULL, 0.02834952),
 	(7, 'cup', 0.23658823, NULL),
 	(8, '1/2 cup', 0.11829411, NULL),
 	(9, '1/4 cup', 0.059147059, NULL),

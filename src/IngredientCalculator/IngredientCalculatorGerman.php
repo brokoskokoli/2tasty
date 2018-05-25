@@ -2,22 +2,19 @@
 
 namespace App\IngredientCalculator;
 
+use App\Entity\Ingredient;
 use App\Entity\RecipeIngredient;
+use App\Entity\RefUnit;
 
 class IngredientCalculatorGerman extends IngredientCalculatorBase
 {
-    public function calculate(RecipeIngredient $recipeIngredient)
+    public function getDefault(Ingredient $ingredient)
     {
-        $result = 'German: ';
-
-        if ($recipeIngredient->getAmount()) {
-            $result .= $recipeIngredient->getAmount() . ' ';
+        if ($ingredient->isLiquid()) {
+            return $this->em->getReference(RefUnit::class, RefUnit::REF_UNIT_ML);
+        } else {
+            return $this->em->getReference(RefUnit::class, RefUnit::REF_UNIT_G);
         }
-        if ($recipeIngredient->getUnit()) {
-            $result .= $this->translator->trans($recipeIngredient->getUnit()->getName()) . ' ';
-        }
-
-        return $result;
     }
 
 
