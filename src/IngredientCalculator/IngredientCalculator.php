@@ -76,7 +76,8 @@ class IngredientCalculator
         }
 
         $recipeIngredient->setUnit($unit);
-        $recipeIngredient->setAmount($amount);
+        $roundedAmount = round($amount, - (ceil(log10($amount))-3));
+        $recipeIngredient->setAmount($roundedAmount);
         return false;
     }
 }
