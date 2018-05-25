@@ -95,7 +95,7 @@ class AppExtension extends AbstractExtension
 
         $result = $this->ingredientService->getTranslatedCalculatedIngredientText($recipeIngredient, $this->user);
 
-        if ($result != '') {
+        if ($result != '' && $recipeIngredient->getText() != '') {
             $result .= ' - ';
         }
 
