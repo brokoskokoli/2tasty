@@ -47,6 +47,12 @@ security:
                 # The name of the route to redirect to after logging out
                 target: homepage
 
+            remember_me:
+                secret:   '%kernel.secret%'
+                lifetime: 60480000 # 100 weeks in seconds
+                path:     /
+                always_remember_me: true
+
     access_control:
         # this is a catch-all for the admin area
         # additional security lives in the controllers
