@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\RefIngredientDisplayPreferenceRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\IngredientDisplayPreferenceOverrideRepository")
  */
 class IngredientDisplayPreferenceOverride
 {
@@ -28,11 +28,17 @@ class IngredientDisplayPreferenceOverride
     private $ingredient;
 
     /**
-     * @var string
+     * @var RefUnit
      * @ORM\ManyToOne(targetEntity="App\Entity\RefUnit", fetch="EAGER")
      * @Assert\NotNull()
      */
     private $unit;
+
+    /**
+     * @var RefIngredientDisplayPreference
+     * @ORM\ManyToOne(targetEntity="App\Entity\RefIngredientDisplayPreference", fetch="EAGER")
+     */
+    private $displayPreference;
 
     /**
      * @var User
@@ -116,6 +122,22 @@ class IngredientDisplayPreferenceOverride
         return $this;
     }
 
+    /**
+     * @return RefIngredientDisplayPreference
+     */
+    public function getDisplayPreference(): ?RefIngredientDisplayPreference
+    {
+        return $this->displayPreference;
+    }
 
+    /**
+     * @param RefIngredientDisplayPreference $displayPreference
+     * @return IngredientDisplayPreferenceOverride
+     */
+    public function setDisplayPreference(?RefIngredientDisplayPreference $displayPreference): IngredientDisplayPreferenceOverride
+    {
+        $this->displayPreference = $displayPreference;
+        return $this;
+    }
 
 }

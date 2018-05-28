@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Entity\Ingredient;
+use App\Entity\IngredientDisplayPreferenceOverride;
 use App\Entity\RecipeIngredient;
 use App\Entity\RefIngredientDisplayPreference;
 use App\Entity\RefUnit;
@@ -80,7 +81,20 @@ class IngredientService
         }
 
         foreach ($user->getIngredientDisplayPreferenceOverrides() as $override) {
-            if ($override->getIngredient() === $ingredient) {
+            if ($override->getIngredient() === $ingredient && $override->getDisplayPreference() === null) {
+                return $override->getUnit();
+            }
+        }
+
+        foreach ($user->getIngredientDisplayPreferenceOverrides() as $override) {
+            if ($override->getIngredient() === $ingredient && $override->getDisplayPreference() === $user->getIngredientDisplayPreference()) {
+                return $override->getUnit();
+            }
+        }
+
+        dump($this->em->getRepository(IngredientDisplayPreferenceOverride::class)->getAllCommon());
+        foreach ($this->em->getRepository(IngredientDisplayPreferenceOverride::class)->getAllCommon() as $override) {
+            if ($override->getIngredient() === $ingredient && $override->getDisplayPreference() === $user->getIngredientDisplayPreference()) {
                 return $override->getUnit();
             }
         }

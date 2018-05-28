@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\RefIngredientDisplayPreference;
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -12,4 +13,5 @@ use Doctrine\ORM\EntityRepository;
  */
 class RefIngredientDisplayPreferenceRepository extends EntityRepository
 {
+
 }

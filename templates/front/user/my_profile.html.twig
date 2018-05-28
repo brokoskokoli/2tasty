@@ -17,14 +17,16 @@
     {{ form_row(form.ingredientDisplayPreference) }}
 
     {{ arrayCollection.start('ingredientDisplayPreferenceOverrides', 'title.ingredientDisplayPreferenceOverrides', [
-        {class: 'col-md-6', field: form.ingredientDisplayPreferenceOverrides.vars.prototype.ingredient},
-        {class: 'col-md-5', field: form.ingredientDisplayPreferenceOverrides.vars.prototype.unit},
+        {class: 'col-md-5', field: form.ingredientDisplayPreferenceOverrides.vars.prototype.ingredient},
+        {class: 'col-md-3', field: form.ingredientDisplayPreferenceOverrides.vars.prototype.unit},
+        {class: 'col-md-3', field: form.ingredientDisplayPreferenceOverrides.vars.prototype.displayPreference},
     ]) }}
 
     {% for override in form.ingredientDisplayPreferenceOverrides %}
         {{ arrayCollection.line([
-            {class: 'col-md-6', field: override.ingredient},
-            {class: 'col-md-5', field: override.unit},
+            {class: 'col-md-5', field: override.ingredient},
+            {class: 'col-md-3', field: override.unit},
+            {class: 'col-md-3', field: override.displayPreference},
         ]) }}
     {% endfor %}
 

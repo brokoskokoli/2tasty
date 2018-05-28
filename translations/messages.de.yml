@@ -65,9 +65,10 @@ dialogs:
 
 form:
   defaultvalue:
-    ingredient: '-- Zutat wählen--'
-    unit: '-- Einheit wählen--'
-    ingredient_view: '-- Anzeige wählen--'
+    ingredient: '-- Zutat wählen --'
+    unit: '-- Einheit wählen --'
+    ingredient_view: '-- Anzeige wählen --'
+    none: '-- Keine(r) --'
 
 menuentries:
   addIngredients: Zutaten hinzufügen

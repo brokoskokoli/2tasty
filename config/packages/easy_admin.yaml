@@ -7,3 +7,4 @@ easy_admin:
         - App\Entity\ImageFile
         - App\Entity\Comment
         - App\Entity\RefUnit
+        - App\Entity\IngredientDisplayPreferenceOverride
