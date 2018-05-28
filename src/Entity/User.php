@@ -29,6 +29,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class User implements UserInterface, \Serializable
 {
+    const DISPLAY_PREFERENCE_NATIVE = 1;
+
     /**
      * @var int
      *
@@ -152,7 +154,8 @@ class User implements UserInterface, \Serializable
     {
         $this->setUpdatedAt(new \DateTime());
         $this->altText = '';
-        $this->ingredientDisplayPreference = new ArrayCollection();
+        $this->ingredientDisplayPreference = self::DISPLAY_PREFERENCE_NATIVE;
+        $this->ingredientDisplayPreferenceOverrides = new ArrayCollection();
     }
 
 

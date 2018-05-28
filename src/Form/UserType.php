@@ -64,9 +64,8 @@ class UserType extends AbstractType
                     'class' => RefIngredientDisplayPreference::class,
                     'choice_label' => 'name',
                     'label' => "label.ingredient_display_preference",
-                    'placeholder' => 'form.defaultvalue.ingredient_view',
                     'choice_translation_domain' => 'messages',
-                    'required' => false,
+                    'required' => true,
                 ]
             )
             ->add('ingredientDisplayPreferenceOverrides',
