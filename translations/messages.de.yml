@@ -93,6 +93,9 @@ menu:
 
 help:
   app_description: |
+    <strong>Version 0.6</strong> <br>
+    - Umrechnung der Einheiten bei der Anzeige eingebaut<br>
+    <br>
     <strong>Version 0.5</strong> <br>
     - Seite zur Profilverwaltung<br>
     <br>
