@@ -1,0 +1,18 @@
+SetEnv APP_ENV prod
+SetEnv MAILER_URL smtp://smtp.strato.de:465?encryption=ssl&auth_mode=login&username=noreply@recipes.stefanrichter.de&password=1234test
+SetEnv APP_SECRET 67d829bf61dc5f87a73fd814e2c9f629
+SetEnv APP_DEBUG 0
+
+<IfModule mod_rewrite.c>
+    Options -MultiViews
+    RewriteEngine On
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^(.*)$ index.php [QSA,L]
+</IfModule>
+
+<IfModule !mod_rewrite.c>
+    <IfModule mod_alias.c>
+        RedirectMatch 302 ^/$ /index.php/
+    </IfModule>
+</IfModule>
+
