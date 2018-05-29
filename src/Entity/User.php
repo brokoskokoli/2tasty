@@ -465,6 +465,22 @@ class User implements UserInterface, \Serializable
         return $this->recipes;
     }
 
+    /**
+     * @param Recipe $recipe
+     * @return $this
+     */
+    public function removeRecipe(Recipe $recipe)
+    {
+        $this->recipes->remove($recipe);
+        $recipe->setAuthor(null);
+        return $this;
+    }
 
+    public function addRecipe(Recipe $recipe)
+    {
+        $this->recipes->add($recipe);
+        $recipe->setAuthor($this);
+        return $this;
+    }
 
 }

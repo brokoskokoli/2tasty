@@ -12,11 +12,14 @@
     {% endif %}
 
 
-    <h3>{{ user.fullName }}</h3>
 
+    <p>&nbsp;</p>
+    <h2>{{ 'title.recipe_list'|trans }}</h2>
     {% for recipe in user.recipes %}
 
-                {{ include('front/recipes/_recipe_rowdisplay.xml.twig', {recipe: recipe})|raw }}
+        {% if not recipe.private %}
+            {{ include('front/recipes/_recipe_rowdisplay.html.twig', {recipe: recipe})|raw }}
+        {% endif %}
     {% endfor %}
 
 {% endblock %}
