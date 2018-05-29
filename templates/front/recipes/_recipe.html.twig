@@ -65,5 +65,17 @@
     </div>
 
     <p class="spacer-medium">&nbsp;</p>
+    <div class="links">
+        <h2>{{ 'title.links'|trans }}</h2>
+        <ul>
+        {% for link in recipe.recipeLinks %}
+            <li>
+                <a href="{{ link.url }}">{{ link.linkText }}</a>
+            </li>
+        {% endfor %}
+        </ul>
+    </div>
+
+    <p class="spacer-medium">&nbsp;</p>
     {{ include('front/recipes/_recipe_tags.html.twig') }}
 </div>

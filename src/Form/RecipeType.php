@@ -17,6 +17,7 @@ use App\Form\Type\RecipeAlternativeType;
 use App\Form\Type\RecipeHintType;
 use App\Form\Type\RecipeImageType;
 use App\Form\Type\RecipeIngredientType;
+use App\Form\Type\RecipeLinkType;
 use App\Form\Type\RecipeStepType;
 use App\Form\Type\RecipeTagsInputType;
 use Symfony\Component\Form\AbstractType;
@@ -99,6 +100,16 @@ class RecipeType extends AbstractType
                 CollectionType::class,
                 [
                     'entry_type' => RecipeHintType::class,
+                    'allow_add' => true,
+                    'allow_delete' => true,
+                    'by_reference' => true
+                ]
+
+            )
+            ->add('recipeLinks',
+                CollectionType::class,
+                [
+                    'entry_type' => RecipeLinkType::class,
                     'allow_add' => true,
                     'allow_delete' => true,
                     'by_reference' => true

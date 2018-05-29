@@ -3,6 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\Recipe;
+use App\Entity\RecipeTag;
+use App\Entity\User;
+use App\Helper\QueryHelper;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query;
@@ -104,5 +107,26 @@ class RecipeRepository extends ServiceEntityRepository
         return array_filter($terms, function ($term) {
             return 2 <= mb_strlen($term);
         });
+    }
+
+    public function filterRecipes($page, $filter = [], ?User $user = null)
+    {
+        $queryBuilder = $this->createQueryBuilder('r');
+        $queryBuilder->leftJoin('r.recipeTags', 't');
+
+        /**
+         * @var int $key
+         * @var RecipeTag $term
+         */
+        $fields = $queryBuilder->expr()->orX();
+        foreach ($filter['recipeTags'] ?? [] as $key => $term) {
+            $fields->add('t.name in (:t_'.$key.')');
+            $queryBuilder->setParameter('t_'.$key, $term->getName());
+        }
+        $queryBuilder->andWhere($fields);
+
+
+        QueryHelper::andWhereFromFilter($queryBuilder, $filter, 'private', 'r.author');
+        return $this->createPaginator($queryBuilder->getQuery(), $page);
     }
 }

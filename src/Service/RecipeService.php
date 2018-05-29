@@ -44,6 +44,9 @@ class RecipeService
         foreach ($recipe->getRecipeAlternatives() as &$recipeAlternative) {
             $recipeAlternative->setRecipe($recipe);
         }
+        foreach ($recipe->getRecipeLinks() as &$recipeLink) {
+            $recipeLink->setRecipe($recipe);
+        }
         foreach ($recipe->getImages() as &$recipeImage) {
             if ($recipeImage->getImageName() === null && $recipeImage->getImageFile() === null) {
                 $recipe->removeImage($recipeImage);
@@ -77,5 +80,16 @@ class RecipeService
         $recipes = $this->em->getRepository(Recipe::class)->findAll();
         $index = array_rand($recipes);
         return $recipes[$index];
+    }
+
+    public function filterRecipes($page, $filter, User $user)
+    {
+        if ($filter['private'] === true) {
+            $filter['private'] = $user;
+        } else {
+            $filter['private'] = null;
+        }
+
+        return $this->em->getRepository(Recipe::class)->filterRecipes($page, $filter, $user);
     }
 }

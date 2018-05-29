@@ -79,6 +79,19 @@
 
 {{ arrayCollection.end(form.recipeAlternatives) }}
 
+{{ arrayCollection.start('recipeLinks', 'title.links', [
+    {class: 'col-md-5', field: form.recipeLinks.vars.prototype.text},
+    {class: 'col-md-6', field: form.recipeLinks.vars.prototype.url},
+]) }}
+
+{% for hint in form.recipeLinks %}
+    {{ arrayCollection.line([
+        {class: 'col-md-5', field: hint.text},
+        {class: 'col-md-6', field: hint.url},
+    ]) }}
+{% endfor %}
+
+{{ arrayCollection.end(form.recipeLinks) }}
 
 {{ form_row(form.recipeTags, {'attr' : {'class': 'stXtokenField', 'data-availabeTokens': recipeTags|join('|')}}) }}
 

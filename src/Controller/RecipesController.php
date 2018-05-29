@@ -8,6 +8,7 @@ use App\Entity\Recipe;
 use App\Entity\RecipeTag;
 use App\Events;
 use App\Form\CommentType;
+use App\Form\RecipeFilterType;
 use App\Form\RecipeType;
 use App\Form\Type\IngredientType;
 use App\Repository\RecipeRepository;
@@ -279,5 +280,34 @@ class RecipesController extends AbstractController
         return $this->render('front/recipes/show.html.twig', [
             'recipe' => $recipe,
         ]);
+    }
+
+    /**
+     *
+     * @Route("/filter_recipes", defaults={"page": "1", "format"="html"}, name="recipes_filter")
+     * @Route("/filter_recipes/{page}", defaults={"page": "1", "format"="html"}, requirements={"page": "[1-9]\d*"}, name="recipes_filter_paginated")
+     *
+     * @param Request $request
+     * @param RecipeService $recipeService
+     */
+    public function filterAction(Request $request, RecipeService $recipeService, RecipeTagService $recipeTagService, int $page = null)
+    {
+
+        $form = $this->createForm(RecipeFilterType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $filters = $form->getData();
+            $result = $recipeService->filterRecipes($page, $filters, $this->getUser());
+        }
+
+        return $this->render('front/recipes/filter.html.twig', [
+            'recipes' => $result ?? [],
+            'form' => $form->createView(),
+            'recipeTags' => $recipeTagService->getAllNames(),
+        ]);
+
+
     }
 }

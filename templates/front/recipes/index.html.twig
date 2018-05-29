@@ -7,7 +7,7 @@
 
         {{ include('front/recipes/_recipe_rowdisplay.html.twig', {recipe: recipe})|raw }}
     {% else %}
-        <div class="well">{{ 'recipe.no_recipes_found'|trans }}</div>
+        <div class="well">{{ 'messages.no_recipes_found'|trans }}</div>
     {% endfor %}
 
     {% if recipes.haveToPaginate %}

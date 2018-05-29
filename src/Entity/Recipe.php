@@ -93,7 +93,7 @@ class Recipe
     /**
      * @var User
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\User")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="recipes")
      * @ORM\JoinColumn(nullable=false)
      * @Assert\NotNull()
      */
@@ -175,6 +175,20 @@ class Recipe
      * @Assert\Valid()
      */
     private $recipeIngredients;
+
+    /**
+     * @var RecipeLink[]|ArrayCollection
+     *
+     * @ORM\OneToMany(
+     *     targetEntity="App\Entity\RecipeLink",
+     *      mappedBy="recipe",
+     *      orphanRemoval=true,
+     *      cascade={"persist"}
+     * )
+     * @ORM\OrderBy({"id": "ASC"})
+     * @Assert\Valid()
+     */
+    private $recipeLinks;
 
     /**
      * @var RecipeTag[]|ArrayCollection
@@ -492,6 +506,29 @@ if (!$this->comments->contains($comment)) {
     {
         $this->recipeIngredients->remove($recipeIngredient);
         $recipeIngredient->setRecipe(null);
+        return $this;
+    }
+
+
+    /**
+     * @return RecipeLink[]|ArrayCollection
+     */
+    public function getRecipeLinks() : Collection
+    {
+        return $this->recipeLinks;
+    }
+
+    public function addRecipeLink(RecipeLink $recipeLink) : Recipe
+    {
+        $this->recipeLinks->add($recipeLink);
+        $recipeLink->setRecipe($this);
+        return $this;
+    }
+
+    public function removeRecipeLink(RecipeLink $recipeLink) : Recipe
+    {
+        $this->recipeLinks->remove($recipeLink);
+        $recipeLink->setRecipe(null);
         return $this;
     }
 

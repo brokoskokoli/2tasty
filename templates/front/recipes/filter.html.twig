@@ -1,0 +1,41 @@
+{% extends 'front/layout.html.twig' %}
+
+{% block body_id 'recipes_filter' %}
+
+{% block main %}
+    <h1>{{ 'title.filter_recipes'|trans }}</h1>
+    {{ form_start(form) }}
+    {{ form_row(form.recipeTags, {'attr' : {'class': 'stXtokenField', 'data-availabeTokens': recipeTags|join('|')}}) }}
+
+    {{ form_end(form) }}
+    <p class="spacer-medium">&nbsp;</p>
+
+    {% if recipes %}
+        {% for recipe in recipes %}
+
+            {{ include('front/recipes/_recipe_rowdisplay.html.twig', {recipe: recipe})|raw }}
+        {% else %}
+            <div class="well">{{ 'messages.no_recipes_found'|trans }}</div>
+        {% endfor %}
+
+        {% if recipes.haveToPaginate|default(false) %}
+            <div class="navigation text-center">
+                {{ pagerfanta(recipes, 'twitter_bootstrap3_translated', {routeName: 'recipes_filter_paginated'}) }}
+            </div>
+        {% endif %}
+    {% endif %}
+{% endblock %}
+
+{% block sidebar %}
+    {{ parent() }}
+    {{ include('front/recipes/_rss.html.twig') }}
+{% endblock %}
+
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script>
+        require("assets{{ asset('js/pages/recipes/filter.js') }}");
+    </script>
+{% endblock %}

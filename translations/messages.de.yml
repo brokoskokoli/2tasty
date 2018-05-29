@@ -15,6 +15,8 @@ title:
   edit_profile: 'Profil bearbeiten'
   ingredientDisplayPreferenceOverrides: Zutateneinstellungen
   profile: 'Kochprofil'
+  links: Links
+  filter_recipes: Erweiterte Suche
 
 
 label:
@@ -42,6 +44,8 @@ label:
   email: Emailadresse
   ingredient_display_preference: Zutatenanzeige
   profile_image: Profilbild
+  link: Link
+  own_recipes: Nur eigene Rezepte
 
 action:
   back_to_list: Zurück zur Liste
@@ -92,6 +96,7 @@ menu:
   recipe_of_the_day: Mein Rezept des Tages
   new_quick: Ich möchte schnell ein Foto von einem Rezept hochladen
   my_profile: ''
+  filter_recipes: 'Rezeptsuche'
 
 help:
   app_description: |
@@ -126,7 +131,7 @@ messages:
   password_no_number: Das Passwort muss mindestens eine Zahl enthalten
   forgot_password_mail_send: Wir haben dir eine Email geschickt!
   reset_password: Dein Password wurde erfolgreich geändert!
-  no_recipes_found: Erstelle dein erstes Rezept!
+  no_recipes_found: Keine Rezepte gefunden!
   recipe_created: Rezept erstellt!
   profile_modified: Profil geändert!
 

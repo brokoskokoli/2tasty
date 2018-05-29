@@ -43,7 +43,7 @@ class IngredientDisplayPreferenceOverride
     /**
      * @var User
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\User")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="ingredientDisplayPreferenceOverrides")
      * @ORM\JoinColumn(nullable=true)
      */
     private $author;

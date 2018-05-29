@@ -19,6 +19,11 @@
 
 {% block header_navigation_links %}
     <li>
+        <a href="{{ path('recipes_filter') }}">
+            <i class="fa fa-search" aria-hidden="true"></i> {{ 'menu.filter_recipes'|trans }}
+        </a>
+    </li>
+    <li>
         <a href="{{ path('recipes_list_my') }}">
             <i class="fa fa-list-alt" aria-hidden="true"></i> {{ 'menu.recipe_list'|trans }}
         </a>
