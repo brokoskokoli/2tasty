@@ -48,6 +48,11 @@
             <i class="fa fa-plus" aria-hidden="true"></i> {{ 'action.create_recipe'|trans }}
         </a>
     </div>
+    <div class="section actions">
+        <a href="{{ path('recipes_import_from_link') }}" class="btn btn-lg btn-block btn-success">
+            <i class="fa fa-cloud-download" aria-hidden="true"></i> {{ 'action.import_recipe_from_link'|trans }}
+        </a>
+    </div>
 
     {{ parent() }}
 {% endblock %}

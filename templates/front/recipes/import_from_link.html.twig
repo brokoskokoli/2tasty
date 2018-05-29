@@ -1,0 +1,18 @@
+{% extends 'front/layout.html.twig' %}
+
+{% block body_id 'recipes_new' %}
+
+{% block main %}
+    <h1>{{ 'title.import_from_link'|trans }}</h1>
+
+
+    {{ form_start(form) }}
+    {{ form_row(form.link) }}
+    {{ form_row(form.submit, {'attr' : {'class': 'btn-primary'}}) }}
+
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block sidebar %}
+    {{ parent() }}
+{% endblock %}

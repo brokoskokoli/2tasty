@@ -17,6 +17,7 @@ title:
   profile: 'Kochprofil'
   links: Links
   filter_recipes: Erweiterte Suche
+  import_from_link: Import from Link
 
 
 label:
@@ -62,6 +63,8 @@ action:
   reset_password: Passwort zurücksetzen
   save_and_create_new: Rezept speichern und danach noch eins erstellen!
   download_recipe_pdf: Als PDF herunterladen
+  import_recipe_from_link: Importiere Rezept
+  import: Import
 
 dialogs:
   delete_recipe:

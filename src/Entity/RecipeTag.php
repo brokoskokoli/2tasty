@@ -17,6 +17,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class RecipeTag implements \JsonSerializable
 {
+    const TAG_TOCOOK = 1;
+
     /**
      * @var int
      *

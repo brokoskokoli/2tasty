@@ -9,6 +9,7 @@ use App\Entity\RecipeTag;
 use App\Events;
 use App\Form\CommentType;
 use App\Form\RecipeFilterType;
+use App\Form\RecipeImportFromLinkType;
 use App\Form\RecipeType;
 use App\Form\Type\IngredientType;
 use App\Repository\RecipeRepository;
@@ -289,6 +290,7 @@ class RecipesController extends AbstractController
      *
      * @param Request $request
      * @param RecipeService $recipeService
+     * @return Response
      */
     public function filterAction(Request $request, RecipeService $recipeService, RecipeTagService $recipeTagService, int $page = null)
     {
@@ -309,5 +311,44 @@ class RecipesController extends AbstractController
         ]);
 
 
+    }
+
+
+    /**
+     * @Route("/import_from_link", name="recipes_import_from_link")
+     * @Method({"GET", "POST"})
+     *
+     * @param Request $request
+     * @param RecipeService $recipeService
+     * @param IngredientService $ingredientService
+     * @param RecipeTagService $recipeTagService
+     * @param bool $quick
+     * @return Response
+     */
+    public function importFromLinkAction(Request $request, RecipeService $recipeService, IngredientService $ingredientService, RecipeTagService $recipeTagService, $quick = false): Response
+    {
+        $form = $this->createForm(RecipeImportFromLinkType::class);
+        $form->handleRequest($request);
+        $error = false;
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $filters = $form->getData();
+
+            $recipe = $recipeService->createRecipeFromLink($filters['link'], $this->getUser());
+
+            if ($recipe !== null) {
+                $recipeService->saveRecipe($recipe);
+                $this->addFlash('success', 'messages.recipe_created');
+                return $this->redirectToRoute('recipes_edit', ['id' => $recipe->getId()]);
+            }
+
+            $error = true;
+        }
+
+        return $this->render('front/recipes/import_from_link.html.twig', [
+            'form' => $form->createView(),
+            'error' => $error,
+        ]);
     }
 }

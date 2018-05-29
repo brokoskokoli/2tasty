@@ -3,6 +3,8 @@
 namespace App\Service;
 
 use App\Entity\Recipe;
+use App\Entity\RecipeLink;
+use App\Entity\RecipeTag;
 use App\Entity\User;
 use App\Helper\SecurityHelper;
 use App\Utils\Slugger;
@@ -91,5 +93,26 @@ class RecipeService
         }
 
         return $this->em->getRepository(Recipe::class)->filterRecipes($page, $filter, $user);
+    }
+
+    /**
+     * @param $link
+     * @param User $user
+     * @return Recipe|null
+     */
+    public function createRecipeFromLink($link, User $user)
+    {
+        $recipe = new Recipe();
+        $recipe->setAuthor($user);
+        $tempname = parse_url($link, PHP_URL_HOST) . parse_url($link, PHP_URL_PATH);
+        $tempname = preg_replace('/[^A-Za-z0-9\-]/', ' ', $tempname);
+        $recipeLink = new RecipeLink();
+        $recipeLink->setUrl($link);
+        $recipe->addRecipeLink($recipeLink);
+        $recipe->setTitle($tempname);
+        $tag = $this->em->getReference(RecipeTag::class, RecipeTag::TAG_TOCOOK);
+        $recipe->addTag($tag);
+
+        return $recipe;
     }
 }
