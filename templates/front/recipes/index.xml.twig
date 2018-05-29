@@ -14,11 +14,12 @@
                 <description>{{ recipe.summary }}</description>
                 <link>{{ url('recipes_show', {'slug': recipe.slug}) }}</link>
                 <guid>{{ url('recipes_show', {'slug': recipe.slug}) }}</guid>
-                <pubDate>{{ recipe.publishedAt|date(format='r', timezone='GMT') }}</pubDate>
+                <pubDate>{{ recipe.createdAt|date(format='r', timezone='GMT') }}</pubDate>
                 <author>{{ recipe.author.email }}</author>
                 {% for tag in recipe.recipeTags %}
                     <category>{{ tag.name }}</category>
                 {% endfor %}
+
             </item>
         {% endfor %}
     </channel>

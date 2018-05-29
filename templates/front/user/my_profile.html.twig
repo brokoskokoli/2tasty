@@ -11,7 +11,9 @@
     {{ form_row(form.fullName) }}
     {{ form_row(form.username) }}
     {{ form_row(form.email) }}
-    {{ form_row(form.imageFile) }}
+    <div class="profileimage_container">
+        {{ form_row(form.imageFile) }}
+    </div>
 
     <h2>{{ 'title.ingredient_display'|trans }}</h2>
     {{ form_row(form.ingredientDisplayPreference) }}
@@ -33,9 +35,6 @@
     {{ arrayCollection.end(form.ingredientDisplayPreferenceOverrides) }}
     {{ form_row(form.submit, {'attr': {'class': 'btn-primary'}}) }}
     {{ form_end(form) }}
-    {% if user.imageFile is defined %}
-    <img class="profileimage" src="{{ vich_uploader_asset(user, 'imageFile') }}">
-    {% endif %}
 {% endblock %}
 
 {% block javascripts %}

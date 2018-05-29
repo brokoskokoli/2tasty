@@ -63,4 +63,16 @@ class UserController extends AbstractController
         ]);
     }
 
+
+    /**
+     * @Route("/profile/{username}", name="user_profile")
+     * @Method({"GET", "POST"})
+     */
+    public function profileAction(Request $request, UserService $userService, User $user = null): Response
+    {
+        return $this->render('front/user/profile.html.twig', [
+            'user' => $user,
+        ]);
+    }
+
 }

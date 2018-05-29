@@ -1,0 +1,34 @@
+{% extends 'front/layout.html.twig' %}
+
+{% import 'front/common/arrayCollection.html.twig' as arrayCollection %}
+{% block body_id 'user_profile' %}
+
+{% block main %}
+    <h1>{{ 'title.profile'|trans }}</h1>
+
+    <h2>{{ user.fullName }}</h2>
+    {% if user.imageFile is defined %}
+    <img class="profileimage" src="{{ vich_uploader_asset(user, 'imageFile') }}">
+    {% endif %}
+
+
+    <h3>{{ user.fullName }}</h3>
+
+    {% for recipe in user.recipes %}
+
+                {{ include('front/recipes/_recipe_rowdisplay.xml.twig', {recipe: recipe})|raw }}
+    {% endfor %}
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        require("assets{{ asset('js/pages/user/my_profile.js') }}");
+    </script>
+{% endblock %}
+
+{% block sidebar %}
+    {{ parent() }}
+{% endblock %}
+

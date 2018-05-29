@@ -1,0 +1,9 @@
+
+<article class="recipe">
+    <h2><a href="{{ path('recipes_show', {'slug' : recipe.slug}) }}">{{ recipe.title }}</a></h2>
+    <p class="post-metadata">
+        <span class="metadata"><i class="fa fa-calendar"></i> {{ recipe.createdAt|localizeddate('long', 'medium', null, 'UTC') }}</span>
+        <span class="metadata"><i class="fa fa-user"></i> {{ recipe.author }}</span>
+    </p>
+    <p>{{ recipe.summary }}</p>
+</article>

@@ -150,6 +150,18 @@ class User implements UserInterface, \Serializable
      */
     private $ingredientDisplayPreferenceOverrides;
 
+    /**
+    * @var Recipe[]|ArrayCollection
+    *
+    * @ORM\OneToMany(
+    *      targetEntity="App\Entity\Recipe",
+    *      mappedBy="author",
+    *      cascade={"persist"}
+    * )
+    * @ORM\OrderBy({"createdAt": "DESC"})
+     */
+    private $recipes;
+
     public function __construct()
     {
         $this->setUpdatedAt(new \DateTime());
@@ -444,5 +456,15 @@ class User implements UserInterface, \Serializable
         $override->setAuthor(null);
         return $this;
     }
+
+    /**
+     * @return Recipe[]|ArrayCollection
+     */
+    public function getRecipes()
+    {
+        return $this->recipes;
+    }
+
+
 
 }
