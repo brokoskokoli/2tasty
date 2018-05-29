@@ -118,13 +118,17 @@ class RecipeRepository extends ServiceEntityRepository
          * @var int $key
          * @var RecipeTag $term
          */
-        $fields = $queryBuilder->expr()->orX();
+        $fields = $queryBuilder->expr()->andX();
+        $allKeywords = [];
         foreach ($filter['recipeTags'] ?? [] as $key => $term) {
-            $fields->add('t.name in (:t_'.$key.')');
-            $queryBuilder->setParameter('t_'.$key, $term->getName());
+            $allKeywords[] = $term->getId();
+        }
+        foreach ($filter['recipeTags'] ?? [] as $key => $term) {
+            $fields->add('t.id in (:tags)');
+            $queryBuilder->setParameter('tags', $allKeywords);
         }
         $queryBuilder->andWhere($fields);
-
+        $queryBuilder->having('count(distinct t.id) = '.count($allKeywords));
 
         QueryHelper::andWhereFromFilter($queryBuilder, $filter, 'private', 'r.author');
         return $this->createPaginator($queryBuilder->getQuery(), $page);
