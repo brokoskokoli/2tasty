@@ -88,3 +88,9 @@
 
 
 {% endblock %}
+
+
+{% block sidebar %}
+    {{ parent() }}
+    <a href="{{ asset('myfood-0.1.xpi') }}" download><i class="fa fa-firefox" aria-hidden="true"></i> {{ 'action.download_firefox_extension'|trans }}</a>
+{% endblock %}

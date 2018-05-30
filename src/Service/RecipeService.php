@@ -110,6 +110,7 @@ class RecipeService
         $recipeLink->setUrl($link);
         $recipe->addRecipeLink($recipeLink);
         $recipe->setTitle($tempname);
+        $recipe->setPrivate(true);
         $tag = $this->em->getReference(RecipeTag::class, RecipeTag::TAG_TOCOOK);
         $recipe->addTag($tag);
 

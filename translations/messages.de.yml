@@ -65,6 +65,7 @@ action:
   download_recipe_pdf: Als PDF herunterladen
   import_recipe_from_link: Importiere Rezept
   import: Import
+  download_firefox_extension: Lade die Firefox Erweiterung herunter
 
 dialogs:
   delete_recipe:
@@ -103,6 +104,10 @@ menu:
 
 help:
   app_description: |
+    <strong>Version 0.7</strong> <br>
+    - Import von Links hinzugefügt<br>
+    - Firefox Extension hinzugefügt<br>
+    <br>
     <strong>Version 0.6</strong> <br>
     - Umrechnung der Einheiten bei der Anzeige eingebaut<br>
     <br>

@@ -46,4 +46,15 @@ class RecipeImportFromLinkType extends AbstractType
                 ])
         ;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'method' => 'GET',
+            'csrf_protection' => false,
+        ]);
+    }
 }
