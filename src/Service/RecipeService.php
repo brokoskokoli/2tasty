@@ -7,6 +7,7 @@ use App\Entity\RecipeLink;
 use App\Entity\RecipeTag;
 use App\Entity\User;
 use App\Helper\SecurityHelper;
+use App\URLParser\URLParser;
 use App\Utils\Slugger;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -113,6 +114,13 @@ class RecipeService
         $recipe->setPrivate(true);
         $tag = $this->em->getReference(RecipeTag::class, RecipeTag::TAG_TOCOOK);
         $recipe->addTag($tag);
+
+        $parser = URLParser::getParser($link);
+        if ($parser) {
+            $parser->readSingleRecipeFromUrl($recipe, $link);
+        }
+
+        dump($recipe);die;
 
         return $recipe;
     }
