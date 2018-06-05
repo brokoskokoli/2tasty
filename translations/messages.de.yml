@@ -107,6 +107,9 @@ menu:
 
 help:
   app_description: |
+    <strong>Version 0.8</strong> <br>
+    - Import von Links: Chefkoch<br>
+    <br>
     <strong>Version 0.7</strong> <br>
     - Import von Links hinzugefügt<br>
     - Firefox Extension hinzugefügt<br>

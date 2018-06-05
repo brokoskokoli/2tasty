@@ -42,7 +42,7 @@
         <h2>{{ 'title.steps'|trans }}</h2>
         <ol>
             {% for step in recipe.recipeSteps %}
-                <li><p>{{ step.text }}</p><span class="details">{{ step.duration }} {{ 'static.durations.minutes'|trans }}</span></li>
+                <li><p>{{ step.text }}</p><span class="details">{% if step.duration %}{{ step.duration }} {{ 'static.durations.minutes'|trans }}{% endif %}</span></li>
             {% endfor %}
         </ol>
     </div>
