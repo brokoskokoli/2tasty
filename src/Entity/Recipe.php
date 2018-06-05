@@ -63,6 +63,13 @@ class Recipe
     private $summary;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $informations;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(type="datetime")
@@ -98,6 +105,22 @@ class Recipe
      * @Assert\NotNull()
      */
     private $author;
+
+    /**
+     * @var int
+     * in minutes
+     *
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $workingTime;
+
+    /**
+     * @var int
+     * in minutes
+     *
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $waitingTime;
 
     /**
      * @var bool
@@ -289,6 +312,26 @@ if (!$this->comments->contains($comment)) {
     }
 
     /**
+     * @return string
+     */
+    public function getInformations(): ?string
+    {
+        return $this->informations;
+    }
+
+    /**
+     * @param string $informations
+     * @return Recipe
+     */
+    public function setInformations(?string $informations): Recipe
+    {
+        $this->informations = $informations;
+        return $this;
+    }
+
+
+
+    /**
      * @return ImageFile[]|ArrayCollection
      */
     public function getImages()
@@ -419,6 +462,42 @@ if (!$this->comments->contains($comment)) {
     public function setPrivate(bool $private): Recipe
     {
         $this->private = $private;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getWorkingTime(): ?int
+    {
+        return $this->workingTime;
+    }
+
+    /**
+     * @param int $workingTime
+     * @return Recipe
+     */
+    public function setWorkingTime(?int $workingTime): Recipe
+    {
+        $this->workingTime = $workingTime;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getWaitingTime(): ?int
+    {
+        return $this->waitingTime;
+    }
+
+    /**
+     * @param int $waitingTime
+     * @return Recipe
+     */
+    public function setWaitingTime(?int $waitingTime): Recipe
+    {
+        $this->waitingTime = $waitingTime;
         return $this;
     }
 

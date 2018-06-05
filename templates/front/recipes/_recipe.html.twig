@@ -24,6 +24,9 @@
     {{ recipe.summary|default('')|md2html }}
 
     <p>{{ 'label.portions'|trans }} : {{ recipe.portions }}</p>
+    <p>{{ 'label.working_time'|trans }} : {{ recipe.workingTime|default(' -- ') }}</p>
+    <p>{{ 'label.waiting_time'|trans }} : {{ recipe.waitingTime|default(' -- ') }}</p>
+    <p>{{ recipe.informations|purify }}</p>
 
     <p class="spacer-medium">&nbsp;</p>
     <div class="ingredients">

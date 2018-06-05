@@ -3,6 +3,7 @@
 namespace App\Form\DataTransformer;
 
 use App\Entity\Ingredient;
+use App\Service\IngredientService;
 use App\Service\TranslationService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\DataTransformerInterface;
@@ -15,11 +16,17 @@ class EntityToTranslatedStringTransformer implements DataTransformerInterface
     private $translator;
     private $translationService;
 
-    public function __construct(EntityManagerInterface $entityManager, TranslatorInterface $translator, TranslationService $translationService)
+    /**
+     * @var IngredientService
+     */
+    private $ingredientService;
+
+    public function __construct(EntityManagerInterface $entityManager, TranslatorInterface $translator, TranslationService $translationService, IngredientService $ingredientService)
     {
         $this->entityManager = $entityManager;
         $this->translator = $translator;
         $this->translationService = $translationService;
+        $this->ingredientService = $ingredientService;
     }
 
     /**
@@ -52,22 +59,6 @@ class EntityToTranslatedStringTransformer implements DataTransformerInterface
             return null;
         }
 
-        $locale = $this->translator->getLocale();
-
-        $ingredient = $this->entityManager
-            ->getRepository(Ingredient::class)
-            // query for the issue with this id
-            ->findOneBy([$locale => $ingredientText])
-        ;
-
-        if (!$ingredient) {
-            $function = 'set' . $locale;
-            $ingredient = new Ingredient();
-            $ingredient->setName(uniqid('ingredient.'));
-            $ingredient->$function($ingredientText);
-            $this->translationService->clearTranslationCache();
-        }
-
-        return $ingredient;
+        return $this->ingredientService->getIngredientFromStringInCurrentLocale($ingredientText);
     }
 }

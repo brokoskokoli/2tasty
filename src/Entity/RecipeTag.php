@@ -23,8 +23,7 @@ class RecipeTag implements \JsonSerializable
      * @var int
      *
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="id", initialValue=1000)
+     * @ORM\GeneratedValue("AUTO")
      * @ORM\Column(type="integer")
      */
     private $id;

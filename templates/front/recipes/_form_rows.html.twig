@@ -20,6 +20,9 @@
 
 {{ form_row(form.summary) }}
 {{ form_row(form.portions) }}
+{{ form_row(form.workingTime) }}
+{{ form_row(form.waitingTime) }}
+{{ form_row(form.informations) }}
 
 {{ arrayCollection.start('ingredients', 'title.ingredients', [
     {class: 'col-md-3 stXautoComplete', field: form.recipeIngredients.vars.prototype.ingredient, autocomplete: ingredientList  },

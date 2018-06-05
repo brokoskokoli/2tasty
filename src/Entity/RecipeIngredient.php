@@ -12,6 +12,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 class RecipeIngredient
 {
 
+    const SEPARATOR = ' - ';
+
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -174,6 +176,11 @@ class RecipeIngredient
     }
 
 
-
-
+    public function addToText($text)
+    {
+        if (!empty($this->text)) {
+            $this->text .= self::SEPARATOR;
+        }
+        $this->text .= $text;
+    }
 }

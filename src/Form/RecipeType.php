@@ -20,6 +20,7 @@ use App\Form\Type\RecipeIngredientType;
 use App\Form\Type\RecipeLinkType;
 use App\Form\Type\RecipeStepType;
 use App\Form\Type\RecipeTagsInputType;
+use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -66,6 +67,27 @@ class RecipeType extends AbstractType
                 TextareaType::class,
                 [
                     'label' => 'label.summary',
+                    'required' => false,
+                ]
+            )->add(
+                'workingTime',
+                IntegerType::class,
+                [
+                    'label' => "label.working_time",
+                    'required' => false,
+                ]
+            )->add(
+                'waitingTime',
+                IntegerType::class,
+                [
+                    'label' => "label.waiting_time",
+                    'required' => false,
+                ]
+            )->add(
+                'informations',
+                CKEditorType::class,
+                [
+                    'label' => "label.further_informations",
                     'required' => false,
                 ]
             )

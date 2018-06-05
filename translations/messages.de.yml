@@ -47,6 +47,9 @@ label:
   profile_image: Profilbild
   link: Link
   own_recipes: Nur eigene Rezepte
+  waiting_time: Wartezeit (in Minuten)
+  working_time: Arbeitszeit (in Minuten)
+  further_informations: Weitere Informationen
 
 action:
   back_to_list: Zurück zur Liste

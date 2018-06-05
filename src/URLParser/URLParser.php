@@ -3,12 +3,14 @@
 namespace App\URLParser;
 
 
+use App\Service\ImportService;
+
 class URLParser
 {
     /** @var array|URLParserBase[]  */
     protected static $parser = [];
 
-    public static function readParser()
+    public static function readParser(ImportService $importService)
     {
         if (empty(self::$parser)) {
             foreach (scandir(__DIR__) as $file)
@@ -24,7 +26,7 @@ class URLParser
                     if (class_exists($class))
                     {
                         if (method_exists($class, 'canHandleUrl')) {
-                            self::$parser[] = new $class;
+                            self::$parser[] = new $class($importService);
                         }
                     }
                 }
@@ -32,9 +34,9 @@ class URLParser
         }
     }
 
-    public static function getParser($url) : ?URLParserBase
+    public static function getParser($url, ImportService $importService) : ?URLParserBase
     {
-        self::readParser();
+        self::readParser($importService);
         foreach (self::$parser as $parser) {
             if ($parser->canHandleUrl($url)) {
                 return $parser;

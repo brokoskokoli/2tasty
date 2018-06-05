@@ -95,6 +95,15 @@
     "erusev/parsedown": {
         "version": "1.6.3"
     },
+    "exercise/htmlpurifier-bundle": {
+        "version": "0.2",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "0.2",
+            "ref": "0b76657841c2ba52647bb1b4a5595a0e3b9f485c"
+        }
+    },
     "ezyang/htmlpurifier": {
         "version": "v4.9.3"
     },
@@ -109,6 +118,9 @@
             "version": "2.2",
             "ref": "9d60c231a92e69c68b89897813ec4931d0697b1f"
         }
+    },
+    "friendsofsymfony/ckeditor-bundle": {
+        "version": "1.1.0"
     },
     "illuminate/contracts": {
         "version": "v5.6.23"
@@ -487,6 +499,9 @@
             "version": "1.5",
             "ref": "c4f5755b37fb65b9c6a3cbdae91205c15a137ed4"
         }
+    },
+    "webit/eval-math": {
+        "version": "1.0.1"
     },
     "webmozart/assert": {
         "version": "1.3.0"

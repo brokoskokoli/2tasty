@@ -23,17 +23,22 @@ class IngredientService
     /** @var TranslatorInterface $translator */
     private $translator;
 
+    private $translationService;
+
     /**
      * UserService constructor.
      * @param EntityManagerInterface $entityManager
      * @param TranslatorInterface $translator
+     * @param TranslationService $translationService
      */
     public function __construct(
         EntityManagerInterface $entityManager,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
+        TranslationService $translationService
     ) {
         $this->em = $entityManager;
         $this->translator = $translator;
+        $this->translationService = $translationService;
     }
 
     /**
@@ -92,7 +97,6 @@ class IngredientService
             }
         }
 
-        dump($this->em->getRepository(IngredientDisplayPreferenceOverride::class)->getAllCommon());
         foreach ($this->em->getRepository(IngredientDisplayPreferenceOverride::class)->getAllCommon() as $override) {
             if ($override->getIngredient() === $ingredient && $override->getDisplayPreference() === $user->getIngredientDisplayPreference()) {
                 return $override->getUnit();
@@ -124,5 +128,26 @@ class IngredientService
         }
 
         return $result;
+    }
+
+    public function getIngredientFromStringInCurrentLocale($ingredientString)
+    {
+        $locale = $this->translator->getLocale();
+
+        $ingredient = $this->em
+            ->getRepository(Ingredient::class)
+            // query for the issue with this id
+            ->findOneBy([$locale => $ingredientString])
+        ;
+
+        if (!$ingredient) {
+            $function = 'set' . $locale;
+            $ingredient = new Ingredient();
+            $ingredient->setName(uniqid('ingredient.'));
+            $ingredient->$function($ingredientString);
+            $this->translationService->clearTranslationCache();
+        }
+
+        return $ingredient;
     }
 }

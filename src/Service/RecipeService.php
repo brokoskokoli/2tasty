@@ -10,6 +10,7 @@ use App\Helper\SecurityHelper;
 use App\URLParser\URLParser;
 use App\Utils\Slugger;
 use Doctrine\ORM\EntityManagerInterface;
+use FAPI\Localise\Api\Import;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class RecipeService
@@ -20,13 +21,20 @@ class RecipeService
     private $em;
 
     /**
+     * @var ImportService
+     */
+    private $importService;
+
+    /**
      * UserService constructor.
      * @param EntityManagerInterface $entityManager
      */
     public function __construct(
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        ImportService $importService
     ) {
         $this->em = $entityManager;
+        $this->importService = $importService;
     }
 
 
@@ -115,12 +123,10 @@ class RecipeService
         $tag = $this->em->getReference(RecipeTag::class, RecipeTag::TAG_TOCOOK);
         $recipe->addTag($tag);
 
-        $parser = URLParser::getParser($link);
+        $parser = URLParser::getParser($link, $this->importService);
         if ($parser) {
             $parser->readSingleRecipeFromUrl($recipe, $link);
         }
-
-        dump($recipe);die;
 
         return $recipe;
     }
