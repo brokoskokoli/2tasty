@@ -113,13 +113,13 @@ class RecipeRepository extends ServiceEntityRepository
     {
         $queryBuilder = $this->createQueryBuilder('r');
         $queryBuilder->leftJoin('r.recipeTags', 't');
-
+        QueryHelper::andWhereFromFilter($queryBuilder, $filter, 'private', 'r.author');
+        $fields = $queryBuilder->expr()->andX();
+        $allKeywords = [];
         /**
          * @var int $key
          * @var RecipeTag $term
          */
-        $fields = $queryBuilder->expr()->andX();
-        $allKeywords = [];
         foreach ($filter['recipeTags'] ?? [] as $key => $term) {
             $allKeywords[] = $term->getId();
         }
@@ -128,9 +128,10 @@ class RecipeRepository extends ServiceEntityRepository
             $queryBuilder->setParameter('tags', $allKeywords);
         }
         $queryBuilder->andWhere($fields);
-        $queryBuilder->having('count(distinct t.id) = '.count($allKeywords));
+        $queryBuilder->having('count(distinct t.id) >= '.count($allKeywords));
+        $queryBuilder->addGroupBy('r.id');
 
-        QueryHelper::andWhereFromFilter($queryBuilder, $filter, 'private', 'r.author');
+
         return $this->createPaginator($queryBuilder->getQuery(), $page);
     }
 }
