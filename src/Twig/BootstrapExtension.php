@@ -24,7 +24,22 @@ class BootstrapExtension extends AbstractExtension
             return '';
         }
 
-        $result = '<div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="false">
+        $result = '<style>
+
+        /**
+        CAROUSEL
+         */
+        .carousel-inner img {
+          margin-left: auto;
+          margin-right: auto;
+        }
+        .carousel-inner .item {
+            background-size: cover;
+            background-blend-mode: luminosity;
+        }
+        </style>';
+
+        $result .= '<div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="false">
             <!-- Indicators -->
             <ol class="carousel-indicators">';
 
@@ -40,7 +55,7 @@ class BootstrapExtension extends AbstractExtension
 
         $first = true;
         foreach ($images as $index => $image) {
-            $result .= '<div class="item '.($first?'active':'').'"><img src="'.$image.'">
+            $result .= '<div class="item '.($first?'active':'').'" style="background-image:url('.$image.');"><img src="'.$image.'">
                     </div>';
             $first = false;
         }
