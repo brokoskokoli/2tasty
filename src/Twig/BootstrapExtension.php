@@ -29,13 +29,16 @@ class BootstrapExtension extends AbstractExtension
         /**
         CAROUSEL
          */
-        .carousel-inner img {
-          margin-left: auto;
-          margin-right: auto;
-        }
         .carousel-inner .item {
             background-size: cover;
             background-blend-mode: luminosity;
+        }
+        .carousel-inner .transparent-overlay {
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.5);
+            position: relative;
+            text-align: center;
         }
         </style>';
 
@@ -55,7 +58,9 @@ class BootstrapExtension extends AbstractExtension
 
         $first = true;
         foreach ($images as $index => $image) {
-            $result .= '<div class="item '.($first?'active':'').'" style="background-image:url('.$image.');"><img src="'.$image.'">
+            $result .= '<div class="item '.($first?'active':'').'" style="background-image:url('.$image.');">
+            
+            <div class="transparent-overlay"><img src="'.$image.'"></div>
                     </div>';
             $first = false;
         }
