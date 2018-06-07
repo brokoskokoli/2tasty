@@ -69,6 +69,7 @@ action:
   import_recipe_from_link: Importiere Rezept
   import: Import
   download_firefox_extension: Lade die Firefox Erweiterung herunter
+  random_recipe: Zufallsrezept
 
 dialogs:
   delete_recipe:
@@ -104,6 +105,7 @@ menu:
   new_quick: Ich möchte schnell ein Foto von einem Rezept hochladen
   my_profile: ''
   filter_recipes: 'Rezeptsuche'
+  recipes_to_cook: Rezepte von meiner ToCook Liste
 
 help:
   app_description: |

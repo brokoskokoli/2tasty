@@ -42,9 +42,13 @@ class RecipeFilterType extends AbstractType
                     'required' => false,
                 ]
             )
-            ->add('submit', SubmitType::class,
+            ->add('filter', SubmitType::class,
                 [
                     'label' => 'action.search',
+                ])
+            ->add('random', SubmitType::class,
+                [
+                    'label' => 'action.random_recipe',
                 ])
         ;
     }
@@ -55,7 +59,8 @@ class RecipeFilterType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'method' => 'GET'
+            'method' => 'GET',
+            'csrf_protection' => false,
         ]);
     }
 }

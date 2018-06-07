@@ -7,6 +7,15 @@
     {{ form_start(form) }}
     {{ form_row(form.recipeTags, {'attr' : {'class': 'stXtokenField', 'data-availabeTokens': recipeTags|join('|')}}) }}
 
+    {{ form_row(form.private) }}
+    <div class="row">
+        <div class="col-md-6">
+            {{ form_row(form.filter) }}
+        </div>
+        <div class="col-md-6">
+            {{ form_row(form.random, {'attr': {'class': ' pull-right'}}) }}
+        </div>
+    </div>
     {{ form_end(form) }}
     <p class="spacer-medium">&nbsp;</p>
 

@@ -9,6 +9,7 @@ use App\Helper\QueryHelper;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query;
+use Doctrine\ORM\QueryBuilder;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Pagerfanta;
 
@@ -109,11 +110,8 @@ class RecipeRepository extends ServiceEntityRepository
         });
     }
 
-    public function filterRecipes($page, $filter = [], ?User $user = null)
+    private function applyRecipeTagsFilter(QueryBuilder $queryBuilder, $filter)
     {
-        $queryBuilder = $this->createQueryBuilder('r');
-        $queryBuilder->leftJoin('r.recipeTags', 't');
-        QueryHelper::andWhereFromFilter($queryBuilder, $filter, 'private', 'r.author');
         $fields = $queryBuilder->expr()->andX();
         $allKeywords = [];
         /**
@@ -130,8 +128,26 @@ class RecipeRepository extends ServiceEntityRepository
         $queryBuilder->andWhere($fields);
         $queryBuilder->having('count(distinct t.id) >= '.count($allKeywords));
         $queryBuilder->addGroupBy('r.id');
+    }
+
+    public function filterRecipes($page, $filter = [], ?User $user = null)
+    {
+        $queryBuilder = $this->createQueryBuilder('r');
+        $queryBuilder->leftJoin('r.recipeTags', 't');
+        QueryHelper::andWhereFromFilter($queryBuilder, $filter, 'private', 'r.author');
+        $this->applyRecipeTagsFilter($queryBuilder, $filter);
 
 
         return $this->createPaginator($queryBuilder->getQuery(), $page);
+    }
+
+    public function getAllForFilter($filter = [], ?User $user = null)
+    {
+        $queryBuilder = $this->createQueryBuilder('r');
+        $queryBuilder->leftJoin('r.recipeTags', 't');
+        QueryHelper::andWhereFromFilter($queryBuilder, $filter, 'private', 'r.author');
+        $this->applyRecipeTagsFilter($queryBuilder, $filter);
+
+        return $queryBuilder->getQuery()->getResult();
     }
 }

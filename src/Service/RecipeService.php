@@ -93,17 +93,31 @@ class RecipeService
         return $recipes[$index];
     }
 
-    public function filterRecipes($page, $filter, User $user)
+    private function prepareRecipeFilter(&$filter, ?User $user = null)
     {
         if ($filter['private'] === true) {
             $filter['private'] = $user;
         } else {
             $filter['private'] = null;
         }
+    }
+
+    public function filterRecipes($page, $filter, User $user)
+    {
+        $this->prepareRecipeFilter($filter, $user);
 
         return $this->em->getRepository(Recipe::class)->filterRecipes($page, $filter, $user);
     }
 
+    public function randomRecipe($filter, User $user)
+    {
+        $this->prepareRecipeFilter($filter, $user);
+
+        $recipes = $this->em->getRepository(Recipe::class)->getAllForFilter($filter, $user);
+
+        $index = array_rand($recipes);
+        return [$recipes[$index]];
+    }
     /**
      * @param $link
      * @param User $user
