@@ -116,7 +116,7 @@ class RecipeService
         $recipes = $this->em->getRepository(Recipe::class)->getAllForFilter($filter, $user);
 
         $index = array_rand($recipes);
-        return [$recipes[$index]];
+        return $recipes[$index];
     }
     /**
      * @param $link

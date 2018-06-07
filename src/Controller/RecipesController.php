@@ -303,12 +303,13 @@ class RecipesController extends AbstractController
             if ($form->get('filter')->isClicked()) {
                 $result = $recipeService->filterRecipes($page, $filters, $this->getUser());
             } else {
-                $result = $recipeService->randomRecipe($filters, $this->getUser());
+                $resultRecipe = $recipeService->randomRecipe($filters, $this->getUser());
             }
         }
 
         return $this->render('front/recipes/filter.html.twig', [
             'recipes' => $result ?? [],
+            'recultRecipe' => $resultRecipe ?? null,
             'form' => $form->createView(),
             'recipeTags' => $recipeTagService->getAllNames(),
         ]);

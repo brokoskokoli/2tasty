@@ -33,6 +33,10 @@
             </div>
         {% endif %}
     {% endif %}
+
+    {% if recultRecipe %}
+        {{ include('front/recipes/_recipe.html.twig', {recipe: recultRecipe}) }}
+    {% endif %}
 {% endblock %}
 
 {% block sidebar %}
