@@ -18,6 +18,8 @@ title:
   links: Links
   filter_recipes: Erweiterte Suche
   import_from_link: Import from Link
+  recipeLists: Rezeptlisten
+  edit_recipelist: Rezeptliste bearbeiten
 
 
 label:
@@ -50,6 +52,7 @@ label:
   waiting_time: Wartezeit (in Minuten)
   working_time: Arbeitszeit (in Minuten)
   further_informations: Weitere Informationen
+  recipeLists: Rezeptlisten
 
 action:
   back_to_list: Zurück zur Liste
@@ -70,6 +73,8 @@ action:
   import: Import
   download_firefox_extension: Lade die Firefox Erweiterung herunter
   random_recipe: Zufallsrezept
+  create_recipeList: Erstelle Rezeptliste
+  edit_recipe_list: Rezeptliste bearbeiten
 
 dialogs:
   delete_recipe:
@@ -94,7 +99,7 @@ rss:
 
 menu:
   toggle_nav: ''
-  recipe_list: 'Rezeptliste'
+  recipe_list: 'Meine Rezepte'
   homepage: News
   admin_menu: Admin
   search: ''
@@ -106,6 +111,7 @@ menu:
   my_profile: ''
   filter_recipes: 'Rezeptsuche'
   recipes_to_cook: Rezepte von meiner ToCook Liste
+  recipelists_list: Meine Rezeptlisten
 
 help:
   app_description: |
@@ -150,6 +156,8 @@ messages:
   no_recipes_found: Keine Rezepte gefunden!
   recipe_created: Rezept erstellt!
   profile_modified: Profil geändert!
+  no_recipe_lists_found: Keine Rezeptlisten gefunden
+  recipe_list_modified: Die Rezeptliste wurde bearbeitet
 
 page:
   forgot_password:

@@ -223,9 +223,9 @@ class Recipe
 
     /**
      * @var ArrayCollection|RecipeList[]
-     * @ORM\ManyToMany(targetEntity="App\Entity\RecipeList", inversedBy="recipes")
+     * @ORM\ManyToMany(targetEntity="App\Entity\RecipeList", cascade={"persist"}, inversedBy="recipes")
      */
-    private $lists;
+    private $recipeLists;
 
     public function __construct()
     {
@@ -392,23 +392,23 @@ if (!$this->comments->contains($comment)) {
     /**
      * @return RecipeList[]|ArrayCollection
      */
-    public function getLists()
+    public function getRecipeLists()
     {
-        return $this->lists;
+        return $this->recipeLists;
     }
 
-    public function addList(RecipeList ...$lists): void
+    public function addRecipeList(RecipeList ...$lists): void
     {
         foreach ($lists as $list) {
-            if (!$this->lists->contains($list)) {
-                $this->lists->add($list);
+            if (!$this->recipeLists->contains($list)) {
+                $this->recipeLists->add($list);
             }
         }
     }
 
-    public function removeList(RecipeList $list): void
+    public function removeRecipeList(RecipeList $list): void
     {
-        $this->lists->removeElement($list);
+        $this->recipeLists->removeElement($list);
     }
 
     /**

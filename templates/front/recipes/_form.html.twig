@@ -15,7 +15,8 @@
     {{ include('front/recipes/_form_rows.html.twig', {
         form: form,
         ingredientList: ingredientList,
-        recipeTags: recipeTags
+        recipeTags: recipeTags,
+        recipeLists: recipeLists
     }, with_context = false) }}
 
     <button type="submit" class="{{ button_css|default("btn btn-primary") }}">

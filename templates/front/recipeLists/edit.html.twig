@@ -3,7 +3,7 @@
 {% block body_id 'recipes_edit' %}
 
 {% block main %}
-    <h1>{{ 'title.edit_recipe'|trans({'%id%': recipe.id}) }}</h1>
+    <h1>{{ 'title.edit_recipelist'|trans({'%id%': recipe.id}) }}</h1>
 
     {{ include('front/recipes/_form.html.twig', {
         form: form,
@@ -19,7 +19,7 @@
     {{ parent() }}
 
     <script>
-        require("assets{{ asset('js/pages/recipes/edit_new.js') }}");
+        require("assets{{ asset('js/pages/recipe_lists/edit_new.js') }}");
     </script>
 {% endblock %}
 

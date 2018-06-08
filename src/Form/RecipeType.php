@@ -18,6 +18,7 @@ use App\Form\Type\RecipeHintType;
 use App\Form\Type\RecipeImageType;
 use App\Form\Type\RecipeIngredientType;
 use App\Form\Type\RecipeLinkType;
+use App\Form\Type\RecipeListsInputType;
 use App\Form\Type\RecipeStepType;
 use App\Form\Type\RecipeTagsInputType;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
@@ -146,11 +147,16 @@ class RecipeType extends AbstractType
                     'allow_delete' => true,
                     'by_reference' => true
                 ]
-
             )
             ->add('recipeTags', RecipeTagsInputType::class,
                 [
                     'label' => 'label.recipeTags',
+                    'required' => false,
+                ]
+            )
+            ->add('recipeLists', RecipeListsInputType::class,
+                [
+                    'label' => 'label.recipeLists',
                     'required' => false,
                 ]
             )
@@ -170,6 +176,7 @@ class RecipeType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Recipe::class,
+            'user' => null,
         ]);
     }
 }

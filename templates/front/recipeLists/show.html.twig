@@ -1,0 +1,41 @@
+{% extends 'front/layout.html.twig' %}
+
+{% block body_id 'recipelists_show' %}
+
+{% block main %}
+
+    <h1>{{ recipeList.name }}</h1>
+
+    {% if recipeList.author != null %}
+    <span class="metadata"><i class="fa fa-user"></i> {{ recipeList.author.fullName }}</span>
+    {% endif %}
+
+    <br>
+    {{ recipeList.summary|default('')|md2html }}
+
+    {% for recipe in recipeList.recipes %}
+        {{ include('front/recipes/_recipe_rowdisplay.html.twig', {recipe: recipe})|raw }}
+    {% else %}
+
+        {{ 'messages.no_recipes_found'|trans }}
+    {% endfor %}
+
+{% endblock %}
+
+{% block sidebar %}
+    {% if is_granted('recipelist_edit', recipeList) %}
+        <div class="section">
+            <a class="btn btn-lg btn-block btn-success" href="{{ path('recipelists_edit', {id: recipeList.id}) }}">
+                <i class="fa fa-edit" aria-hidden="true"></i> {{ 'action.edit_recipe_list'|trans }}
+            </a>
+        </div>
+
+        {#
+        <div class="section">
+            {{ include('front/recipes/_delete_form.html.twig', {recipe: recipe}, with_context = false) }}
+        </div>#}
+        <hr>
+    {% endif %}
+
+    {{ parent() }}
+{% endblock %}

@@ -23,6 +23,25 @@
     <br>
     {{ recipe.summary|default('')|md2html }}
 
+    <p class="spacer-medium">&nbsp;</p>
+    {{ include('front/recipes/_recipe_tags.html.twig') }}
+
+    <p class="spacer-medium">&nbsp;</p>
+    <p>{{ 'label.recipeLists'|trans }}</p>
+    {% if not recipe.recipeLists.empty %}
+        <p class="recipe-recipeTags">
+            <ul>
+            {% for list in recipe.recipeLists %}
+                <li>
+                    <a href="{{ path('recipelists_show', {'slug': list.slug}) }}">{{ list.name }}</a>
+                </li>
+            {% endfor %}
+            </ul>
+        </p>
+    {% endif %}
+
+
+
     <p>{{ 'label.portions'|trans }} : {{ recipe.portions }}</p>
     <p>{{ 'label.working_time'|trans }} : {{ recipe.workingTime|default(' -- ') }}</p>
     <p>{{ 'label.waiting_time'|trans }} : {{ recipe.waitingTime|default(' -- ') }}</p>
@@ -79,6 +98,4 @@
         </ul>
     </div>
 
-    <p class="spacer-medium">&nbsp;</p>
-    {{ include('front/recipes/_recipe_tags.html.twig') }}
 </div>

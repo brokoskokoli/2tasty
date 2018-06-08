@@ -16,6 +16,7 @@ use App\Repository\RecipeRepository;
 use App\Service\DatabaseTranslationLoaderService;
 use App\Service\IngredientService;
 use App\Service\PDFExportService;
+use App\Service\RecipeListService;
 use App\Service\RecipeService;
 use App\Service\RecipeTagService;
 use App\Utils\Slugger;
@@ -70,11 +71,16 @@ class RecipesController extends AbstractController
      * @Security("is_granted('show', recipe)")
      * @Method({"GET", "POST"})
      */
-    public function editAction(Request $request, RecipeService $recipeService, Recipe $recipe, IngredientService $ingredientService, RecipeTagService $recipeTagService): Response
-    {
+    public function editAction(Request $request,
+                               RecipeService $recipeService,
+                               Recipe $recipe,
+                               IngredientService $ingredientService,
+                               RecipeTagService $recipeTagService,
+                               RecipeListService $recipeListService
+    ): Response {
         $this->denyAccessUnlessGranted('edit', $recipe, 'Recipes can only be edited by their authors.');
 
-        $form = $this->createForm(RecipeType::class, $recipe);
+        $form = $this->createForm(RecipeType::class, $recipe, ['user' => $this->getUser()]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -89,6 +95,7 @@ class RecipesController extends AbstractController
             'ingredientList' => $ingredientService->getAllNames(),
             'form' => $form->createView(),
             'recipeTags' => $recipeTagService->getAllNames(),
+            'recipeLists' => $recipeListService->getAllForUser($this->getUser()),
         ]);
     }
 
@@ -118,7 +125,7 @@ class RecipesController extends AbstractController
         }
 
         // See https://symfony.com/doc/current/book/forms.html#submitting-forms-with-multiple-buttons
-        $form = $this->createForm(RecipeType::class, $recipe)
+        $form = $this->createForm(RecipeType::class, $recipe, ['user' => $this->getUser()])
             ->add('saveAndCreateNew', SubmitType::class);
 
         $form->handleRequest($request);

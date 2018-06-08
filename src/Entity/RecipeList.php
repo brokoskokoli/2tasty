@@ -5,12 +5,13 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Illuminate\Support\Arr;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\RecipeListRepository")
  */
-class RecipeList
+class RecipeList implements \JsonSerializable
 {
 
     /**
@@ -29,8 +30,22 @@ class RecipeList
     private $name;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(type="string")
+     */
+    private $slug;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $summary;
+
+    /**
      * @var ArrayCollection|Recipe[]
-     * @ORM\ManyToMany(targetEntity="Recipe", mappedBy="lists")
+     * @ORM\ManyToMany(targetEntity="Recipe", mappedBy="recipeLists")
      */
     private $recipes;
 
@@ -38,9 +53,40 @@ class RecipeList
      * @var User
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\User")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $author;
+
+    /**
+     * @inheritDoc
+     */
+    public function __construct()
+    {
+        $this->recipes = new ArrayCollection();
+    }
+
+
+    public function __toString(): string
+    {
+        $result = '';
+        if ($this->author !== null) {
+            $result .= $this->author->getUsername() . ' - ';
+        }
+        return $result .= $this->name;
+    }
+
+
+    /**
+     * {@inheritdoc}
+     */
+    public function jsonSerialize(): string
+    {
+        // This entity implements JsonSerializable (http://php.net/manual/en/class.jsonserializable.php)
+        // so this method is used to customize its JSON representation when json_encode()
+        // is called, for example in recipeTags|json_encode (app/Resources/views/form/fields.html.twig)
+
+        return $this->__toString();
+    }
 
     /**
      * @return mixed
@@ -48,6 +94,16 @@ class RecipeList
     public function getId()
     {
         return $this->id;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(?string $slug): void
+    {
+        $this->slug = $slug;
     }
 
     /**
@@ -93,7 +149,7 @@ class RecipeList
     /**
      * @return User
      */
-    public function getAuthor(): User
+    public function getAuthor(): ?User
     {
         return $this->author;
     }
@@ -102,10 +158,28 @@ class RecipeList
      * @param User $author
      * @return RecipeList
      */
-    public function setAuthor(User $author): RecipeList
+    public function setAuthor(?User $author): RecipeList
     {
         $this->author = $author;
         return $this;
+    }
+
+    /**
+     * @param string $summary
+     * @return RecipeList
+     */
+    public function setSummary(?string $summary): RecipeList
+    {
+        $this->summary = $summary;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSummary(): ?string
+    {
+        return $this->summary;
     }
 
 
