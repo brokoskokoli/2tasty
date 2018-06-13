@@ -51,7 +51,7 @@ class CommentNotificationSubscriber implements EventSubscriberInterface
         $comment = $event->getSubject();
         $recipe = $comment->getRecipe();
 
-        $linkToRecipe = $this->urlGenerator->generate('blog_recipe', [
+        $linkToRecipe = $this->urlGenerator->generate('recipes_show', [
             'slug' => $recipe->getSlug(),
             '_fragment' => 'comment_'.$comment->getId(),
         ], UrlGeneratorInterface::ABSOLUTE_URL);
