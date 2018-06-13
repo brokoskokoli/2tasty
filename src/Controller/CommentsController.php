@@ -29,7 +29,7 @@ class CommentsController extends AbstractController
     /**
      * @Route("/{recipeSlug}/new", name="comment_new")
      * @Method("POST")
-     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     * @Security("has_role('ROLE_USER')")
      * @ParamConverter("recipe", options={"mapping": {"recipeSlug": "slug"}})
      *
      * NOTE: The ParamConverter mapping is required because the route parameter
