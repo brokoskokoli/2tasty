@@ -64,7 +64,7 @@ class CommentsController extends AbstractController
             // See https://symfony.com/doc/current/components/event_dispatcher.html
             $eventDispatcher->dispatch(Events::COMMENT_CREATED, $event);
 
-            return $this->redirectToRoute('blog_recipe', ['slug' => $recipe->getSlug()]);
+            return $this->redirectToRoute('recipes_show', ['slug' => $recipe->getSlug()]);
         }
 
         return $this->render('front/recipes/comment_form_error.html.twig', [
