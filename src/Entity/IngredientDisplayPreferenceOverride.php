@@ -48,6 +48,13 @@ class IngredientDisplayPreferenceOverride
      */
     private $author;
 
+    /**
+     * @inheritDoc
+     */
+    public function __toString()
+    {
+        return strval($this->id);
+    }
 
 
     /**

@@ -57,6 +57,23 @@ class RecipeRepository extends ServiceEntityRepository
         return $paginator;
     }
 
+
+    public function getMyRecipes($user)
+    {
+        $queryBuilder = $this->createQueryBuilder('r');
+        $queryBuilder->leftJoin('r.collectors', 'c');
+        $userGroup = $queryBuilder->expr()->orX();
+        $userGroup->add('r.author = :user');
+        $userGroup->add('c.id = :user');
+        $queryBuilder->andWhere($userGroup);
+
+        $queryBuilder->setParameter('user', $user);
+        $queryBuilder->orderBy('r.createdAt', 'DESC');
+
+        return $queryBuilder->getQuery()->getResult();
+    }
+
+
     /**
      * @return Recipe[]
      */

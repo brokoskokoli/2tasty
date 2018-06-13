@@ -133,8 +133,8 @@ class RecipeListsController extends AbstractController
     /**
      * Finds and displays a RecipeList entity.
      *
-     * @Route("/recipe/{id}", requirements={"id": "\d+"}, name="recipelists_show_id")
-     * @Route("/recipe/{slug}", name="recipelists_show")
+     * @Route("/display/{id}", requirements={"id": "\d+"}, name="recipelists_show_id")
+     * @Route("/display/{slug}", name="recipelists_show")
      * @Method("GET")
      */
     public function show(RecipeList $recipeList): Response

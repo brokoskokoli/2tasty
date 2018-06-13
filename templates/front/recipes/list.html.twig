@@ -27,9 +27,11 @@
                             <i class="fa fa-eye" aria-hidden="true"></i> {{ 'action.show'|trans }}
                         </a>
 
+                        {% if recipe.author == user %}
                         <a href="{{ path('recipes_edit', {id: recipe.id}) }}" class="btn btn-sm btn-primary">
                             <i class="fa fa-edit" aria-hidden="true"></i> {{ 'action.edit'|trans }}
                         </a>
+                        {% endif %}
                     </div>
                 </td>
             </tr>

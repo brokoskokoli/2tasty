@@ -78,6 +78,8 @@ action:
   create_recipeList: Erstelle Rezeptliste
   edit_recipe_list: Rezeptliste bearbeiten
   show_recipe_list: Zeige Rezeptliste
+  add_to_collection: Füge zur Sammlung hinzu
+  remove_from_collection: Entferne aus der Sammlung
 
 dialogs:
   delete_recipe:
@@ -154,6 +156,7 @@ static:
 messages:
   recipe_modified: Die Änderungen wurden gespeichert
   no_comments: Erstelle den ersten Kommentar!
+  register_to_comment: Logge dich ein, um einen Kommentar zu erstellen
   password_not_equal: Die Passwörter sind nicht gleich
   password_min_length: Das Passwort muss mindestens 8 Zeichen lang sein
   password_no_number: Das Passwort muss mindestens eine Zahl enthalten
@@ -164,6 +167,9 @@ messages:
   profile_modified: Profil geändert!
   no_recipe_lists_found: Keine Rezeptlisten gefunden
   recipe_list_modified: Die Rezeptliste wurde bearbeitet
+  recipe_added_to_collection: Das Rezept wurde zur Sammlung hinzugefügt
+  recipe_removed_from_collection: Das Rezept wurde aus der Sammlung entfernt
+  email_to_register: Zur Registrierungsanfrage sende bitte eine Mail mit deinem gewünschten Benutzenamen an <a href="mailto:%mail%">den Support</a>
 
 page:
   forgot_password:

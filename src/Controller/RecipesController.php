@@ -54,12 +54,13 @@ class RecipesController extends AbstractController
      */
     public function listMyAction(RecipeRepository $recipes): Response
     {
-        $authorRecipes = $recipes->findBy(['author' => $this->getUser()], ['createdAt' => 'DESC']);
+        $authorRecipes = $recipes->getMyRecipes($this->getUser());
 
         return $this->render(
             'front/recipes/list.html.twig',
             [
-                'recipes' => $authorRecipes
+                'recipes' => $authorRecipes,
+                'user' => $this->getUser(),
             ]
         );
     }
@@ -100,6 +101,44 @@ class RecipesController extends AbstractController
     }
 
     /**
+     * Add a recipe to collected recipes to use them in lists etc.
+     *
+     * @Route("/{id}/add_to_collection", requirements={"id": "\d+"}, name="recipes_add_to_collection")
+     * @Security("is_granted('show', recipe)")
+     * @Method({"GET", "POST"})
+     */
+    public function addToCollectionAction(Request $request,
+                                          RecipeService $recipeService,
+                                          Recipe $recipe
+    ): Response {
+
+        if ($recipeService->addRecipeToUserCollection($recipe, $this->getUser())) {
+            $this->addFlash('success', 'messages.recipe_added_to_collection');
+        }
+
+        return $this->redirectToRoute('recipes_show', ['slug' => $recipe->getSlug()]);
+    }
+
+    /**
+     * Remove a recipe from collected recipes
+     *
+     * @Route("/{id}/remove_from_collection", requirements={"id": "\d+"}, name="recipes_remove_from_collection")
+     * @Security("is_granted('show', recipe)")
+     * @Method({"GET", "POST"})
+     */
+    public function removeFromCollectionAction(Request $request,
+                                          RecipeService $recipeService,
+                                          Recipe $recipe
+    ): Response {
+
+        if ($recipeService->removeRecipeFromUserCollection($recipe, $this->getUser())) {
+            $this->addFlash('success', 'messages.recipe_removed_from_collection');
+        }
+
+        return $this->redirectToRoute('recipes_show', ['slug' => $recipe->getSlug()]);
+    }
+
+    /**
      * Creates a new Recipe entity.
      *
      * @Route("/new", name="recipes_new", defaults={"quick": false})
@@ -125,7 +164,7 @@ class RecipesController extends AbstractController
         }
 
         // See https://symfony.com/doc/current/book/forms.html#submitting-forms-with-multiple-buttons
-        $form = $this->createForm(RecipeType::class, $recipe, ['user' => $this->getUser()])
+        $form = $this->createForm(RecipeType::class, $recipe, ['user' => $this->getUser(), 'recipe' => $recipe])
             ->add('saveAndCreateNew', SubmitType::class);
 
         $form->handleRequest($request);
@@ -236,6 +275,7 @@ class RecipesController extends AbstractController
     {
         return $this->render('front/recipes/show.html.twig', [
             'recipe' => $recipe,
+            'user' => $this->getUser(),
         ]);
     }
 

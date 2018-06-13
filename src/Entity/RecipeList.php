@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 
+use App\Utils\Slugger;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Illuminate\Support\Arr;
@@ -68,11 +69,7 @@ class RecipeList implements \JsonSerializable
 
     public function __toString(): string
     {
-        $result = '';
-        if ($this->author !== null) {
-            $result .= $this->author->getUsername() . ' - ';
-        }
-        return $result . $this->name;
+        return $this->name;
     }
 
 
@@ -104,6 +101,15 @@ class RecipeList implements \JsonSerializable
     public function setSlug(?string $slug): void
     {
         $this->slug = $slug;
+    }
+
+    public function createSlug()
+    {
+        if ($this->getAuthor()) {
+            $this->setSlug(Slugger::slugify($this->getAuthor()->getUsername() . '_' . $this->getName()));
+        } else {
+            $this->setSlug(Slugger::slugify('common_' . $this->getName()));
+        }
     }
 
     /**

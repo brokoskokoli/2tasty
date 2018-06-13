@@ -151,16 +151,27 @@ class User implements UserInterface, \Serializable
     private $ingredientDisplayPreferenceOverrides;
 
     /**
-    * @var Recipe[]|ArrayCollection
-    *
-    * @ORM\OneToMany(
-    *      targetEntity="App\Entity\Recipe",
-    *      mappedBy="author",
-    *      cascade={"persist"}
-    * )
-    * @ORM\OrderBy({"createdAt": "DESC"})
+     * @var Recipe[]|ArrayCollection
+     *
+     * @ORM\OneToMany(
+     *      targetEntity="App\Entity\Recipe",
+     *      mappedBy="author",
+     *      cascade={"persist"}
+     * )
+     * @ORM\OrderBy({"createdAt": "DESC"})
      */
     private $recipes;
+
+    /**
+     * @var Recipe[]|ArrayCollection
+     *
+     * @ORM\ManyToMany(
+     *      targetEntity="App\Entity\Recipe",
+     *      mappedBy="collectors",
+     *      cascade={"persist"}
+     * )
+     */
+    private $collected_recipes;
 
     public function __construct()
     {
@@ -480,6 +491,32 @@ class User implements UserInterface, \Serializable
     {
         $this->recipes->add($recipe);
         $recipe->setAuthor($this);
+        return $this;
+    }
+
+    /**
+     * @return Recipe[]|ArrayCollection
+     */
+    public function getCollectedRecipes()
+    {
+        return $this->collected_recipes;
+    }
+
+    /**
+     * @param Recipe $recipe
+     * @return $this
+     */
+    public function removeCollectedRecipe(Recipe $recipe)
+    {
+        $this->collected_recipes->remove($recipe);
+        $recipe->removeCollector($this);
+        return $this;
+    }
+
+    public function addCollectedRecipe(Recipe $recipe)
+    {
+        $this->collected_recipes->add($recipe);
+        $recipe->addCollector($this);
         return $this;
     }
 

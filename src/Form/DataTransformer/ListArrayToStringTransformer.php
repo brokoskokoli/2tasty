@@ -11,9 +11,12 @@
 
 namespace App\Form\DataTransformer;
 
+use App\Entity\Recipe;
 use App\Entity\RecipeList;
 use App\Entity\RecipeTag;
 use App\Entity\User;
+use App\Service\RecipeListService;
+use function Clue\StreamFilter\fun;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -31,11 +34,13 @@ class ListArrayToStringTransformer implements DataTransformerInterface
 {
     private $manager;
     private $user;
+    private $recipe;
 
-    public function __construct(ObjectManager $manager, ?User $user = null)
+    public function __construct(ObjectManager $manager, ?User $user = null, ?Recipe $recipe = null)
     {
         $this->manager = $manager;
         $this->user = $user;
+        $this->recipe = $recipe;
 
     }
 
@@ -48,10 +53,16 @@ class ListArrayToStringTransformer implements DataTransformerInterface
         // Symfony\Bridge\Doctrine\Form\DataTransformer\CollectionToArrayTransformer::transform()
         // The value returned is a string that concatenates the string representation of those objects
 
-        /* @var RecipeList[] $recipelists */
-        return implode(',', array_map(function ($recipeList) {
-            return $recipeList->getName();
-        }, $recipeLists));
+        /* @var RecipeList $recipelist */
+        return implode(',', $this->toDisplayStringArray($recipeLists));
+    }
+
+    protected function toDisplayStringArray($recipeListsEntities)
+    {
+        /** @var RecipeList $recipeList */
+        return array_map(function ($recipeList) {
+            return strval($recipeList);
+        }, $recipeListsEntities);
     }
 
     /**
@@ -65,19 +76,29 @@ class ListArrayToStringTransformer implements DataTransformerInterface
 
         $names = array_filter(array_unique(array_map('trim', explode(',', $string))));
 
-        // Get the current recipeTags and find the new ones that should be created.
-        $recipeLists = $this->manager->getRepository(RecipeList::class)->findBy([
-            'name' => $names,
-            'author' => $this->user,
-        ]);
-        $newNames = array_diff($names, $recipeLists);
-        foreach ($newNames as $name) {
+        $recipeListsEntities = $this->manager->getRepository(RecipeList::class)->getAllForUser($this->user);
+
+        foreach ($names as $name) {
+            $found = false;
+            foreach ($recipeListsEntities as $entity) {
+                if (strval($entity) === $name) {
+                    $results[] = $entity;
+                    $found = true;
+                    break;
+                }
+            }
+
+            if ($found) {
+                break;
+            }
+
             $list = new RecipeList();
             $list->setName($name);
             $list->setAuthor($this->user);
-            $recipeLists[] = $list;
+            $list->createSlug();
+            $results[] = $list;
         }
 
-        return $recipeLists;
+        return $results;
     }
 }

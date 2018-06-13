@@ -224,10 +224,16 @@ class Recipe
     /**
      * @var ArrayCollection|RecipeList[]
      * @ORM\ManyToMany(targetEntity="App\Entity\RecipeList", cascade={"persist"}, inversedBy="recipes")
-     * @ORM\JoinTable(name="recipe_lists")
+     * @ORM\JoinTable(name="recipe_recipelists")
      *
      */
     private $recipeLists;
+
+    /**
+     * @var ArrayCollection|User[]
+     * @ORM\ManyToMany(targetEntity="App\Entity\User", cascade={"persist"}, inversedBy="collected_recipes")
+     */
+    private $collectors;
 
     public function __construct()
     {
@@ -324,14 +330,12 @@ if (!$this->comments->contains($comment)) {
     /**
      * @param string $informations
      * @return Recipe
-     */
+*/
     public function setInformations(?string $informations): Recipe
     {
         $this->informations = $informations;
         return $this;
     }
-
-
 
     /**
      * @return ImageFile[]|ArrayCollection
@@ -411,6 +415,64 @@ if (!$this->comments->contains($comment)) {
     public function removeRecipeList(RecipeList $list): void
     {
         $this->recipeLists->removeElement($list);
+    }
+
+    /**
+     * @return RecipeList[]|ArrayCollection
+     */
+    public function getAuthorRecipeLists()
+    {
+        $result = [];
+        foreach ($this->recipeLists as $recipeList) {
+            if ($this->getAuthor() === $recipeList->getAuthor()) {
+                $result[] = $recipeList;
+            }
+        }
+        return $result;
+    }
+
+    public function addAuthorRecipeList(RecipeList ...$lists): void
+    {
+        foreach ($lists as $list) {
+            if ($this->getAuthor() === $list->getAuthor()) {
+                if (!$this->recipeLists->contains($list)) {
+                    $this->recipeLists->add($list);
+                }
+            }
+        }
+    }
+
+    public function removeAuthorRecipeList(RecipeList $list): void
+    {
+        if ($this->getAuthor() === $list->getAuthor()) {
+            $this->recipeLists->removeElement($list);
+        }
+    }
+
+    /**
+     * @return User[]|ArrayCollection
+     */
+    public function getCollectors()
+    {
+        return $this->collectors;
+    }
+
+    public function addCollector(User ...$users) : self
+    {
+        foreach ($users as $user) {
+            if (!$this->collectors->contains($user)) {
+                $this->collectors->add($user);
+            }
+        }
+
+        return $this;
+    }
+
+    public function removeCollector(User $user): self
+    {
+        $this->collectors->removeElement($user);
+
+        return $this;
     }
 
     /**

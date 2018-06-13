@@ -53,6 +53,10 @@ class RecipeVoter extends Voter
             return false;
         }
 
+        if ($attribute == self::SHOW) {
+            return true;
+        }
+
         // the logic of this voter is pretty simple: if the logged user is the
         // author of the given blog recipe, grant permission; otherwise, deny it.
         // (the supports() method guarantees that $recipe is a Recipe object)

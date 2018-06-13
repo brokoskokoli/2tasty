@@ -26,7 +26,7 @@
 
 {{ form_row(form.recipeTags, {'attr' : {'class': 'stXtokenField', 'data-availabeTokens': recipeTags|join('|')}}) }}
 
-{{ form_row(form.recipeLists, {'attr' : {'class': 'stXtokenField', 'data-availabeTokens': recipeLists|join('|')}}) }}
+{{ form_row(form.authorRecipeLists, {'attr' : {'class': 'stXtokenField', 'data-availabeTokens': recipeLists|join('|')}}) }}
 
 {{ arrayCollection.start('ingredients', 'title.ingredients', [
     {class: 'col-md-3 stXautoComplete', field: form.recipeIngredients.vars.prototype.ingredient, autocomplete: ingredientList  },

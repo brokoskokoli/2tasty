@@ -154,10 +154,12 @@ class RecipeType extends AbstractType
                     'required' => false,
                 ]
             )
-            ->add('recipeLists', RecipeListsInputType::class,
+            ->add('authorRecipeLists', RecipeListsInputType::class,
                 [
                     'label' => 'label.recipeLists',
                     'required' => false,
+                    'user' => $options['user'],
+                    'recipe' => $options['recipe'],
                 ]
             )
             ->add('private', CheckboxType::class,
@@ -177,6 +179,7 @@ class RecipeType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Recipe::class,
             'user' => null,
+            'recipe' => null,
         ]);
     }
 }

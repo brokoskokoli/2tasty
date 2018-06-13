@@ -37,7 +37,67 @@ class RecipeService
         $this->importService = $importService;
     }
 
+    public function addRecipeToUserCollection(Recipe $recipe, User $user) : bool
+    {
+        if (!$this->canUserAddRecipeToCollection($recipe, $user)) {
+            return false;
+        }
 
+        $user->addCollectedRecipe($recipe);
+        $this->em->persist($user);
+        $this->em->flush();
+
+        return true;
+    }
+
+    public function canUserAddRecipeToCollection(Recipe $recipe, User $user) : bool
+    {
+        if ($recipe->getAuthor() === $user) {
+            return false;
+        }
+        if ($recipe->getCollectors()->contains($user)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public function removeRecipeFromUserCollection(Recipe $recipe, User $user) : bool
+    {
+        if (!$this->canUserRemoveRecipeFromCollection($recipe, $user)) {
+            return false;
+        }
+
+        $user->removeCollectedRecipe($recipe);
+        $this->em->persist($user);
+        $this->em->flush();
+
+        return true;
+    }
+
+    public function canUserRemoveRecipeFromCollection(Recipe $recipe, User $user) : bool
+    {
+        if ($recipe->getAuthor() === $user) {
+            return false;
+        }
+        if (!$recipe->getCollectors()->contains($user)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public function canUserUseRecipe(Recipe $recipe, User $user) : bool
+    {
+        if ($recipe->getAuthor() === $user) {
+            return true;
+        }
+        if ($recipe->getCollectors()->contains($user)) {
+            return true;
+        }
+
+        return false;
+    }
 
     public function saveRecipe(Recipe $recipe)
     {

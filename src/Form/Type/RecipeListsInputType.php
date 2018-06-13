@@ -51,7 +51,7 @@ class  RecipeListsInputType extends AbstractType
             // but here we're doing the transformation in two steps (Collection <-> array <-> string)
             // and reuse the existing CollectionToArrayTransformer.
             ->addModelTransformer(new CollectionToArrayTransformer(), true)
-            ->addModelTransformer(new ListArrayToStringTransformer($this->manager, $options['user']), true)
+            ->addModelTransformer(new ListArrayToStringTransformer($this->manager, $options['user'], $options['recipe']), true)
         ;
     }
 
@@ -60,9 +60,7 @@ class  RecipeListsInputType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $view->vars['recipeLists'] = $this->manager->getRepository(RecipeList::class)->findBy([
-            'author' => $options['user']
-        ]);
+        $view->vars['recipeLists'] = $this->manager->getRepository(RecipeList::class)->getAllForUser($options['user']);
     }
 
     /**
@@ -80,6 +78,7 @@ class  RecipeListsInputType extends AbstractType
     {
         $resolver->setDefaults([
             'user' => null,
+            'recipe' => null,
         ]);
     }
 }

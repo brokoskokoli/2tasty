@@ -42,11 +42,11 @@ class RecipeListService
     }
 
     /**
-     * @return Ingredient[]|array
+     * @return RecipeList[]|array
      */
     public function getAllForUser(?User $user = null)
     {
-        return $this->em->getRepository(RecipeList::class)->findAll();
+        return $this->em->getRepository(RecipeList::class)->getAllForUser($user);
     }
 
     public function getAllNamesForUser(?User $user = null)
@@ -60,11 +60,7 @@ class RecipeListService
     public function saveRecipeList(RecipeList $recipeList, ?User $user = null)
     {
         $recipeList->setAuthor($user);
-        if ($recipeList->getAuthor()) {
-            $recipeList->setSlug(Slugger::slugify($recipeList->getAuthor()->getUsername() . '_' . $recipeList->getName()));
-        } else {
-            $recipeList->setSlug(Slugger::slugify('common_' . $recipeList->getName()));
-        }
+        $recipeList->createSlug();
 
         foreach ($recipeList->getRecipes() as $recipe) {
             $recipe->addRecipeList($recipeList);

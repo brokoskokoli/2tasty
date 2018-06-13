@@ -11,9 +11,11 @@
 
 namespace App\Twig;
 
+use App\Entity\Recipe;
 use App\Entity\RecipeIngredient;
 use App\Entity\User;
 use App\Service\IngredientService;
+use App\Service\RecipeService;
 use App\Utils\Markdown;
 use Symfony\Component\Intl\Intl;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -47,10 +49,12 @@ class AppExtension extends AbstractExtension
      */
     private $user;
     private $ingredientService;
+    private $recipeService;
 
     public function __construct(Markdown $parser,
                                 TokenStorageInterface $tokenStorage,
                                 IngredientService $ingredientService,
+                                RecipeService $recipeService,
                                 $locales)
     {
         $this->parser = $parser;
@@ -59,6 +63,7 @@ class AppExtension extends AbstractExtension
         }
         $this->ingredientService = $ingredientService;
         $this->localeCodes = explode('|', $locales);
+        $this->recipeService = $recipeService;
     }
 
     /**
@@ -79,6 +84,9 @@ class AppExtension extends AbstractExtension
     {
         return [
             new TwigFunction('locales', [$this, 'getLocales']),
+            new TwigFunction('canAddToCollection', [$this, 'canAddToCollection']),
+            new TwigFunction('canRemoveFromCollection', [$this, 'canRemoveFromCollection']),
+            new TwigFunction('canUserUseRecipe', [$this, 'canUserUseRecipe']),
         ];
     }
 
@@ -123,5 +131,20 @@ class AppExtension extends AbstractExtension
         }
 
         return $this->locales;
+    }
+
+    public function canAddToCollection(Recipe $recipe, User $user) : bool
+    {
+        return $this->recipeService->canUserAddRecipeToCollection($recipe, $user);
+    }
+
+    public function canRemoveFromCollection(Recipe $recipe, User $user) : bool
+    {
+        return $this->recipeService->canUserRemoveRecipeFromCollection($recipe, $user);
+    }
+
+    public function canUserUseRecipe(Recipe $recipe, User $user) : bool
+    {
+        return $this->recipeService->canUserUseRecipe($recipe, $user);
     }
 }

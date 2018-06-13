@@ -77,9 +77,14 @@ class RecipeListType extends AbstractType
                     'choice_label' => 'title',
                     'multiple' => true,
                     'query_builder' => function (EntityRepository $er) use ($user) {
-                        return $er->createQueryBuilder('r')
-                            ->andWhere('r.author = :user')
-                            ->setParameter('user', $user);
+                        $queryBuilder = $er->createQueryBuilder('r')
+                            ->leftJoin('r.collectors', 'c');
+                        $userGroup = $queryBuilder->expr()->orX();
+                        $userGroup->add('r.author = :user');
+                        $userGroup->add('c.id = :user');
+                        $queryBuilder->andWhere($userGroup);
+                        $queryBuilder->setParameter('user', $user);
+                        return $queryBuilder;
                     },
                 ]
             )

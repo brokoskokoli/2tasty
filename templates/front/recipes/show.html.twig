@@ -14,14 +14,14 @@
         be able to add a comment.
         See https://symfony.com/doc/current/cookbook/security/remember_me.html#forcing-the-user-to-re-authenticate-before-accessing-certain-resources
         #}
-        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+        {% if app.user %}
             {{ render(controller('App\\Controller\\CommentsController:commentForm', {'id': recipe.id})) }}
         {% else %}
             <p>
                 <a class="btn btn-success" href="{{ path('security_login') }}">
                     <i class="fa fa-sign-in" aria-hidden="true"></i> {{ 'action.sign_in'|trans }}
                 </a>
-                {{ 'recipe.to_publish_a_comment'|trans }}
+                {{ 'messages.register_to_comment'|trans }}
             </p>
         {% endif %}
     </div>
@@ -63,6 +63,21 @@
             {{ include('front/recipes/_delete_form.html.twig', {recipe: recipe}, with_context = false) }}
         </div>
         <hr>
+    {% else %}
+        {% if canAddToCollection(recipe, user) %}
+            <div class="section">
+                <a class="btn btn-lg btn-block btn-success" href="{{ path('recipes_add_to_collection', {id: recipe.id}) }}">
+                    <i class="fa fa-plus" aria-hidden="true"></i> {{ 'action.add_to_collection'|trans }}
+                </a>
+            </div>
+        {% endif %}
+        {% if canRemoveFromCollection(recipe, user) %}
+            <div class="section">
+                <a class="btn btn-lg btn-block btn-danger" href="{{ path('recipes_remove_from_collection', {id: recipe.id}) }}">
+                    <i class="fa fa-minus" aria-hidden="true"></i> {{ 'action.remove_from_collection'|trans }}
+                </a>
+            </div>
+        {% endif %}
     {% endif %}
 
     <div class="section">
