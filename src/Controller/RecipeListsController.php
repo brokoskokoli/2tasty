@@ -75,7 +75,6 @@ class RecipeListsController extends AbstractController
      *
      * @Route("/{id}/edit", requirements={"id": "\d+"}, name="recipelists_edit")
      * @Route("/new", name="recipelists_new")
-     * @Security("is_granted('show', recipe)")
      * @Method({"GET", "POST"})
      */
     public function editAction(Request $request,
@@ -92,7 +91,7 @@ class RecipeListsController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $recipeListService->saveRecipeList($recipeList);
+            $recipeListService->saveRecipeList($recipeList, $this->getUser());
             $this->addFlash('success', 'messages.recipe_list_modified');
 
             return $this->redirectToRoute('recipelists_edit', ['id' => $recipeList->getId()]);

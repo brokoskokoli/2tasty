@@ -1,18 +1,20 @@
 {% extends 'front/layout.html.twig' %}
 
-{% block body_id 'recipes_edit' %}
+{% import 'front/common/arrayCollection.html.twig' as arrayCollection %}
+
+{% block body_id 'recipelists_edit' %}
 
 {% block main %}
-    <h1>{{ 'title.edit_recipelist'|trans({'%id%': recipe.id}) }}</h1>
+    <h1>{{ 'title.edit_recipelist'|trans }}</h1>
 
-    {{ include('front/recipes/_form.html.twig', {
-        form: form,
-        button_label: 'action.save'|trans,
-        include_back_to_home_link: true,
-        ingredientList: ingredientList,
-        recipeTags: recipeTags,
-        recipeLists: recipeLists
-    }, with_context = false) }}
+    {{ form_start(form) }}
+    {{ form_row(form.name) }}
+    {{ form_row(form.summary) }}
+    {{ form_row(form.recipes, {'attr': {'class': 'largepicker'}}) }}
+    {{ form_row(form.submit, {'attr': {'class': 'btn-primary'}}) }}
+
+    {{ form_end(form) }}
+
 {% endblock %}
 
 {% block javascripts %}
@@ -24,16 +26,19 @@
 {% endblock %}
 
 {% block sidebar %}
+    {% if recipeList.id is not null %}
     <div class="section">
-        <a href="{{ path('recipes_show', {slug: recipe.slug}) }}" class="btn btn-lg btn-block btn-success">
-            <i class="fa fa-eye" aria-hidden="true"></i> {{ 'action.show_recipe'|trans }}
+        <a href="{{ path('recipelists_show', {slug: recipeList.slug}) }}" class="btn btn-lg btn-block btn-success">
+            <i class="fa fa-eye" aria-hidden="true"></i> {{ 'action.show_recipe_list'|trans }}
         </a>
     </div>
+    {% endif %}
 
+    {#
     <div class="section actions">
         {{ include('front/recipes/_delete_form.html.twig', {recipe: recipe}, with_context = false) }}
     </div>
-
+#}
     {{ parent() }}
 {% endblock %}
 

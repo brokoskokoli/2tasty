@@ -61,7 +61,7 @@
         <h2>{{ 'title.steps'|trans }}</h2>
         <ol>
             {% for step in recipe.recipeSteps %}
-                <li><p>{{ step.text }}</p><span class="details">{% if step.duration %}{{ step.duration }} {{ 'static.durations.minutes'|trans }}{% endif %}</span></li>
+                <li><p>{{ step.text|default('')|md2html }}</p><span class="details">{% if step.duration %}{{ step.duration }} {{ 'static.durations.minutes'|trans }}{% endif %}</span></li>
             {% endfor %}
         </ol>
     </div>
@@ -71,7 +71,7 @@
         <h2>{{ 'title.hints'|trans }}</h2>
         {% for hint in recipe.recipeHints %}
             <div class="panel panel-default">
-                <div class="panel-body">{{ hint.text }}</div>
+                <div class="panel-body">{{ hint.text|default('')|md2html }}</div>
             </div>
         {% endfor %}
     </div>
@@ -81,7 +81,7 @@
         <h2>{{ 'title.recipeAlternatives'|trans }}</h2>
         {% for alternative in recipe.recipeAlternatives %}
             <div class="panel panel-default">
-                <div class="panel-body">{{ alternative.text }}</div>
+                <div class="panel-body">{{ alternative.text|default('')|md2html }}</div>
             </div>
         {% endfor %}
     </div>

@@ -15,14 +15,14 @@
         <tbody>
         {% for recipeList in recipeLists %}
             <tr>
-                <td>{{ recipeList.title }}</td>
+                <td>{{ recipeList.name }}</td>
                 <td class="text-right">
                     <div class="item-actions">
                         <a href="{{ path('recipelists_show_id', {id: recipeList.id}) }}" class="btn btn-sm btn-default">
                             <i class="fa fa-eye" aria-hidden="true"></i> {{ 'action.show'|trans }}
                         </a>
 
-                        <a href="{{ path('recipelists_edit', {id: recipe.id}) }}" class="btn btn-sm btn-primary">
+                        <a href="{{ path('recipelists_edit', {id: recipeList.id}) }}" class="btn btn-sm btn-primary">
                             <i class="fa fa-edit" aria-hidden="true"></i> {{ 'action.edit'|trans }}
                         </a>
                     </div>

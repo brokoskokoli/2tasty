@@ -57,9 +57,18 @@ class RecipeListService
     }
 
 
-    public function saveRecipeList(RecipeList $recipeList)
+    public function saveRecipeList(RecipeList $recipeList, ?User $user = null)
     {
-        $recipeList->setSlug(Slugger::slugify($recipeList->getAuthor()->getUsername() . '_' . $recipeList->getName()));
+        $recipeList->setAuthor($user);
+        if ($recipeList->getAuthor()) {
+            $recipeList->setSlug(Slugger::slugify($recipeList->getAuthor()->getUsername() . '_' . $recipeList->getName()));
+        } else {
+            $recipeList->setSlug(Slugger::slugify('common_' . $recipeList->getName()));
+        }
+
+        foreach ($recipeList->getRecipes() as $recipe) {
+            $recipe->addRecipeList($recipeList);
+        }
 
         $this->em->persist($recipeList);
         $this->em->flush();

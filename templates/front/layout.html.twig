@@ -55,12 +55,22 @@
     </li>
 
     {% if app.user %}
-        <li>
+        <li class="hidden-xs">
+            <a href="{{ path('user_my_profile') }}">
+                <i class="fa fa-user" aria-hidden="true"></i>
+            </a>
+        </li>
+        <li class="visible-xs-block">
             <a href="{{ path('user_my_profile') }}">
                 <i class="fa fa-user" aria-hidden="true"></i> {{ 'menu.my_profile'|trans }}
             </a>
         </li>
-        <li>
+        <li class="hidden-xs">
+            <a href="{{ path('security_logout') }}">
+                <i class="fa fa-sign-out" aria-hidden="true"></i>
+            </a>
+        </li>
+        <li class="visible-xs-block">
             <a href="{{ path('security_logout') }}">
                 <i class="fa fa-sign-out" aria-hidden="true"></i> {{ 'menu.logout'|trans }}
             </a>

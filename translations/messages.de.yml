@@ -20,6 +20,7 @@ title:
   import_from_link: Import from Link
   recipeLists: Rezeptlisten
   edit_recipelist: Rezeptliste bearbeiten
+  recipes: Rezepte
 
 
 label:
@@ -53,6 +54,7 @@ label:
   working_time: Arbeitszeit (in Minuten)
   further_informations: Weitere Informationen
   recipeLists: Rezeptlisten
+  recipes: Rezepte
 
 action:
   back_to_list: Zurück zur Liste
@@ -75,6 +77,7 @@ action:
   random_recipe: Zufallsrezept
   create_recipeList: Erstelle Rezeptliste
   edit_recipe_list: Rezeptliste bearbeiten
+  show_recipe_list: Zeige Rezeptliste
 
 dialogs:
   delete_recipe:
@@ -103,18 +106,21 @@ menu:
   homepage: News
   admin_menu: Admin
   search: ''
-  logout: ''
+  logout: 'Logout'
   login: Login
-  choose_language: ''
+  choose_language: 'Sprache wählen'
   recipe_of_the_day: Mein Rezept des Tages
   new_quick: Ich möchte schnell ein Foto von einem Rezept hochladen
-  my_profile: ''
+  my_profile: 'Profileinstellungen'
   filter_recipes: 'Rezeptsuche'
   recipes_to_cook: Rezepte von meiner ToCook Liste
   recipelists_list: Meine Rezeptlisten
 
 help:
   app_description: |
+    <strong>Version 0.9</strong> <br>
+    - Rezeptlisten<br>
+    <br>
     <strong>Version 0.8</strong> <br>
     - Import von Links: Chefkoch<br>
     <br>

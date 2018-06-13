@@ -22,12 +22,15 @@ use App\Form\Type\RecipeLinkType;
 use App\Form\Type\RecipeListsInputType;
 use App\Form\Type\RecipeStepType;
 use App\Form\Type\RecipeTagsInputType;
+use Doctrine\ORM\EntityRepository;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -47,9 +50,11 @@ class RecipeListType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $user = $options['user'];
+
         $builder
             ->add(
-                'title',
+                'name',
                 TextType::class,
                 [
                     'attr' => ['autofocus' => true],
@@ -64,12 +69,24 @@ class RecipeListType extends AbstractType
                 ]
             )
             ->add('recipes',
-                CollectionType::class,
+                EntityType::class,
                 [
-                    'entry_type' => \App\Form\Type\RecipeType::class,
-                    'allow_add' => true,
-                    'allow_delete' => true,
-                    'by_reference' => true
+                    'label' => "label.recipes",
+                    'required' => true,
+                    'class' => Recipe::class,
+                    'choice_label' => 'title',
+                    'multiple' => true,
+                    'query_builder' => function (EntityRepository $er) use ($user) {
+                        return $er->createQueryBuilder('r')
+                            ->andWhere('r.author = :user')
+                            ->setParameter('user', $user);
+                    },
+                ]
+            )
+            ->add('submit',
+                SubmitType::class,
+                [
+                    'label' => 'action.save'
                 ]
             )
         ;

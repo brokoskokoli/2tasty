@@ -45,7 +45,7 @@ class RecipeList implements \JsonSerializable
 
     /**
      * @var ArrayCollection|Recipe[]
-     * @ORM\ManyToMany(targetEntity="Recipe", mappedBy="recipeLists")
+     * @ORM\ManyToMany(targetEntity="Recipe", mappedBy="recipeLists", cascade={"persist"})
      */
     private $recipes;
 
@@ -72,7 +72,7 @@ class RecipeList implements \JsonSerializable
         if ($this->author !== null) {
             $result .= $this->author->getUsername() . ' - ';
         }
-        return $result .= $this->name;
+        return $result . $this->name;
     }
 
 
@@ -109,7 +109,7 @@ class RecipeList implements \JsonSerializable
     /**
      * @return string
      */
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }
@@ -118,7 +118,7 @@ class RecipeList implements \JsonSerializable
      * @param string $name
      * @return RecipeList
      */
-    public function setName(string $name): RecipeList
+    public function setName(?string $name): RecipeList
     {
         $this->name = $name;
         return $this;
@@ -137,6 +137,7 @@ class RecipeList implements \JsonSerializable
         foreach ($recipes as $recipe) {
             if (!$this->recipes->contains($recipe)) {
                 $this->recipes->add($recipe);
+                $recipe->addRecipeList($this);
             }
         }
     }
@@ -144,6 +145,7 @@ class RecipeList implements \JsonSerializable
     public function removeRecipe(Recipe $recipe): void
     {
         $this->recipes->removeElement($recipe);
+        $recipe->removeRecipeList($this);
     }
 
     /**

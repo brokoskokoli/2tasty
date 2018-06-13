@@ -224,6 +224,8 @@ class Recipe
     /**
      * @var ArrayCollection|RecipeList[]
      * @ORM\ManyToMany(targetEntity="App\Entity\RecipeList", cascade={"persist"}, inversedBy="recipes")
+     * @ORM\JoinTable(name="recipe_lists")
+     *
      */
     private $recipeLists;
 
