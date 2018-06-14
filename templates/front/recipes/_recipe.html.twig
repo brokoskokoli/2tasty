@@ -27,8 +27,8 @@
     {{ include('front/recipes/_recipe_tags.html.twig') }}
 
     <p class="spacer-medium">&nbsp;</p>
-    <p>{{ 'label.recipeLists'|trans }}</p>
     {% if not recipe.recipeLists.empty %}
+        <p>{{ 'label.recipeLists'|trans }}</p>
         <p class="recipe-recipeTags">
             <ul>
             {% for list in recipe.recipeLists %}
@@ -66,36 +66,42 @@
         </ol>
     </div>
 
-    <p class="spacer-medium">&nbsp;</p>
-    <div class="hints">
-        <h2>{{ 'title.hints'|trans }}</h2>
-        {% for hint in recipe.recipeHints %}
-            <div class="panel panel-default">
-                <div class="panel-body">{{ hint.text|default('')|md2html }}</div>
-            </div>
-        {% endfor %}
-    </div>
+    {% if recipe.recipeHints|length > 0 %}
+        <p class="spacer-medium">&nbsp;</p>
+        <div class="hints">
+            <h2>{{ 'title.hints'|trans }}</h2>
+            {% for hint in recipe.recipeHints %}
+                <div class="panel panel-default">
+                    <div class="panel-body">{{ hint.text|default('')|md2html }}</div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
 
-    <p class="spacer-medium">&nbsp;</p>
-    <div class="alternatives">
-        <h2>{{ 'title.recipeAlternatives'|trans }}</h2>
-        {% for alternative in recipe.recipeAlternatives %}
-            <div class="panel panel-default">
-                <div class="panel-body">{{ alternative.text|default('')|md2html }}</div>
-            </div>
-        {% endfor %}
-    </div>
+    {% if recipe.recipeAlternatives|length > 0 %}
+        <p class="spacer-medium">&nbsp;</p>
+        <div class="alternatives">
+            <h2>{{ 'title.recipeAlternatives'|trans }}</h2>
+            {% for alternative in recipe.recipeAlternatives %}
+                <div class="panel panel-default">
+                    <div class="panel-body">{{ alternative.text|default('')|md2html }}</div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
 
-    <p class="spacer-medium">&nbsp;</p>
-    <div class="links">
-        <h2>{{ 'title.links'|trans }}</h2>
-        <ul>
-        {% for link in recipe.recipeLinks %}
-            <li>
-                <a href="{{ link.url }}">{{ link.linkText }}</a>
-            </li>
-        {% endfor %}
-        </ul>
-    </div>
+    {% if recipe.recipeLinks|length > 0 %}
+        <p class="spacer-medium">&nbsp;</p>
+        <div class="links">
+            <h2>{{ 'title.links'|trans }}</h2>
+            <ul>
+            {% for link in recipe.recipeLinks %}
+                <li>
+                    <a href="{{ link.url }}">{{ link.linkText }}</a>
+                </li>
+            {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
 
 </div>
