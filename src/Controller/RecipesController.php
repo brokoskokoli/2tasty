@@ -37,7 +37,6 @@ use Symfony\Component\Translation\Translator;
  * Controller used to manage blog contents in the public part of the site.
  *
  * @Route("/recipes")
- * @Security("has_role('ROLE_USER')")
  *
  * @author Ryan Weaver <weaverryan@gmail.com>
  * @author Javier Eguiluz <javier.eguiluz@gmail.com>
