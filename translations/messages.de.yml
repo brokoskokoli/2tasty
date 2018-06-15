@@ -55,6 +55,7 @@ label:
   further_informations: Weitere Informationen
   recipeLists: Rezeptlisten
   recipes: Rezepte
+  personal_message: Persönliche Nachricht
 
 action:
   back_to_list: Zurück zur Liste
@@ -80,11 +81,16 @@ action:
   show_recipe_list: Zeige Rezeptliste
   add_to_collection: Füge zur Sammlung hinzu
   remove_from_collection: Entferne aus der Sammlung
+  send: Absenden!
+  share_mail: Per Mail teilen!
 
 dialogs:
   delete_recipe:
     title: Rezept löschen
     body: Möchtest du dieses Rezept wirklich löschen?
+  share_email:
+    title: Per Mail teilen
+
 
 form:
   defaultvalue:
@@ -188,7 +194,17 @@ emails:
       <a href="%url%">%url%</a>
 
       Dein treuer Server :-)
+  share:
+    subject: ''
+    text: |
+      Hallo,
+      %from_name% hat etwas mit dir geteilt: %title%
 
+      %message%
+
+      <a href="%url%">%url%</a>
+
+      Viel Erfolg beim Nachkochen!
 
 ingredient_preferences:
   Native: Wie im Rezept

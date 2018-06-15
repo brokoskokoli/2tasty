@@ -60,6 +60,9 @@ class AppExtension extends AbstractExtension
         $this->parser = $parser;
         if (!empty($tokenStorage->getToken())) {
             $this->user = $tokenStorage->getToken()->getUser();
+            if (!$this->user instanceof User) {
+                $this->user = null;
+            }
         }
         $this->ingredientService = $ingredientService;
         $this->localeCodes = explode('|', $locales);
@@ -100,7 +103,6 @@ class AppExtension extends AbstractExtension
 
     public function ingredientText(RecipeIngredient $recipeIngredient): string
     {
-
         $result = $this->ingredientService->getTranslatedCalculatedIngredientText($recipeIngredient, $this->user);
 
         if ($result != '' && $recipeIngredient->getText() != '') {
@@ -133,18 +135,18 @@ class AppExtension extends AbstractExtension
         return $this->locales;
     }
 
-    public function canAddToCollection(Recipe $recipe, User $user) : bool
+    public function canAddToCollection(Recipe $recipe) : bool
     {
-        return $this->recipeService->canUserAddRecipeToCollection($recipe, $user);
+        return $this->recipeService->canUserAddRecipeToCollection($recipe, $this->user);
     }
 
-    public function canRemoveFromCollection(Recipe $recipe, User $user) : bool
+    public function canRemoveFromCollection(Recipe $recipe) : bool
     {
-        return $this->recipeService->canUserRemoveRecipeFromCollection($recipe, $user);
+        return $this->recipeService->canUserRemoveRecipeFromCollection($recipe, $this->user);
     }
 
-    public function canUserUseRecipe(Recipe $recipe, User $user) : bool
+    public function canUserUseRecipe(Recipe $recipe) : bool
     {
-        return $this->recipeService->canUserUseRecipe($recipe, $user);
+        return $this->recipeService->canUserUseRecipe($recipe, $this->user);
     }
 }

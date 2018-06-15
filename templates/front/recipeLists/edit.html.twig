@@ -8,6 +8,8 @@
     <h1>{{ 'title.edit_recipelist'|trans }}</h1>
 
     {{ form_start(form) }}
+
+    {{ form_errors(form) }}
     {{ form_row(form.name) }}
     {{ form_row(form.summary) }}
     {{ form_row(form.recipes, {'attr': {'class': 'largepicker bettermultiple'}}) }}

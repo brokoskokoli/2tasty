@@ -79,7 +79,7 @@ class IngredientService
         return $calculator->getDefault($ingredient);
     }
 
-    public function getUserIngredientPreferenceUnit(Ingredient $ingredient, ?User $user) : ?RefUnit
+    public function getUserIngredientPreferenceUnit(Ingredient $ingredient, ?User $user = null) : ?RefUnit
     {
         if (!$ingredient) {
             return null;
@@ -109,10 +109,12 @@ class IngredientService
     public function getCalculatedIngredientAmountText(RecipeIngredient $recipeIngredient, ?User $user = null)
     {
         if ($recipeIngredient->getIngredient()) {
-            $preferenceUnit = $this->getUserIngredientPreferenceUnit($recipeIngredient->getIngredient(), $user);
+            if ($user) {
+                $preferenceUnit = $this->getUserIngredientPreferenceUnit($recipeIngredient->getIngredient(), $user);
 
-            if ($preferenceUnit !== $recipeIngredient->getUnit()) {
-                IngredientCalculator::calculateToUnit($recipeIngredient, $preferenceUnit);
+                if ($preferenceUnit !== $recipeIngredient->getUnit()) {
+                    IngredientCalculator::calculateToUnit($recipeIngredient, $preferenceUnit);
+                }
             }
         }
 

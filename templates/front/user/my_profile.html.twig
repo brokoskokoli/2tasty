@@ -7,6 +7,7 @@
     <h1>{{ 'title.edit_profile'|trans }}</h1>
     {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
 
+    {{ form_errors(form) }}
 
     {{ form_row(form.fullName) }}
     {{ form_row(form.username) }}

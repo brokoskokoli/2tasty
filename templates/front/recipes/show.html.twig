@@ -29,22 +29,22 @@
     <div class="row">
 
         <div class="col-md-10 col-md-offset-1">
-        {% for comment in recipe.comments %}
-            <div class="row recipe-comment">
-                <a name="comment_{{ comment.id }}"></a>
-                <h4 class="col-sm-3">
-                    <strong>{{ comment.author.fullName }}</strong>
-                    <strong>{{ comment.publishedAt|localizeddate('medium', 'short', null, 'UTC') }}</strong>
-                </h4>
-                <div class="col-sm-9">
-                    {{ comment.content|md2html }}
+            {% for comment in recipe.comments %}
+                <div class="row recipe-comment">
+                    <a name="comment_{{ comment.id }}"></a>
+                    <h4 class="col-sm-3">
+                        <strong>{{ comment.author.fullName }}</strong>
+                        <strong>{{ comment.publishedAt|localizeddate('medium', 'short', null, 'UTC') }}</strong>
+                    </h4>
+                    <div class="col-sm-9">
+                        {{ comment.content|md2html }}
+                    </div>
                 </div>
-            </div>
-        {% else %}
-            <div class="recipe-comment">
-                <p>{{ 'messages.no_comments'|trans }}</p>
-            </div>
-        {% endfor %}
+            {% else %}
+                <div class="recipe-comment">
+                    <p>{{ 'messages.no_comments'|trans }}</p>
+                </div>
+            {% endfor %}
         </div>
 
     </div>
@@ -64,16 +64,18 @@
         </div>
         <hr>
     {% else %}
-        {% if canAddToCollection(recipe, user) %}
+        {% if canAddToCollection(recipe) %}
             <div class="section">
-                <a class="btn btn-lg btn-block btn-success" href="{{ path('recipes_add_to_collection', {id: recipe.id}) }}">
+                <a class="btn btn-lg btn-block btn-success"
+                   href="{{ path('recipes_add_to_collection', {id: recipe.id}) }}">
                     <i class="fa fa-plus" aria-hidden="true"></i> {{ 'action.add_to_collection'|trans }}
                 </a>
             </div>
         {% endif %}
-        {% if canRemoveFromCollection(recipe, user) %}
+        {% if canRemoveFromCollection(recipe) %}
             <div class="section">
-                <a class="btn btn-lg btn-block btn-danger" href="{{ path('recipes_remove_from_collection', {id: recipe.id}) }}">
+                <a class="btn btn-lg btn-block btn-danger"
+                   href="{{ path('recipes_remove_from_collection', {id: recipe.id}) }}">
                     <i class="fa fa-minus" aria-hidden="true"></i> {{ 'action.remove_from_collection'|trans }}
                 </a>
             </div>
@@ -81,10 +83,21 @@
     {% endif %}
 
     <div class="section">
-        <a class="btn btn-lg btn-block btn-success" href="{{ path('recipes_recipe_download_pdf', {slug: recipe.slug}) }}">
+        <a class="btn btn-lg btn-block btn-success"
+           href="{{ path('recipes_recipe_download_pdf', {slug: recipe.slug}) }}">
             <i class="fa fa-download" aria-hidden="true"></i> {{ 'action.download_recipe_pdf'|trans }}
         </a>
     </div>
+
+
+    {% if app.user %}
+        {{ include('front/share/_share_widget.html.twig', {'link': app.request.getUri, 'title': recipe.title, 'modalId': 'shareModal' }) }}
+        <div class="section">
+            <button type="button" class="btn btn-lg btn-block btn-primary" data-toggle="modal" data-target="#shareModal">
+                <i class="fa fa-share-alt"></i> {{ 'action.share_mail'|trans }}
+            </button>
+        </div>
+    {% endif %}
 
 
 

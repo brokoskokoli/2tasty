@@ -50,8 +50,12 @@ class RecipeService
         return true;
     }
 
-    public function canUserAddRecipeToCollection(Recipe $recipe, User $user) : bool
+    public function canUserAddRecipeToCollection(Recipe $recipe, ?User $user) : bool
     {
+        if (!$user) {
+            return false;
+        }
+
         if ($recipe->getAuthor() === $user) {
             return false;
         }
@@ -62,7 +66,7 @@ class RecipeService
         return true;
     }
 
-    public function removeRecipeFromUserCollection(Recipe $recipe, User $user) : bool
+    public function removeRecipeFromUserCollection(Recipe $recipe, ?User $user) : bool
     {
         if (!$this->canUserRemoveRecipeFromCollection($recipe, $user)) {
             return false;
@@ -75,8 +79,12 @@ class RecipeService
         return true;
     }
 
-    public function canUserRemoveRecipeFromCollection(Recipe $recipe, User $user) : bool
+    public function canUserRemoveRecipeFromCollection(Recipe $recipe, ?User $user) : bool
     {
+        if (!$user) {
+            return false;
+        }
+
         if ($recipe->getAuthor() === $user) {
             return false;
         }
@@ -87,8 +95,12 @@ class RecipeService
         return true;
     }
 
-    public function canUserUseRecipe(Recipe $recipe, User $user) : bool
+    public function canUserUseRecipe(Recipe $recipe, ?User $user) : bool
     {
+        if (!$user) {
+            return false;
+        }
+
         if ($recipe->getAuthor() === $user) {
             return true;
         }

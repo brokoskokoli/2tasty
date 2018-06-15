@@ -91,4 +91,19 @@ class MailerService
 
         $this->send($options, "mails/forgot_password.html.twig", ['user' => $user]);
     }
+
+    public function sendShareEmail(array $formdata, User $user)
+    {
+        $options = [
+            'to' => $formdata['email'],
+            'subject' => $this->translator->trans('emails.share.subject') . ' ' . $formdata['title'],
+        ];
+
+        $this->send($options, "mails/share.html.twig", [
+            'from_user' => $user,
+            'title' => $formdata['title'],
+            'link' => $formdata['link'],
+            'message' => $formdata['message'],
+        ]);
+    }
 }

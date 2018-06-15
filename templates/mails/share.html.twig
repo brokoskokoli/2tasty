@@ -1,0 +1,6 @@
+{{ 'emails.share.text' | trans(
+    { "%from_name%": from_user.fullName,
+        "%url%": link,
+        "%message%": message,
+        "%title%": title,
+    })| raw | nl2br | raw }}
