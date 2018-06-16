@@ -64,7 +64,9 @@ class RecipeIngredient
 
     public function __toString()
     {
-        return $this->getIngredient()->getName();
+        return $this->getId()
+            . ($this->getIngredient()?'_' . $this->getIngredient()->getName():'')
+            . ($this->getText()?'_' . $this->getText():'');
     }
 
     /**
