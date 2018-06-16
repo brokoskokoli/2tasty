@@ -73,7 +73,7 @@ class IngredientService
         return $result;
     }
 
-    public function getUserPreferenceIngredientDisplayDefault(Ingredient $ingredient, RefIngredientDisplayPreference $preference) : RefUnit
+    public function getUserPreferenceIngredientDisplayDefault(Ingredient $ingredient, RefIngredientDisplayPreference $preference) : ?RefUnit
     {
         $calculator = IngredientCalculator::getCalculator($preference, $this->em, $this->translator);
         return $calculator->getDefault($ingredient);

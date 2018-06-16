@@ -56,6 +56,7 @@ label:
   recipeLists: Rezeptlisten
   recipes: Rezepte
   personal_message: Persönliche Nachricht
+  searchText: Suchtext
 
 action:
   back_to_list: Zurück zur Liste

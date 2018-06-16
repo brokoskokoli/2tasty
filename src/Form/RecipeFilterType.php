@@ -9,6 +9,7 @@ use App\Form\Type\RecipeHintType;
 use App\Form\Type\RecipeImageType;
 use App\Form\Type\RecipeIngredientType;
 use App\Form\Type\RecipeLinkType;
+use App\Form\Type\RecipeListsInputType;
 use App\Form\Type\RecipeStepType;
 use App\Form\Type\RecipeTagsInputType;
 use Symfony\Component\Form\AbstractType;
@@ -30,10 +31,24 @@ class RecipeFilterType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('text', TextType::class,
+                [
+                    'label' => 'label.searchText',
+                    'required' => false,
+                ]
+            )
             ->add('recipeTags', RecipeTagsInputType::class,
                 [
                     'label' => 'label.recipeTags',
                     'required' => false,
+                ]
+            )
+            ->add('authorRecipeLists', RecipeListsInputType::class,
+                [
+                    'label' => 'label.recipeLists',
+                    'required' => false,
+                    'user' => $options['user'],
+                    'recipe' => $options['recipe'],
                 ]
             )
             ->add('private', CheckboxType::class,
@@ -61,6 +76,8 @@ class RecipeFilterType extends AbstractType
         $resolver->setDefaults([
             'method' => 'GET',
             'csrf_protection' => false,
+            'user' => null,
+            'recipe' => null,
         ]);
     }
 }

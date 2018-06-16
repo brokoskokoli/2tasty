@@ -336,12 +336,17 @@ class RecipesController extends AbstractController
      *
      * @param Request $request
      * @param RecipeService $recipeService
+     * @param RecipeTagService $recipeTagService
+     * @param RecipeListService $recipeListService
+     * @param int|null $page
      * @return Response
      */
-    public function filterAction(Request $request, RecipeService $recipeService, RecipeTagService $recipeTagService, int $page = null)
+    public function filterAction(Request $request, RecipeService $recipeService, RecipeTagService $recipeTagService, RecipeListService $recipeListService, int $page = null)
     {
 
-        $form = $this->createForm(RecipeFilterType::class);
+        $form = $this->createForm(RecipeFilterType::class, null, [
+            'user' => $this->getUser(),
+            ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -358,6 +363,7 @@ class RecipesController extends AbstractController
             'recultRecipe' => $resultRecipe ?? null,
             'form' => $form->createView(),
             'recipeTags' => $recipeTagService->getAllNames(),
+            'recipeLists' => $recipeListService->getAllNamesForUser($this->getUser()),
         ]);
 
 

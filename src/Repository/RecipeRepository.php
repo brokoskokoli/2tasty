@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Recipe;
+use App\Entity\RecipeList;
 use App\Entity\RecipeTag;
 use App\Entity\User;
 use App\Helper\QueryHelper;
@@ -129,6 +130,11 @@ class RecipeRepository extends ServiceEntityRepository
 
     private function applyRecipeTagsFilter(QueryBuilder $queryBuilder, $filter)
     {
+        if (!($filter['recipeTags'] ?? null)) {
+            return;
+        }
+
+        $queryBuilder->leftJoin('r.recipeTags', 't');
         $fields = $queryBuilder->expr()->andX();
         $allKeywords = [];
         /**
@@ -147,13 +153,55 @@ class RecipeRepository extends ServiceEntityRepository
         $queryBuilder->addGroupBy('r.id');
     }
 
+    private function applyRecipeListsFilter(QueryBuilder $queryBuilder, $filter)
+    {
+        if (!($filter['authorRecipeLists'] ?? null)) {
+            return;
+        }
+        $queryBuilder->leftJoin('r.recipeLists', 'rl');
+        $fields = $queryBuilder->expr()->andX();
+        $allKeywords = [];
+        /**
+         * @var int $key
+         * @var RecipeList $term
+         */
+        foreach ($filter['authorRecipeLists'] ?? [] as $key => $term) {
+            $allKeywords[] = $term->getName();
+        }
+        foreach ($filter['authorRecipeLists'] ?? [] as $key => $term) {
+            $fields->add('rl.name in (:lists)');
+            $queryBuilder->setParameter('lists', $allKeywords);
+        }
+        $queryBuilder->andWhere($fields);
+        $queryBuilder->having('count(distinct rl.id) >= '.count($allKeywords));
+        $queryBuilder->addGroupBy('rl.id');
+    }
+
+    protected function applySearchTermFilter(QueryBuilder $queryBuilder, $filter)
+    {
+        $terms = array_unique(explode(' ', mb_strtolower($filter['text'])));
+        if (empty($terms) || empty($terms[0])) {
+            return;
+        }
+        $fields = $queryBuilder->expr()->orX();
+        foreach ($terms as $key => $term) {
+            $fields->add('r.title LIKE :t_'.$key)
+                ->add('r.summary LIKE :t_'.$key);
+
+            $queryBuilder->setParameter('t_'.$key, '%'.$term.'%');
+        }
+
+        $queryBuilder->andWhere($fields);
+
+    }
+
     public function filterRecipes($page, $filter = [], ?User $user = null)
     {
         $queryBuilder = $this->createQueryBuilder('r');
-        $queryBuilder->leftJoin('r.recipeTags', 't');
         QueryHelper::andWhereFromFilter($queryBuilder, $filter, 'private', 'r.author');
         $this->applyRecipeTagsFilter($queryBuilder, $filter);
-
+        $this->applyRecipeListsFilter($queryBuilder, $filter);
+        $this->applySearchTermFilter($queryBuilder, $filter);
 
         return $this->createPaginator($queryBuilder->getQuery(), $page);
     }
@@ -161,9 +209,10 @@ class RecipeRepository extends ServiceEntityRepository
     public function getAllForFilter($filter = [], ?User $user = null)
     {
         $queryBuilder = $this->createQueryBuilder('r');
-        $queryBuilder->leftJoin('r.recipeTags', 't');
         QueryHelper::andWhereFromFilter($queryBuilder, $filter, 'private', 'r.author');
         $this->applyRecipeTagsFilter($queryBuilder, $filter);
+        $this->applyRecipeListsFilter($queryBuilder, $filter);
+        $this->applySearchTermFilter($queryBuilder, $filter);
 
         return $queryBuilder->getQuery()->getResult();
     }

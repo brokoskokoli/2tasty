@@ -5,6 +5,8 @@
 {% block main %}
     <h1>{{ 'title.filter_recipes'|trans }}</h1>
     {{ form_start(form) }}
+    {{ form_row(form.text) }}
+    {{ form_row(form.authorRecipeLists, {'attr' : {'class': 'stXtokenField', 'data-availabeTokens': recipeLists|join('|')}}) }}
     {{ form_row(form.recipeTags, {'attr' : {'class': 'stXtokenField', 'data-availabeTokens': recipeTags|join('|')}}) }}
 
     {{ form_row(form.private) }}

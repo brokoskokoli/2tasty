@@ -143,6 +143,4 @@ class RecipeListsController extends AbstractController
             'recipeList' => $recipeList,
         ]);
     }
-
-
 }
