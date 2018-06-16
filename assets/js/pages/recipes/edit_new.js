@@ -18,6 +18,6 @@ $(function() {
             showAutocompleteOnFocus: true
         };
         $element.tokenfield(settings);
-    })
+    });
 
 });

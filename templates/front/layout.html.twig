@@ -49,11 +49,6 @@
         </li>
     {% endif %}
 
-
-    <li>
-        <a href="{{ path('recipes_search') }}"> <i class="fa fa-search"></i> {{ 'menu.search'|trans }}</a>
-    </li>
-
     {% if app.user %}
         <li class="hidden-xs">
             <a href="{{ path('user_my_profile') }}">
