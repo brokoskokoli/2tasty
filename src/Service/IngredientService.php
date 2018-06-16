@@ -112,7 +112,7 @@ class IngredientService
             if ($user) {
                 $preferenceUnit = $this->getUserIngredientPreferenceUnit($recipeIngredient->getIngredient(), $user);
 
-                if ($preferenceUnit !== $recipeIngredient->getUnit()) {
+                if ($preferenceUnit && $preferenceUnit !== $recipeIngredient->getUnit()) {
                     IngredientCalculator::calculateToUnit($recipeIngredient, $preferenceUnit);
                 }
             }

@@ -15,7 +15,7 @@ class IngredientCalculatorNative extends IngredientCalculatorBase
      */
     public function getDefault(Ingredient $ingredient)
     {
-        return $this->em->getReference(RefUnit::class, RefUnit::REF_UNIT_US_CUP);
+        return null;
     }
 
 
