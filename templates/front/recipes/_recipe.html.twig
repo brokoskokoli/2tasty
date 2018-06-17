@@ -4,11 +4,13 @@
     <p>&nbsp;</p>
 
     {% if not app.user or recipe.author.id != app.user.id %}
-        <div class="content-inline-block">
         <p class="recipe-metadata">
             <span class="metadata"><i class="fa fa-user"></i> {{ recipe.author.fullName }}</span>
             <span class="metadata"><i
                         class="fa fa-calendar"></i> {{ recipe.createdAt|localizeddate('long', 'medium', null, 'UTC') }}</span>
+            {% if recipe.ratingGlobal %}
+                <span class="metadata">{{ recipe.ratingGlobal|rating(5, "fa-norm", true) }} ({{ recipe.ratingGlobal }})</span>
+            {% endif %}
         </p>
     {% endif %}
 
