@@ -94,3 +94,11 @@ img.profileimage {
 .quicklinks-sidebar {
   font-size: 16px;
 }
+
+div.content-inline-block {
+  display: inline-block;
+}
+
+div.content-inline-block>div {
+  display: inline-block;
+}

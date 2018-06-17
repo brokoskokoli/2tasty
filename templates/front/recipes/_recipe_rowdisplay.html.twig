@@ -10,12 +10,16 @@
             </h2>
 
             <p class="recipe-metadata">
-                <span class="metadata"><i class="fa fa-calendar"></i> {{ recipe.createdAt|localizeddate('long', 'medium', null, 'UTC') }}</span>
+                <span class="metadata"><i class="fa fa-calendar"></i> {{ recipe.createdAt|localizeddate('long', 'none', null, null) }}</span>
+
                 <span class="metadata"><a href="{{ path('user_profile', {'username': recipe.author.username}) }}"><i class="fa fa-user"></i> {{ recipe.author.fullName }}</a></span>
+
             </p>
 
             {{ recipe.summary|default('')|md2html }}
-
+            {% if recipe.ratingGlobal %}
+                <span class="metadata">{{ recipe.ratingGlobal|rating(5, "fa-norm", true) }} ({{ recipe.ratingGlobal }})</span>
+            {% endif %}
             {{ include('front/recipes/_recipe_tags.html.twig') }}
         </div>
         <div class="col-md-4">

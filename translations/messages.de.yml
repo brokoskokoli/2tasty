@@ -57,6 +57,10 @@ label:
   recipes: Rezepte
   personal_message: Persönliche Nachricht
   searchText: Suchtext
+  rating: Bewertung
+  rate: Bewerten
+  rating_user: Meine Bewertung
+  rating_global: Gesamtbewertung
 
 action:
   back_to_list: Zurück zur Liste
@@ -84,6 +88,7 @@ action:
   remove_from_collection: Entferne aus der Sammlung
   send: Absenden!
   share_mail: Per Mail teilen!
+  rate: Bewerten!
 
 dialogs:
   delete_recipe:

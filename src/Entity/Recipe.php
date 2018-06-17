@@ -144,6 +144,21 @@ class Recipe
     private $comments;
 
     /**
+     * @var RecipeRating[]|ArrayCollection
+     *
+     * @ORM\OneToMany(
+     *      targetEntity="App\Entity\RecipeRating",
+     *      mappedBy="recipe",
+     *      orphanRemoval=true,
+     *      cascade={"persist"},
+     *      fetch="EAGER"
+     * )
+     * @Assert\Valid()
+     *
+     */
+    private $ratings;
+
+    /**
      * @var RecipeStep[]|ArrayCollection
      *
      * @ORM\OneToMany(
@@ -676,6 +691,43 @@ if (!$this->comments->contains($comment)) {
         return $this;
     }
 
+    /**
+     * @return RecipeRating[]|ArrayCollection
+     */
+    public function getRecipeRatings() : Collection
+    {
+        return $this->ratings;
+    }
+
+    public function addRecipeRating(RecipeRating $recipeRating) : Recipe
+    {
+        $this->ratings->add($recipeRating);
+        $recipeRating->setRecipe($this);
+        return $this;
+    }
+
+    public function removeRecipeRating(RecipeRating $recipeRating) : Recipe
+    {
+        $this->ratings->remove($recipeRating);
+        $recipeRating->setRecipe(null);
+        return $this;
+    }
+
+    public function getRatingGlobal()
+    {
+        if (count($this->ratings) == 0) {
+            return null;
+        }
+
+        $sum = 0;
+        foreach ($this->ratings as $rating) {
+            if ($rating->isEnabled()) {
+                $sum += $rating->getRating();
+            }
+        }
+
+        return floatval($sum)/floatval(count($this->ratings));
+    }
 
 
 }

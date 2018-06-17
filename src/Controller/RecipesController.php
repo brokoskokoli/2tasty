@@ -17,6 +17,7 @@ use App\Service\DatabaseTranslationLoaderService;
 use App\Service\IngredientService;
 use App\Service\PDFExportService;
 use App\Service\RecipeListService;
+use App\Service\RecipeRatingService;
 use App\Service\RecipeService;
 use App\Service\RecipeTagService;
 use App\Utils\Slugger;
@@ -269,12 +270,19 @@ class RecipesController extends AbstractController
      * @Route("/recipe/{id}", requirements={"id": "\d+"}, name="recipes_show_id")
      * @Route("/recipe/{slug}", name="recipes_show")
      * @Method("GET")
+     * @param RecipeRatingService $recipeRatingService
+     * @param IngredientService $ingredientService
+     * @param Recipe $recipe
+     * @return Response
      */
-    public function show(IngredientService $ingredientService, Recipe $recipe): Response
+    public function show(RecipeRatingService $recipeRatingService, IngredientService $ingredientService, Recipe $recipe): Response
     {
+        $ratingGlobal = $recipeRatingService->getRatingGlobal($recipe);
+
         return $this->render('front/recipes/show.html.twig', [
             'recipe' => $recipe,
             'user' => $this->getUser(),
+            'ratingGlobal' => $ratingGlobal,
         ]);
     }
 
