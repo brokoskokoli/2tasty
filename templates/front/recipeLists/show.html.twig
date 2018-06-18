@@ -6,6 +6,13 @@
 
     <h1>{{ recipeList.name }}</h1>
 
+    {% if recipeList.archived %}
+    <div class="alert alert-info">
+        <strong>{{ 'messages.recipelist_is_archived'|trans }}</strong>
+    </div>
+    {% endif %}
+
+
     {% if recipeList.author != null %}
     <span class="metadata"><i class="fa fa-user"></i> {{ recipeList.author.fullName }}</span>
     {% endif %}

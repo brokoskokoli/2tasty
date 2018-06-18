@@ -59,11 +59,18 @@ class RecipeList implements \JsonSerializable
     private $author;
 
     /**
+     * @var boolean
+     * @ORM\Column(type="boolean", options={"default" = 0})
+     */
+    private $archived;
+
+    /**
      * @inheritDoc
      */
     public function __construct()
     {
         $this->recipes = new ArrayCollection();
+        $this->archived = false;
     }
 
 
@@ -188,6 +195,24 @@ class RecipeList implements \JsonSerializable
     public function getSummary(): ?string
     {
         return $this->summary;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isArchived(): bool
+    {
+        return $this->archived;
+    }
+
+    /**
+     * @param bool $archived
+     * @return RecipeList
+     */
+    public function setArchived(bool $archived): RecipeList
+    {
+        $this->archived = $archived;
+        return $this;
     }
 
 

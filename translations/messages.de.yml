@@ -61,6 +61,7 @@ label:
   rate: Bewerten
   rating_user: Meine Bewertung
   rating_global: Gesamtbewertung
+  archived: Archiviert (wird nicht zur Auswahl angezeigt, ist aber einsehbar)
 
 action:
   back_to_list: Zurück zur Liste
@@ -182,6 +183,7 @@ messages:
   recipe_added_to_collection: Das Rezept wurde zur Sammlung hinzugefügt
   recipe_removed_from_collection: Das Rezept wurde aus der Sammlung entfernt
   email_to_register: Zur Registrierungsanfrage sende bitte eine Mail mit deinem gewünschten Benutzenamen an <a href="mailto:%mail%">den Support</a>
+  recipelist_is_archived: Diese Rezeptliste ist archiviert!
 
 page:
   forgot_password:

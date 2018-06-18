@@ -72,7 +72,7 @@ class RecipeListType extends AbstractType
                 EntityType::class,
                 [
                     'label' => "label.recipes",
-                    'required' => true,
+                    'required' => false,
                     'class' => Recipe::class,
                     'choice_label' => 'title',
                     'multiple' => true,
@@ -86,6 +86,14 @@ class RecipeListType extends AbstractType
                         $queryBuilder->setParameter('user', $user);
                         return $queryBuilder;
                     },
+                ]
+            )
+            ->add(
+                'archived',
+                CheckboxType::class,
+                [
+                    'label' => 'label.archived',
+                    'required' => false,
                 ]
             )
             ->add('submit',

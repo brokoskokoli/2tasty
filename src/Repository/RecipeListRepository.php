@@ -22,6 +22,7 @@ class RecipeListRepository extends ServiceEntityRepository
     {
         $queryBuilder = $this->createQueryBuilder('rl');
         $queryBuilder->andWhere('rl.author = :user or rl.author is null');
+        $queryBuilder->andWhere('rl.archived = 0');
 
         $queryBuilder->setParameter('user', $user);
 
