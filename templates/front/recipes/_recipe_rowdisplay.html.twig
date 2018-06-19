@@ -21,7 +21,7 @@
                 <span class="metadata">{{ recipe.ratingGlobal|rating(5, "fa-norm", true) }} ({{ recipe.ratingGlobal }})</span>
             {% endif %}
             {{ include('front/recipes/_recipe_tags.html.twig') }}
-            {% if app.user and not app.user.activeRecipeList.getRecipes.contains(recipe) %}
+            {% if app.user and app.user.activeRecipeList and not app.user.activeRecipeList.getRecipes.contains(recipe) %}
                 <a class=""
                    href="{{ path('recipelists_add_to_active', {'id': recipe.id}) }}">
                     {{ 'action.add_to_activ_recipelist'|trans }}

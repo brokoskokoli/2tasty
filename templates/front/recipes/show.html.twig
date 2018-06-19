@@ -82,7 +82,7 @@
         {% endif %}
     {% endif %}
 
-    {% if app.user and not app.user.activeRecipeList.getRecipes.contains(recipe) %}
+    {% if app.user and app.user.activeRecipeList and not app.user.activeRecipeList.getRecipes.contains(recipe) %}
         <div class="section">
             <a class="btn btn-lg btn-block btn-success"
                href="{{ path('recipelists_add_to_active', {'id': recipe.id}) }}">
