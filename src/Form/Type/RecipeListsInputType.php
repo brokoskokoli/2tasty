@@ -22,6 +22,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Defines the custom form field type used to manipulate recipeTags values across
@@ -34,10 +35,12 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class  RecipeListsInputType extends AbstractType
 {
     private $manager;
+    private $translator;
 
-    public function __construct(ObjectManager $manager)
+    public function __construct(ObjectManager $manager, TranslatorInterface $translator)
     {
         $this->manager = $manager;
+        $this->translator = $translator;
     }
 
     /**
@@ -51,7 +54,7 @@ class  RecipeListsInputType extends AbstractType
             // but here we're doing the transformation in two steps (Collection <-> array <-> string)
             // and reuse the existing CollectionToArrayTransformer.
             ->addModelTransformer(new CollectionToArrayTransformer(), true)
-            ->addModelTransformer(new ListArrayToStringTransformer($this->manager, $options['user'], $options['recipe']), true)
+            ->addModelTransformer(new ListArrayToStringTransformer($this->translator, $this->manager, $options['user'], $options['recipe']), true)
         ;
     }
 
@@ -60,7 +63,7 @@ class  RecipeListsInputType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $view->vars['recipeLists'] = $this->manager->getRepository(RecipeList::class)->getAllForUser($options['user']);
+        $view->vars['recipeLists'] = $this->manager->getRepository(RecipeList::class)->getAllForUser($options['user'], true);
     }
 
     /**

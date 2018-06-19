@@ -18,13 +18,16 @@ class RecipeListRepository extends ServiceEntityRepository
     /**
      * @return RecipeList[]|array
      */
-    public function getAllForUser(?User $user = null)
+    public function getAllForUser(?User $user = null, $onlyNotArchived = false)
     {
         $queryBuilder = $this->createQueryBuilder('rl');
         $queryBuilder->andWhere('rl.author = :user or rl.author is null');
-        $queryBuilder->andWhere('rl.archived = 0');
+        if ($onlyNotArchived) {
+            $queryBuilder->andWhere('rl.archived = 0');
+        }
 
         $queryBuilder->setParameter('user', $user);
+        $queryBuilder->orderBy('rl.archived', 'ASC');
 
         return $queryBuilder->getQuery()->getResult();
     }

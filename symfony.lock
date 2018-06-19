@@ -5,6 +5,9 @@
     "bmatzner/fontawesome-bundle": {
         "version": "4.7.0"
     },
+    "brokoskokoli/star-rating-bundle": {
+        "version": "v3.0.6"
+    },
     "clue/stream-filter": {
         "version": "v1.4.0"
     },

@@ -44,16 +44,16 @@ class RecipeListService
     /**
      * @return RecipeList[]|array
      */
-    public function getAllForUser(?User $user = null)
+    public function getAllForUser(?User $user = null, $onlyNotArchived = false)
     {
-        return $this->em->getRepository(RecipeList::class)->getAllForUser($user);
+        return $this->em->getRepository(RecipeList::class)->getAllForUser($user, $onlyNotArchived);
     }
 
     public function getAllNamesForUser(?User $user = null)
     {
         return array_map(function ($element) {
             return $element->getName();
-        }, $this->getAllForUser($user));
+        }, $this->getAllForUser($user, true));
     }
 
 

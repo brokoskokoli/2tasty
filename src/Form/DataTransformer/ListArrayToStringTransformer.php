@@ -20,6 +20,7 @@ use function Clue\StreamFilter\fun;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * This data transformer is used to translate the array of recipeTags into a comma separated format
@@ -35,12 +36,17 @@ class ListArrayToStringTransformer implements DataTransformerInterface
     private $manager;
     private $user;
     private $recipe;
+    private $translator;
 
-    public function __construct(ObjectManager $manager, ?User $user = null, ?Recipe $recipe = null)
+    private $archivedString = '';
+
+    public function __construct(TranslatorInterface $translator, ObjectManager $manager, ?User $user = null, ?Recipe $recipe = null)
     {
         $this->manager = $manager;
         $this->user = $user;
         $this->recipe = $recipe;
+        $this->translator = $translator;
+        $this->archivedString = ' ('.$this->translator->trans('label.archived_short').')';
 
     }
 
@@ -61,7 +67,7 @@ class ListArrayToStringTransformer implements DataTransformerInterface
     {
         /** @var RecipeList $recipeList */
         return array_map(function ($recipeList) {
-            return strval($recipeList);
+            return strval($recipeList) . ($recipeList->isArchived()?$this->archivedString:'');
         }, $recipeListsEntities);
     }
 
@@ -73,6 +79,8 @@ class ListArrayToStringTransformer implements DataTransformerInterface
         if ('' === $string || null === $string) {
             return [];
         }
+
+        $string = str_replace($this->archivedString,'', $string);
 
         $names = array_filter(array_unique(array_map('trim', explode(',', $string))));
 
@@ -89,7 +97,7 @@ class ListArrayToStringTransformer implements DataTransformerInterface
             }
 
             if ($found) {
-                break;
+                continue;
             }
 
             $list = new RecipeList();

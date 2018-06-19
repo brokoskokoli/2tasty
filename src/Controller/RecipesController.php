@@ -96,7 +96,7 @@ class RecipesController extends AbstractController
             'ingredientList' => $ingredientService->getAllNames(),
             'form' => $form->createView(),
             'recipeTags' => $recipeTagService->getAllNames(),
-            'recipeLists' => $recipeListService->getAllForUser($this->getUser()),
+            'recipeLists' => $recipeListService->getAllForUser($this->getUser(), true),
         ]);
     }
 

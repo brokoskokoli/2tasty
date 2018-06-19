@@ -1,0 +1,8 @@
+<h3>{{ 'title.recipeLists'|trans }}</h3>
+
+<ul class="quicklinks-sidebar">
+    <li><a href="{{ path('recipes_filter', {'recipe_filter[recipeTags]': 'ToCook', 'recipe_filter[private]': '1', 'recipe_filter[submit]': ''}) }}">{{ 'menu.recipes_to_cook'|trans }}</a></li>
+    {% for recipelist in recipelists %}
+        <li><a href="{{ path('recipelists_show', {'slug': recipelist.slug}) }}">{{ recipelist.name }}</a></li>
+    {% endfor %}
+</ul>

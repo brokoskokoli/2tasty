@@ -58,9 +58,9 @@ class RecipeListsController extends AbstractController
      * @param RecipeListRepository $recipes
      * @return Response
      */
-    public function listMyAction(RecipeListRepository $recipeListRepository): Response
+    public function listMyAction(RecipeListService $recipeListService): Response
     {
-        $authorRecipeLists = $recipeListRepository->findBy(['author' => $this->getUser()]);
+        $authorRecipeLists = $recipeListService->getAllForUser($this->getUser());
 
         return $this->render(
             'front/recipeLists/list.html.twig',
