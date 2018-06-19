@@ -59,6 +59,10 @@ class RecipeRatingService
     {
         $list = $this->em->getRepository(RecipeRating::class)->getRatingGlobal($recipe);
 
+        if (count($list) == 0) {
+            return null;
+        }
+
         $sum = 0;
         foreach ($list as $rating) {
             $sum += $rating->getRating();

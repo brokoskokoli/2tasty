@@ -91,6 +91,9 @@ action:
   send: Absenden!
   share_mail: Per Mail teilen!
   rate: Bewerten!
+  make_activ_recipelist: Aktivieren
+  remove_activ_recipelist: Deaktivieren
+  add_to_activ_recipelist: In aktive Rezeptliste
 
 dialogs:
   delete_recipe:
@@ -185,6 +188,10 @@ messages:
   recipe_removed_from_collection: Das Rezept wurde aus der Sammlung entfernt
   email_to_register: Zur Registrierungsanfrage sende bitte eine Mail mit deinem gewünschten Benutzenamen an <a href="mailto:%mail%">den Support</a>
   recipelist_is_archived: Diese Rezeptliste ist archiviert!
+  recipe_deleted: Rezept gelöscht!
+  recipelist_make_activ: Rezeptliste aktiviert
+  recipelist_remove_activ: Rezeptliste deaktiviert
+  recipe_added: Rezept hinzugefügt
 
 page:
   forgot_password:

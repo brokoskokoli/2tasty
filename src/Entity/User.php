@@ -173,6 +173,14 @@ class User implements UserInterface, \Serializable
      */
     private $collected_recipes;
 
+    /**
+     * @var RecipeList
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\RecipeList")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $activeRecipeList;
+
     public function __construct()
     {
         $this->setUpdatedAt(new \DateTime());
@@ -519,5 +527,24 @@ class User implements UserInterface, \Serializable
         $recipe->addCollector($this);
         return $this;
     }
+
+    /**
+     * @return RecipeList
+     */
+    public function getActiveRecipeList(): ?RecipeList
+    {
+        return $this->activeRecipeList;
+    }
+
+    /**
+     * @param RecipeList $recipeList
+     * @return User
+     */
+    public function setActiveRecipeList(?RecipeList $recipeList): User
+    {
+        $this->activeRecipeList = $recipeList;
+        return $this;
+    }
+
 
 }

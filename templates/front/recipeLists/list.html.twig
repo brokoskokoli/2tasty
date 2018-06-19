@@ -18,6 +18,16 @@
                 <td>{{ recipeList.name }}{% if recipeList.archived %}<span class="label label-info">{{ 'label.archived_short'|trans }}</span>{% endif %}</td>
                 <td class="text-right">
                     <div class="item-actions">
+                        {% if app.user.activeRecipeList == recipeList %}
+                            <a href="{{ path('recipelists_remove_active', {'id': recipeList.id}) }}" class="btn btn-sm btn-danger">
+                                {{ 'action.remove_activ_recipelist'|trans }}
+                            </a>
+                        {% elseif not recipeList.archived %}
+                            <a href="{{ path('recipelists_make_active', {id: recipeList.id}) }}" class="btn btn-sm btn-default">
+                                {{ 'action.make_activ_recipelist'|trans }}
+                            </a>
+                        {% endif %}
+
                         <a href="{{ path('recipelists_show_id', {id: recipeList.id}) }}" class="btn btn-sm btn-default">
                             <i class="fa fa-eye" aria-hidden="true"></i> {{ 'action.show'|trans }}
                         </a>

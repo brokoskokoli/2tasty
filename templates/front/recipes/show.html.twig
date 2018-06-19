@@ -82,6 +82,15 @@
         {% endif %}
     {% endif %}
 
+    {% if app.user and not app.user.activeRecipeList.getRecipes.contains(recipe) %}
+        <div class="section">
+            <a class="btn btn-lg btn-block btn-success"
+               href="{{ path('recipelists_add_to_active', {'id': recipe.id}) }}">
+                {{ 'action.add_to_activ_recipelist'|trans }}
+            </a>
+        </div>
+    {% endif %}
+
     <div class="section">
         <a class="btn btn-lg btn-block btn-success"
            href="{{ path('recipes_recipe_download_pdf', {slug: recipe.slug}) }}">

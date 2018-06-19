@@ -7,6 +7,7 @@ use App\Entity\ImageFile;
 use App\Entity\Recipe;
 use App\Entity\RecipeList;
 use App\Entity\RecipeTag;
+use App\Entity\User;
 use App\Events;
 use App\Form\CommentType;
 use App\Form\RecipeFilterType;
@@ -77,9 +78,10 @@ class RecipeListsController extends AbstractController
      * @Route("/new", name="recipelists_new")
      * @Method({"GET", "POST"})
      */
-    public function editAction(Request $request,
-                               RecipeListService $recipeListService,
-                               RecipeList $recipeList = null
+    public function editAction(
+        Request $request,
+        RecipeListService $recipeListService,
+        RecipeList $recipeList = null
     ): Response {
         if ($recipeList === null) {
             $recipeList = new RecipeList();
@@ -97,10 +99,12 @@ class RecipeListsController extends AbstractController
             return $this->redirectToRoute('recipelists_edit', ['id' => $recipeList->getId()]);
         }
 
-        return $this->render('front/recipeLists/edit.html.twig', [
+        return $this->render(
+            'front/recipeLists/edit.html.twig', [
             'recipeList' => $recipeList,
             'form' => $form->createView(),
-        ]);
+        ]
+        );
     }
 
     /**
@@ -122,25 +126,85 @@ class RecipeListsController extends AbstractController
         $ok = $recipeService->deleteRecipe($recipe);
 
         if ($ok) {
-            $this->addFlash('success', 'recipe.deleted_successfully');
+            $this->addFlash('success', 'messages.recipe_deleted');
         }
 
         return $this->redirectToRoute('recipes_list_my');
     }
 
 
-
     /**
-     * Finds and displays a RecipeList entity.
-     *
      * @Route("/display/{id}", requirements={"id": "\d+"}, name="recipelists_show_id")
      * @Route("/display/{slug}", name="recipelists_show")
      * @Method("GET")
      */
     public function show(RecipeList $recipeList): Response
     {
-        return $this->render('front/recipeLists/show.html.twig', [
+        return $this->render(
+            'front/recipeLists/show.html.twig', [
             'recipeList' => $recipeList,
-        ]);
+        ]
+        );
     }
+
+
+    /**
+     * Set a recipelist as active to add recipes
+     *
+     * @Route("/make_active/{id}", requirements={"id": "\d+"}, name="recipelists_make_active")
+     * @Method("GET")
+     */
+    public function setActiveAction(Request $request, RecipeListService $recipeListService, RecipeList $recipeList): Response
+    {
+        if (!$this->getUser() instanceof User) {
+            return $this->redirectToRoute('recipes_list_my');
+        }
+
+        if ($recipeListService->makeActive($recipeList, $this->getUser())){
+            $this->addFlash('success', 'messages.recipelist_make_activ');
+        }
+        return $this->redirect($request->headers->get('referer'));
+    }
+
+    /**
+     * Set a recipelist as active to add recipes
+     *
+     * @Route("/remove_active/{id}", requirements={"id": "\d+"}, name="recipelists_remove_active")
+     * @Method("GET")
+     */
+    public function unsetActiveAction(Request $request, RecipeListService $recipeListService, RecipeList $recipeList): Response
+    {
+        if (!$this->getUser() instanceof User) {
+            return $this->redirectToRoute('recipes_list_my');
+        }
+
+        if ($recipeListService->removeActive($this->getUser())) {
+            $this->addFlash('success', 'messages.recipelist_remove_activ');
+        }
+        return $this->redirect($request->headers->get('referer'));
+    }
+
+    /**
+     *
+     * @Route("/add_recipe_to_active/{id}", requirements={"id": "\d+"}, name="recipelists_add_to_active")
+     * @Method("GET")
+     */
+    public function addRecipeToActiveRecipeList(Request $request, RecipeListService $recipeListService, Recipe $recipe)
+    {
+        $user = $this->getUser();
+        if (!$user instanceof User) {
+            return $this->redirectToRoute('recipes_list_my');
+        }
+
+        if (!$user->getActiveRecipeList()) {
+            return $this->redirectToRoute('recipes_list_my');
+        }
+
+
+        if ($recipeListService->addRecipeToList($user->getActiveRecipeList(), $recipe)) {
+            $this->addFlash('success', 'messages.recipe_added');
+        }
+        return $this->redirect($request->headers->get('referer'));
+    }
+
 }

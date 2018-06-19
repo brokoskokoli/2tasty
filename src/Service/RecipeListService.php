@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Entity\Ingredient;
+use App\Entity\Recipe;
 use App\Entity\RecipeList;
 use App\Entity\RecipeTag;
 use App\Entity\User;
@@ -68,6 +69,38 @@ class RecipeListService
 
         $this->em->persist($recipeList);
         $this->em->flush();
+    }
+
+    public function makeActive(RecipeList $recipeList, User $user)
+    {
+        if (!$recipeList->isArchived()) {
+            $user->setActiveRecipeList($recipeList);
+            $this->em->persist($user);
+            $this->em->flush();
+            return true;
+        }
+
+        return false;
+    }
+
+    public function addRecipeToList(RecipeList $recipeList, Recipe $recipe)
+    {
+        if (!$recipeList->isArchived() && !$recipeList->getRecipes()->contains($recipe)) {
+            $recipeList->addRecipe($recipe);
+            $this->em->persist($recipeList);
+            $this->em->flush();
+            return true;
+        }
+
+        return false;
+    }
+
+    public function removeActive(User $user)
+    {
+        $user->setActiveRecipeList(null);
+        $this->em->persist($user);
+        $this->em->flush();
+        return true;
     }
 
 }
