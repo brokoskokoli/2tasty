@@ -64,10 +64,14 @@ class RecipeRatingService
         }
 
         $sum = 0;
+        $count = 0;
         foreach ($list as $rating) {
-            $sum += $rating->getRating();
+            if ($rating->isEnabled()) {
+                $sum += $rating->getRating();
+                $count++;
+            }
         }
 
-        return floatval($sum)/floatval(count($list));
+        return floatval($sum)/floatval($count);
     }
 }

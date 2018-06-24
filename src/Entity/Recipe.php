@@ -720,13 +720,15 @@ if (!$this->comments->contains($comment)) {
         }
 
         $sum = 0;
+        $count = 0;
         foreach ($this->ratings as $rating) {
             if ($rating->isEnabled()) {
                 $sum += $rating->getRating();
+                $count++;
             }
         }
 
-        return floatval($sum)/floatval(count($this->ratings));
+        return floatval($sum)/floatval($count);
     }
 
 
