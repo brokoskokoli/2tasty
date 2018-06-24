@@ -8,3 +8,6 @@ easy_admin:
         - App\Entity\Comment
         - App\Entity\RefUnit
         - App\Entity\IngredientDisplayPreferenceOverride
+        - App\Entity\RecipeTag
+        - App\Entity\RecipeList
+        - App\Entity\Comment
