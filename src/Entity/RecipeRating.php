@@ -72,7 +72,7 @@ class RecipeRating
 
     public function __toString(): string
     {
-        return $this->id;
+        return intval($this->rating) . '-' . $this->author->getFullName() . '-' . ($this->enabled? 'active':'disabled');
     }
 
 

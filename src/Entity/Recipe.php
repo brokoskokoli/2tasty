@@ -694,19 +694,19 @@ if (!$this->comments->contains($comment)) {
     /**
      * @return RecipeRating[]|ArrayCollection
      */
-    public function getRecipeRatings() : Collection
+    public function getRatings() : Collection
     {
         return $this->ratings;
     }
 
-    public function addRecipeRating(RecipeRating $recipeRating) : Recipe
+    public function addRating(RecipeRating $recipeRating) : Recipe
     {
         $this->ratings->add($recipeRating);
         $recipeRating->setRecipe($this);
         return $this;
     }
 
-    public function removeRecipeRating(RecipeRating $recipeRating) : Recipe
+    public function removeRating(RecipeRating $recipeRating) : Recipe
     {
         $this->ratings->remove($recipeRating);
         $recipeRating->setRecipe(null);
