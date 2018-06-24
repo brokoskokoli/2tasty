@@ -46,19 +46,24 @@ $.fn.stXarrayCollection = function() {
             '</div>');
 
         $('#'+addButtonId).click(function (e) {
-            e.preventDefault();
-            var content = widget.attr('data-prototype');
-            var newIndex = rowCounter++;
-            content = content.replace(/__name__/g, newIndex);
-            var $content = $(content);
-            widget.append($content);
-            widget.addDeleteButton($content);
-            $content.find('.stXautoComplete').each(function (index, obj) {
-                $(obj).stXautoComplete();
-            });
-            return false;
+            widget.doAddRow(e);
         });
     };
+
+    this.doAddRow = function (e) {
+
+        e.preventDefault();
+        var content = widget.attr('data-prototype');
+        var newIndex = rowCounter++;
+        content = content.replace(/__name__/g, newIndex);
+        var $content = $(content);
+        widget.append($content);
+        widget.addDeleteButton($content);
+        $content.find('.stXautoComplete').each(function (index, obj) {
+            $(obj).stXautoComplete();
+        });
+        return false;
+    }
 
     this.addDeleteButtons();
     this.addAddButton();
@@ -70,3 +75,11 @@ $('div.symfonyArrayCollection').each(function (index, obj) {
     $(obj).stXarrayCollection();
 })
 
+jQuery(document).bind("keydown", function(e){
+    if(e.ctrlKey && e.keyCode == 32){
+        $active = $(document.activeElement);
+        $widget = $active.parents('.symfonyArrayCollection');
+        $widget.parent().find('.addButton button').trigger('click');
+        return false;
+    }
+});

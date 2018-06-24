@@ -86,6 +86,12 @@ Images
 
 }
 
+.addButton button.btn:active, .addButton button.btn:hover, .addButton button.btn:focus,
+.deleteButton button.btn:active, .deleteButton button.btn:hover, .deleteButton button.btn:focus{
+  background-color: grey;
+  color: white;
+}
+
 label.required:after {
   content: "  *";
 }
