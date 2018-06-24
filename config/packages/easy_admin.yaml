@@ -5,7 +5,6 @@ easy_admin:
         - App\Entity\User
         - App\Entity\Recipe
         - App\Entity\ImageFile
-        - App\Entity\Comment
         - App\Entity\RefUnit
         - App\Entity\IngredientDisplayPreferenceOverride
         - App\Entity\RecipeTag
