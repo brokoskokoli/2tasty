@@ -94,6 +94,7 @@ action:
   make_activ_recipelist: Aktivieren
   remove_activ_recipelist: Deaktivieren
   add_to_activ_recipelist: In aktive Rezeptliste
+  save_active: Speichere als aktive Rezeptliste
 
 dialogs:
   delete_recipe:
@@ -139,6 +140,7 @@ help:
   app_description: |
     <strong>Version 0.9</strong> <br>
     - Rezeptlisten<br>
+    - Warenkorbfunktion<br>
     <br>
     <strong>Version 0.8</strong> <br>
     - Import von Links: Chefkoch<br>

@@ -7,14 +7,14 @@
     <h1>{{ recipeList.name }}</h1>
 
     {% if recipeList.archived %}
-    <div class="alert alert-info">
-        <strong>{{ 'messages.recipelist_is_archived'|trans }}</strong>
-    </div>
+        <div class="alert alert-info">
+            <strong>{{ 'messages.recipelist_is_archived'|trans }}</strong>
+        </div>
     {% endif %}
 
 
     {% if recipeList.author != null %}
-    <span class="metadata"><i class="fa fa-user"></i> {{ recipeList.author.fullName }}</span>
+        <span class="metadata"><i class="fa fa-user"></i> {{ recipeList.author.fullName }}</span>
     {% endif %}
 
     <br>
@@ -38,6 +38,20 @@
                 <i class="fa fa-edit" aria-hidden="true"></i> {{ 'action.edit_recipe_list'|trans }}
             </a>
         </div>
+
+        {% if app.user.activeRecipeList == recipeList %}
+            <div class="section">
+                <a href="{{ path('recipelists_remove_active', {'id': recipeList.id}) }}" class="btn btn-lg btn-block btn-danger">
+                    {{ 'action.remove_activ_recipelist'|trans }}
+                </a>
+            </div>
+        {% elseif not recipeList.archived %}
+            <div class="section">
+                <a href="{{ path('recipelists_make_active', {id: recipeList.id}) }}" class="btn btn-lg btn-block btn-default">
+                    {{ 'action.make_activ_recipelist'|trans }}
+                </a>
+            </div>
+        {% endif %}
 
         {#
         <div class="section">

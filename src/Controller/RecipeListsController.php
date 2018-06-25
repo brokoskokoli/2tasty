@@ -95,6 +95,11 @@ class RecipeListsController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $recipeListService->saveRecipeList($recipeList, $this->getUser());
             $this->addFlash('success', 'messages.recipe_list_modified');
+            if ($form->get('submit_active')->isClicked()) {
+                if ($recipeListService->makeActive($recipeList, $this->getUser())){
+                    $this->addFlash('success', 'messages.recipelist_make_activ');
+                }
+            }
 
             return $this->redirectToRoute('recipelists_edit', ['id' => $recipeList->getId()]);
         }

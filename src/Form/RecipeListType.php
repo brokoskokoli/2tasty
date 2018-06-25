@@ -102,6 +102,12 @@ class RecipeListType extends AbstractType
                     'label' => 'action.save'
                 ]
             )
+            ->add('submit_active',
+                SubmitType::class,
+                [
+                    'label' => 'action.save_active'
+                ]
+            )
         ;
     }
 
