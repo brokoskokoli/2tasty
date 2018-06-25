@@ -12,6 +12,8 @@ use App\Form\Type\RecipeLinkType;
 use App\Form\Type\RecipeListsInputType;
 use App\Form\Type\RecipeStepType;
 use App\Form\Type\RecipeTagsInputType;
+use Brokoskokoli\StarRatingBundle\Form\StarRatingType;
+use Brokoskokoli\StarRatingBundle\StarRatingBundle;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -34,6 +36,12 @@ class RecipeFilterType extends AbstractType
             ->add('text', TextType::class,
                 [
                     'label' => 'label.searchText',
+                    'required' => false,
+                ]
+            )
+            ->add('recipeRating', StarRatingType::class,
+                [
+                    'label' => 'label.rating_minimum',
                     'required' => false,
                 ]
             )

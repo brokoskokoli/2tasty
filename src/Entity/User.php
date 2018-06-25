@@ -181,6 +181,21 @@ class User implements UserInterface, \Serializable
      */
     private $activeRecipeList;
 
+    /**
+     * @var RecipeCooking[]|ArrayCollection
+     *
+     * @ORM\OneToMany(
+     *      targetEntity="App\Entity\RecipeCooking",
+     *      mappedBy="author",
+     *      orphanRemoval=true,
+     *      cascade={"persist"}
+     * )
+     * @ORM\OrderBy({"cookedAt": "DESC"})
+     * @Assert\Valid()
+     *
+     */
+    private $recipeCookings;
+
     public function __construct()
     {
         $this->setUpdatedAt(new \DateTime());
@@ -546,5 +561,27 @@ class User implements UserInterface, \Serializable
         return $this;
     }
 
+    public function getRecipeCookings(): Collection
+    {
+        return $this->recipeCookings;
+    }
+
+    public function addRecipeCooking(RecipeCooking $recipeCooking): self
+    {
+        $recipeCooking->setRecipe($this);
+        if (!$this->recipeCookings->contains($recipeCooking)) {
+            $this->recipeCookings->add($recipeCooking);
+        }
+
+        return $this;
+    }
+
+    public function removeRecipeCooking(RecipeCooking $recipeCooking): self
+    {
+        $recipeCooking->setRecipe(null);
+        $this->recipeCookings->removeElement($recipeCooking);
+
+        return $this;
+    }
 
 }

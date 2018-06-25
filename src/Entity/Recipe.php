@@ -144,6 +144,21 @@ class Recipe
     private $comments;
 
     /**
+     * @var RecipeCooking[]|ArrayCollection
+     *
+     * @ORM\OneToMany(
+     *      targetEntity="App\Entity\RecipeCooking",
+     *      mappedBy="recipe",
+     *      orphanRemoval=true,
+     *      cascade={"persist"}
+     * )
+     * @ORM\OrderBy({"cookedAt": "DESC"})
+     * @Assert\Valid()
+     *
+     */
+    private $recipeCookings;
+
+    /**
      * @var RecipeRating[]|ArrayCollection
      *
      * @ORM\OneToMany(
@@ -313,7 +328,7 @@ class Recipe
     public function addComment(Comment $comment): void
     {
         $comment->setRecipe($this);
-if (!$this->comments->contains($comment)) {
+        if (!$this->comments->contains($comment)) {
             $this->comments->add($comment);
         }
     }
@@ -322,6 +337,29 @@ if (!$this->comments->contains($comment)) {
     {
         $comment->setRecipe(null);
         $this->comments->removeElement($comment);
+    }
+
+    public function getRecipeCookings(): Collection
+    {
+        return $this->recipeCookings;
+    }
+
+    public function addRecipeCooking(RecipeCooking $recipeCooking): self
+    {
+        $recipeCooking->setRecipe($this);
+        if (!$this->recipeCookings->contains($recipeCooking)) {
+            $this->recipeCookings->add($recipeCooking);
+        }
+
+        return $this;
+    }
+
+    public function removeRecipeCooking(RecipeCooking $recipeCooking): self
+    {
+        $recipeCooking->setRecipe(null);
+        $this->recipeCookings->removeElement($recipeCooking);
+
+        return $this;
     }
 
     public function getSummary(): ?string

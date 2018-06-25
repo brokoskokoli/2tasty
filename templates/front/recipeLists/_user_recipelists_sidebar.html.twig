@@ -3,6 +3,8 @@
 <ul class="quicklinks-sidebar">
     <li><a href="{{ path('recipes_filter', {'recipe_filter[recipeTags]': 'ToCook', 'recipe_filter[private]': '1', 'recipe_filter[submit]': ''}) }}">{{ 'menu.recipes_to_cook'|trans }}</a></li>
     {% for recipelist in recipelists %}
-        <li><a href="{{ path('recipelists_show', {'slug': recipelist.slug}) }}">{{ recipelist.name }}</a></li>
+        {% set active = (app.user.activeRecipeList.id == recipelist.id) %}
+        <li><a href="{{ path('recipelists_show', {'slug': recipelist.slug}) }}">{{ recipelist.name }}{% if active == true %} <span class="label  label-success">{{ 'label.active'|trans }} </span> {% endif %} </a></li>
+
     {% endfor %}
 </ul>

@@ -58,11 +58,13 @@ label:
   personal_message: Persönliche Nachricht
   searchText: Suchtext
   rating: Bewertung
+  rating_minimum: Mindestbewertung
   rate: Bewerten
   rating_user: Meine Bewertung
   rating_global: Gesamtbewertung
   archived: Archiviert (wird nicht zur Auswahl angezeigt, ist aber einsehbar)
   archived_short: Archiviert
+  active: aktiv
 
 action:
   back_to_list: Zurück zur Liste

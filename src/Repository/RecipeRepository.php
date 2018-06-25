@@ -195,13 +195,31 @@ class RecipeRepository extends ServiceEntityRepository
 
     }
 
-    public function filterRecipes($page, $filter = [], ?User $user = null)
+    protected function applyRatingFilter(QueryBuilder $queryBuilder, $filter)
     {
-        $queryBuilder = $this->createQueryBuilder('r');
+        if (!($filter['recipeRating'] ?? null)) {
+            return;
+        }
+        $queryBuilder->leftJoin('r.ratings', 'rr');
+        $queryBuilder->having('sum(rr.rating) / count(rr.id)>= '.$filter['recipeRating']);
+        $queryBuilder->addGroupBy('r.id');
+    }
+
+    private function applyRecipeFilters(QueryBuilder $queryBuilder, $filter)
+    {
         QueryHelper::andWhereFromFilter($queryBuilder, $filter, 'private', 'r.author');
         $this->applyRecipeTagsFilter($queryBuilder, $filter);
         $this->applyRecipeListsFilter($queryBuilder, $filter);
         $this->applySearchTermFilter($queryBuilder, $filter);
+        $this->applyRatingFilter($queryBuilder, $filter);
+    }
+
+    public function filterRecipes($page, $filter = [], ?User $user = null)
+    {
+        $queryBuilder = $this->createQueryBuilder('r');
+        $this->applyRecipeFilters($queryBuilder, $filter);
+
+        //dump($queryBuilder->getQuery());die;
 
         return $this->createPaginator($queryBuilder->getQuery(), $page);
     }
@@ -209,10 +227,7 @@ class RecipeRepository extends ServiceEntityRepository
     public function getAllForFilter($filter = [], ?User $user = null)
     {
         $queryBuilder = $this->createQueryBuilder('r');
-        QueryHelper::andWhereFromFilter($queryBuilder, $filter, 'private', 'r.author');
-        $this->applyRecipeTagsFilter($queryBuilder, $filter);
-        $this->applyRecipeListsFilter($queryBuilder, $filter);
-        $this->applySearchTermFilter($queryBuilder, $filter);
+        $this->applyRecipeFilters($queryBuilder, $filter);
 
         return $queryBuilder->getQuery()->getResult();
     }
