@@ -78,7 +78,7 @@ class RecipeRepository extends ServiceEntityRepository
     /**
      * @return Recipe[]
      */
-    public function findBySearchQuery(string $rawQuery, int $limit = Recipe::NUM_ITEMS): array
+    public function findBySearchQuery(string $rawQuery, int $limit = Recipe::NUM_ITEMS, ?User $user = null): array
     {
         $query = $this->sanitizeSearchQuery($rawQuery);
         $searchTerms = $this->extractSearchTerms($query);
@@ -98,8 +98,14 @@ class RecipeRepository extends ServiceEntityRepository
         }
 
         $queryBuilder->andWhere($fields)
-            ->setParameter('t_'.$key, '%'.$term.'%')
-            ->andWhere('p.private = 0');
+            ->setParameter('t_'.$key, '%'.$term.'%');
+        $owner = $queryBuilder->expr()->orX();
+        $owner->add('p.private = 0');
+        if ($user) {
+            $owner->add('p.private = 1 and p.author = :user');
+            $queryBuilder->setParameter(':user', $user);
+        }
+        $queryBuilder->andWhere($owner);
 
         return $queryBuilder
             ->orderBy('p.createdAt', 'DESC')

@@ -51,6 +51,86 @@ span.label {
   top: -1px;
 }
 
+div.headercontainer {
+  display: inline-block;
+}
+
+form.quicksearch {
+  margin-top: 6px;
+}
+
+#quicksearchresult {
+  position: absolute;
+  background-color: $navbar-default-bg;
+  padding: 1em;
+  border-bottom: 2px solid $input-border;
+  border-left: 2px solid $input-border;
+  border-right: 2px solid $input-border;
+  font-size: 80%;
+  width: 200%;
+  display: none;
+}
+
+.recipe_list_quicksearch {
+  font-size: 90%;
+
+  img.smallimage {
+    height: 110px;
+  }
+
+  span.metadata, span.recipe-recipeTags {
+    display: inline-block;
+    margin-right: 13px;
+  }
+
+  p {
+    font-size: 15px;
+    margin-top: 11px;
+    margin-bottom: 5px;
+  }
+  h1, h2, h3, h4 {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+}
+
+
+/**
+LOADER
+ */
+.loader-big {
+  border: 16px solid #f3f3f3; /* Light grey */
+  border-top: 16px solid #3498db; /* Blue */
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  animation: spin 2s linear infinite;
+}
+
+.loader-medium {
+  border: 8px solid #f3f3f3; /* Light grey */
+  border-top: 8px solid #3498db; /* Blue */
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 2s linear infinite;
+}
+
+.loader-small {
+  border: 3px solid #f3f3f3; /* Light grey */
+  border-top: 3px solid #3498db; /* Blue */
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+
 /**
 Autocomplete
  */
@@ -69,6 +149,7 @@ Autocomplete
   cursor: pointer;
   background-color: #fff;
 }
+
 
 /**
 Images
@@ -114,4 +195,12 @@ div.content-inline-block {
 
 div.content-inline-block>div {
   display: inline-block;
+}
+
+.quicksearchLoader {
+  display: inline-block;
+  position: absolute;
+  top: 30%;
+  right: 7%;
+  visibility: hidden;
 }

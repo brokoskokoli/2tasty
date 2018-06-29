@@ -8,7 +8,7 @@ exports.config = {
     files: {
         javascripts: {
             joinTo: {
-                'js/vendor.js': /^node_modules/,
+                'js/vendor.js': /^(node_modules|assets\/js\/stX)/,
                 'js/app.js': /^assets\/js/,
             }
         },
@@ -55,7 +55,7 @@ exports.config = {
             $: 'jquery',
             jQuery: 'jquery',
             bootstrap: 'bootstrap',
-            Bloodhound: 'bloodhound-js'
+            Bloodhound: 'bloodhound-js',
         }
     }
 };

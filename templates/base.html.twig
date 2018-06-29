@@ -5,128 +5,150 @@
 #}
 <!DOCTYPE html>
 <html lang="{{ app.request.locale }}">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1"/>
-        <title>{% block title %}MyFood{% endblock %}</title>
-        <link rel="alternate" type="application/rss+xml" title="{{ 'action.rss'|trans }}" href="{{ path('blog_rss') }}">
-        <link rel="stylesheet" type="text/css" href="{{ asset('bundles/bmatznerfontawesome/css/font-awesome.min.css') }}" />
-        {% block stylesheets %}
-            <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-            <link rel="stylesheet" href="{{ asset('css/vendor.css') }}">
-            <link rel="stylesheet" type="text/css" href="{{ asset('bundles/starrating/css/rating.css') }}" />
-        {% endblock %}
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>{% block title %}MyFood{% endblock %}</title>
+    <link rel="alternate" type="application/rss+xml" title="{{ 'action.rss'|trans }}" href="{{ path('blog_rss') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/bmatznerfontawesome/css/font-awesome.min.css') }}"/>
+    {% block stylesheets %}
+        <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/vendor.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ asset('bundles/starrating/css/rating.css') }}"/>
+    {% endblock %}
 
-        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.png') }}" />
-    </head>
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.png') }}"/>
+</head>
 
-    <body id="{% block body_id %}{% endblock %}">
+<body id="{% block body_id %}{% endblock %}">
 
-        {% block header %}
-            <header>
-                <div class="navbar navbar-default navbar-static-top" role="navigation">
-                    <div class="container">
-                        <div class="navbar-header col-md-3 col-lg-2">
-                            <a class="navbar-brand" href="{{ path('recipes_news') }}">
-                                <img src="{{ asset('logo_text.png') }}">
-                            </a>
+{% block header %}
+    <header>
+        <div class="navbar navbar-default navbar-static-top" role="navigation">
+            <div class="container">
+                <div class="navbar-header col-md-6 col-lg-4">
+                    <a class="navbar-brand" href="{{ path('recipes_news') }}">
+                        <img src="{{ asset('logo_text.png') }}">
+                    </a>
+                    {% if app.user %}
+                    <div class="headercontainer">
+                        <form action="{{ path('recipes_search') }}" method="get" class="quicksearch">
+                            <input name="q"
+                                   class="form-control stXquickSearch"
+                                   placeholder="{{ 'placeholder.livesearch'|trans }}"
+                                   data-link="{{ path('recipes_quick_search') }}"
+                                   data-parameter="q"
+                                   data-result="quicksearchresult"
+                                   autocomplete="off"
+                                   data-no-results-message="{{ 'messages.no_recipes_found'|trans }}"
+                                   data-loader=".quicksearchLoader"
+                            >
+                            <div class="loader-small quicksearchLoader"></div>
+                        </form>
 
-                            <button type="button" class="navbar-toggle"
-                                    data-toggle="collapse"
-                                    data-target=".navbar-collapse">
-                                <span class="sr-only">{{ 'menu.toggle_nav'|trans }}</span>
-                                <span class="icon-bar"></span>
-                                <span class="icon-bar"></span>
-                                <span class="icon-bar"></span>
-                            </button>
-                        </div>
-                        <div class="navbar-collapse collapse">
-                            <ul class="nav navbar-nav navbar-right">
-
-                                {% block header_navigation_links %}
-                                {% endblock %}
-
-
-                                <li class="dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" id="locales">
-                                        <i class="fa fa-globe" aria-hidden="true"></i>
-                                        <span class="caret"></span>
-                                        <span class="sr-only">{{ 'menu.choose_language'|trans }}</span>
-                                    </a>
-                                    <ul class="dropdown-menu locales" role="menu" aria-labelledby="locales">
-                                        {% for locale in locales() %}
-                                            <li {% if app.request.locale == locale.code %}aria-checked="true" class="active"{% else %}aria-checked="false"{% endif %} role="menuitem"><a href="{{ path(app.request.get('_route', 'recipes_news'), app.request.get('_route_params', [])|merge({_locale: locale.code})) }}">{{ locale.name|capitalize }}</a></li>
-                                        {% endfor %}
-                                    </ul>
-                                </li>
-                            </ul>
-                        </div>
+                        <div id="quicksearchresult"></div>
                     </div>
+                    {% endif %}
+                    <button type="button" class="navbar-toggle"
+                            data-toggle="collapse"
+                            data-target=".navbar-collapse">
+                        <span class="sr-only">{{ 'menu.toggle_nav'|trans }}</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
                 </div>
-            </header>
-        {% endblock %}
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav navbar-right">
 
-        <div class="container body-container">
-            {% block body %}
-                <div class="row">
-                    <div id="main" class="col-sm-9">
-                        {{ include('common/default/_flash_messages.html.twig') }}
-
-                        {% block main %}{% endblock %}
-                    </div>
-
-                    <div id="sidebar" class="col-sm-3">
-                        {% block sidebar %}
-                            {{ render_esi(controller('Symfony\\Bundle\\FrameworkBundle\\Controller\\TemplateController::templateAction', {
-                                'template': 'common/about.html.twig',
-                                'sharedAge': 600,
-                                '_locale': app.request.locale
-                            })) }}
+                        {% block header_navigation_links %}
                         {% endblock %}
-                    </div>
+
+
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                               aria-expanded="false" id="locales">
+                                <i class="fa fa-globe" aria-hidden="true"></i>
+                                <span class="caret"></span>
+                                <span class="sr-only">{{ 'menu.choose_language'|trans }}</span>
+                            </a>
+                            <ul class="dropdown-menu locales" role="menu" aria-labelledby="locales">
+                                {% for locale in locales() %}
+                                    <li {% if app.request.locale == locale.code %}aria-checked="true" class="active"
+                                        {% else %}aria-checked="false"{% endif %} role="menuitem"><a
+                                                href="{{ path(app.request.get('_route', 'recipes_news'), app.request.get('_route_params', [])|merge({_locale: locale.code})) }}">{{ locale.name|capitalize }}</a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                    </ul>
                 </div>
-            {% endblock %}
+            </div>
         </div>
+    </header>
+{% endblock %}
 
-        {% block footer %}
-            <footer>
-                <div class="container">
-                    <div class="row">
-                        <div id="footer-copyright" class="col-md-6">
-                            <p>&copy; {{ 'now'|date('Y') }} - The MyFood Project</p>
-                            <p>{{ 'help.mit_license'|trans }}</p>
-                        </div>
-                        <div id="footer-resources" class="col-md-6">
+<div class="container body-container">
+    {% block body %}
+        <div class="row">
+            <div id="main" class="col-sm-9">
+                {{ include('common/default/_flash_messages.html.twig') }}
 
-                            {% block footer_content %}
-                            <p>
-                                {#
-                                <a href="https://twitter.com/symfony" title="Symfony Twitter">
-                                    <i class="fa fa-twitter" aria-hidden="true"></i>
-                                </a>
-                                <a href="https://www.facebook.com/SensioLabs" title="SensioLabs Facebook">
-                                    <i class="fa fa-facebook" aria-hidden="true"></i>
-                                </a>
-                                <a href="https://symfony.com/blog/" title="Symfony Blog">
-                                    <i class="fa fa-rss" aria-hidden="true"></i>
-                                </a>#}
-                            </p>
-                            {% endblock %}
-                        </div>
-                    </div>
+                {% block main %}{% endblock %}
+            </div>
+
+            <div id="sidebar" class="col-sm-3">
+                {% block sidebar %}
+                    {{ render_esi(controller('Symfony\\Bundle\\FrameworkBundle\\Controller\\TemplateController::templateAction', {
+                        'template': 'common/about.html.twig',
+                        'sharedAge': 600,
+                        '_locale': app.request.locale
+                    })) }}
+                {% endblock %}
+            </div>
+        </div>
+    {% endblock %}
+</div>
+
+{% block footer %}
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div id="footer-copyright" class="col-md-6">
+                    <p>&copy; {{ 'now'|date('Y') }} - The MyFood Project</p>
+                    <p>{{ 'help.mit_license'|trans }}</p>
                 </div>
-            </footer>
-        {% endblock %}
+                <div id="footer-resources" class="col-md-6">
 
-        {% block javascripts %}
-            <script src="{{ asset('js/vendor.js') }}"></script>
-            <script src="{{ asset('bundles/starrating/js/rating.js') }}"></script>
-            <script src="{{ asset('js/app.js') }}"></script>
-        {% endblock %}
+                    {% block footer_content %}
+                        <p>
+                            {#
+                            <a href="https://twitter.com/symfony" title="Symfony Twitter">
+                                <i class="fa fa-twitter" aria-hidden="true"></i>
+                            </a>
+                            <a href="https://www.facebook.com/SensioLabs" title="SensioLabs Facebook">
+                                <i class="fa fa-facebook" aria-hidden="true"></i>
+                            </a>
+                            <a href="https://symfony.com/blog/" title="Symfony Blog">
+                                <i class="fa fa-rss" aria-hidden="true"></i>
+                            </a>#}
+                        </p>
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+    </footer>
+{% endblock %}
 
-        {# it's not mandatory to set the timezone in localizeddate(). This is done to
-           avoid errors when the 'intl' PHP extension is not available and the application
-           is forced to use the limited "intl polyfill", which only supports UTC and GMT #}
-        <!-- Page rendered on {{ 'now'|localizeddate('long', 'long', null, 'UTC') }} -->
-    </body>
+{% block javascripts %}
+    <script src="{{ asset('js/vendor.js') }}"></script>
+    <script src="{{ asset('bundles/starrating/js/rating.js') }}"></script>
+    <script src="{{ asset('js/app.js') }}"></script>
+{% endblock %}
+
+{# it's not mandatory to set the timezone in localizeddate(). This is done to
+   avoid errors when the 'intl' PHP extension is not available and the application
+   is forced to use the limited "intl polyfill", which only supports UTC and GMT #}
+<!-- Page rendered on {{ 'now'|localizeddate('long', 'long', null, 'UTC') }} -->
+</body>
 </html>

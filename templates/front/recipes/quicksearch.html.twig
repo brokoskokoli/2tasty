@@ -1,0 +1,12 @@
+
+    <div id="results">
+        {% for result in results %}
+            {{ include('front/recipes/_recipe_quicksearch.html.twig', {recipe: result}) }}
+            <hr>
+        {% else %}
+            <h3>{{ 'messages.no_recipes_found'|trans }}</h3>
+        {% endfor %}
+    </div>
+    <div class="col-md-12 center-block">
+        <a href="{{ path('recipes_filter', {'recipe_filter[text]' : searchText, 'recipe_filter[filter]': ''}) }}" class="btn btn-primary center-block">{{ 'menu.filter_recipes'|trans }}</a>
+    </div>

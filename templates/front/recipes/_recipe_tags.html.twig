@@ -1,10 +1,10 @@
 {% if not recipe.recipeTags.empty %}
-    <p class="recipe-recipeTags">
+    <span class="recipe-recipeTags">
         {% for tag in recipe.recipeTags %}
             <span class="label label-default">
                 <i class="fa fa-tag"></i> {{ tag.name }}
             </span>
         {% endfor %}
-    </p>
+    </span>
 {% endif %}
 

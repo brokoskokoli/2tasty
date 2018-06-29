@@ -265,6 +265,25 @@ class RecipesController extends AbstractController
     }
 
     /**
+     * @Route("/quicksearch", name="recipes_quick_search")
+     * @Method("GET")
+     */
+    public function quickSearchAction(Request $request, RecipeRepository $recipes): Response
+    {
+
+        $query = $request->query->get('q', '');
+        $foundRecipes = $recipes->findBySearchQuery($query, 5, $this->getUser());
+
+        return $this->render(
+            'front/recipes/quicksearch.html.twig',
+            [
+                'results' => $foundRecipes,
+                'searchText' => $query
+            ]
+        );
+    }
+
+    /**
      * Finds and displays a Recipe entity.
      *
      * @Route("/recipe/{id}", requirements={"id": "\d+"}, name="recipes_show_id")

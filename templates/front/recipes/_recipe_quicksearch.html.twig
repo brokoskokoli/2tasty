@@ -1,0 +1,39 @@
+
+
+<article class="recipe_list_quicksearch">
+    <div class="row">
+        {% set hasImage = recipe.images|length > 0 %}
+        <div class="{{ hasImage ? 'col-md-8' : 'col-md-12' }}">
+            <h4>
+                <a href="{{ path('recipes_show', {slug: recipe.slug}) }}">
+                    {{ recipe.title }}
+                </a>
+            </h4>
+
+            <p class="recipe-metadata">
+                {% if recipe.ratingGlobal %}
+                    <span class="metadata">{{ recipe.ratingGlobal|rating(5, "fa-norm", true) }} ({{ recipe.ratingGlobal }})</span>
+                {% endif %}
+                {{ include('front/recipes/_recipe_tags.html.twig') }}
+                <span class="metadata"><a href="{{ path('user_profile', {'username': recipe.author.username}) }}"><i class="fa fa-user"></i> {{ recipe.author.fullName }}</a></span>
+
+            </p>
+
+            {{ recipe.summary|default('')|md2html }}
+
+            <br>
+            {% if app.user and app.user.activeRecipeList and not app.user.activeRecipeList.getRecipes.contains(recipe) %}
+                <a class="btn btn-success btn-sm"
+                   target="_blank"
+                   href="{{ path('recipelists_add_to_active', {'id': recipe.id}) }}">
+                    {{ 'action.add_to_activ_recipelist'|trans }}
+                </a>
+            {% endif %}
+        </div>
+        {% if hasImage %}
+        <div class="col-md-4">
+            <img class="smallimage" src="{{ vich_uploader_asset(recipe.images[0], 'imageFile') }}">
+        </div>
+        {% endif %}
+    </div>
+</article>

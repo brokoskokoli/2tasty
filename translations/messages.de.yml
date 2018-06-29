@@ -124,7 +124,7 @@ rss:
 
 menu:
   toggle_nav: ''
-  recipe_list: 'Meine Rezepte'
+  recipe_list: 'Rezepte'
   homepage: News
   admin_menu: Admin
   search: ''
@@ -134,9 +134,12 @@ menu:
   recipe_of_the_day: Mein Rezept des Tages
   new_quick: Ich möchte schnell ein Foto von einem Rezept hochladen
   my_profile: 'Profileinstellungen'
-  filter_recipes: 'Rezeptsuche'
+  filter_recipes: 'Erweiterte Suche'
   recipes_to_cook: Rezepte von meiner ToCook Liste
-  recipelists_list: Meine Rezeptlisten
+  recipelists_list: Listen
+
+placeholder:
+  livesearch: Livesearch...
 
 help:
   app_description: |
