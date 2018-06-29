@@ -41,7 +41,7 @@ $.fn.stXarrayCollection = function() {
     this.addAddButton = function () {
         var addButtonId = widget.buttonId;
 
-        widget.parent().append('<div class="' + addbuttonClass + '" >'+
+        widget.parent().append('<div title="Crtl + Space" class="' + addbuttonClass + '" >'+
             '<button class="btn" id="'+addButtonId+'"><i class="fa fa-plus" aria-hidden="true"></i></button>'+
             '</div>');
 
