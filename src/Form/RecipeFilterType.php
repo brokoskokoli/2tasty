@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Recipe;
 use App\Form\Type\DateTimePickerType;
+use App\Form\Type\IngredientsInputType;
 use App\Form\Type\RecipeAlternativeType;
 use App\Form\Type\RecipeHintType;
 use App\Form\Type\RecipeImageType;
@@ -48,6 +49,18 @@ class RecipeFilterType extends AbstractType
             ->add('recipeTags', RecipeTagsInputType::class,
                 [
                     'label' => 'label.recipeTags',
+                    'required' => false,
+                ]
+            )
+            ->add('ingredients', IngredientsInputType::class,
+                [
+                    'label' => 'label.ingredients_must_have',
+                    'required' => false,
+                ]
+            )
+            ->add('ingredients_exclude', IngredientsInputType::class,
+                [
+                    'label' => 'label.ingredients_must_not_have',
                     'required' => false,
                 ]
             )

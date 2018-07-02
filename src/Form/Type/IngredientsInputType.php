@@ -12,8 +12,10 @@
 namespace App\Form\Type;
 
 use App\Entity\RecipeList;
+use App\Form\DataTransformer\IngredientArrayToStringTransformer;
 use App\Form\DataTransformer\ListArrayToStringTransformer;
 use App\Form\DataTransformer\TagArrayToStringTransformer;
+use App\Service\IngredientService;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bridge\Doctrine\Form\DataTransformer\CollectionToArrayTransformer;
 use Symfony\Component\Form\AbstractType;
@@ -32,15 +34,17 @@ use Symfony\Component\Translation\TranslatorInterface;
  *
  * @author Yonel Ceruto <yonelceruto@gmail.com>
  */
-class  RecipeListsInputType extends AbstractType
+class  IngredientsInputType extends AbstractType
 {
     private $manager;
     private $translator;
+    private $ingredientService;
 
-    public function __construct(ObjectManager $manager, TranslatorInterface $translator)
+    public function __construct(ObjectManager $manager, TranslatorInterface $translator, IngredientService $ingredientService)
     {
         $this->manager = $manager;
         $this->translator = $translator;
+        $this->ingredientService = $ingredientService;
     }
 
     /**
@@ -49,8 +53,12 @@ class  RecipeListsInputType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            // The Tag collection must be transformed into a comma separated string.
+            // We could create a custom transformer to do Collection <-> string in one step,
+            // but here we're doing the transformation in two steps (Collection <-> array <-> string)
+            // and reuse the existing CollectionToArrayTransformer.
             ->addModelTransformer(new CollectionToArrayTransformer(), true)
-            ->addModelTransformer(new ListArrayToStringTransformer($this->translator, $this->manager, $options['user'], $options['recipe']), true)
+            ->addModelTransformer(new IngredientArrayToStringTransformer($this->translator, $this->manager, $this->ingredientService), true)
         ;
     }
 
@@ -59,7 +67,7 @@ class  RecipeListsInputType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $view->vars['recipeLists'] = $this->manager->getRepository(RecipeList::class)->getAllForUser($options['user'], true);
+        $view->vars['ingredients'] = $this->ingredientService->getAllNames();
     }
 
     /**
@@ -70,14 +78,4 @@ class  RecipeListsInputType extends AbstractType
         return TextType::class;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setDefaults([
-            'user' => null,
-            'recipe' => null,
-        ]);
-    }
 }

@@ -140,6 +140,10 @@ class RecipeRepository extends ServiceEntityRepository
             return;
         }
 
+        if ($filter['recipeTags']->count() == 0) {
+            return;
+        }
+
         $queryBuilder->leftJoin('r.recipeTags', 't');
         $fields = $queryBuilder->expr()->andX();
         $allKeywords = [];
@@ -159,11 +163,77 @@ class RecipeRepository extends ServiceEntityRepository
         $queryBuilder->addGroupBy('r.id');
     }
 
+    private function applyIngredientsFilter(QueryBuilder $queryBuilder, $filter)
+    {
+        if (!($filter['ingredients'] ?? null)) {
+            return;
+        }
+
+        if ($filter['ingredients']->count() == 0) {
+            return;
+        }
+
+        $queryBuilder->leftJoin('r.recipeIngredients', 'ri');
+        $queryBuilder->leftJoin('ri.ingredient', 'i');
+        $fields = $queryBuilder->expr()->andX();
+        $allKeywords = [];
+        /**
+         * @var int $key
+         * @var RecipeTag $term
+         */
+        foreach ($filter['ingredients'] ?? [] as $key => $term) {
+            $allIngredients[] = $term->getId();
+        }
+        foreach ($filter['ingredients'] ?? [] as $key => $term) {
+            $fields->add('i.id in (:ingredients)');
+            $queryBuilder->setParameter('ingredients', $allIngredients);
+        }
+        $queryBuilder->andWhere($fields);
+        $queryBuilder->having('count(distinct i.id) >= '.count($allIngredients));
+        $queryBuilder->addGroupBy('r.id');
+    }
+
+
+    private function applyIngredientsExcludeFilter(QueryBuilder $queryBuilder, $filter)
+    {
+        if (!($filter['ingredients_exclude'] ?? null)) {
+            return;
+        }
+
+        if ($filter['ingredients_exclude']->count() == 0) {
+            return;
+        }
+
+        $queryBuilder->leftJoin('r.recipeIngredients', 'rie');
+        $queryBuilder->leftJoin('rie.ingredient', 'ie');
+        $fields = $queryBuilder->expr()->orX();
+        $allKeywords = [];
+        /**
+         * @var int $key
+         * @var RecipeTag $term
+         */
+        foreach ($filter['ingredients_exclude'] ?? [] as $key => $term) {
+            $allIngredientsExclude[] = $term->getId();
+        }
+        foreach ($filter['ingredients_exclude'] ?? [] as $key => $term) {
+            $fields->add('ie.id = ANY (:ingredients_exclude)');
+            $queryBuilder->setParameter('ingredients_exclude', $allIngredientsExclude);
+        }
+        $queryBuilder->andWhere($fields);
+        //$queryBuilder->having('count(distinct ie.id) = 0');
+        $queryBuilder->addGroupBy('r.id');
+    }
+
     private function applyRecipeListsFilter(QueryBuilder $queryBuilder, $filter)
     {
         if (!($filter['authorRecipeLists'] ?? null)) {
             return;
         }
+
+        if ($filter['authorRecipeLists']->count() == 0) {
+            return;
+        }
+
         $queryBuilder->leftJoin('r.recipeLists', 'rl');
         $fields = $queryBuilder->expr()->andX();
         $allKeywords = [];
@@ -218,6 +288,8 @@ class RecipeRepository extends ServiceEntityRepository
         $this->applyRecipeListsFilter($queryBuilder, $filter);
         $this->applySearchTermFilter($queryBuilder, $filter);
         $this->applyRatingFilter($queryBuilder, $filter);
+        $this->applyIngredientsFilter($queryBuilder, $filter);
+        //$this->applyIngredientsExcludeFilter($queryBuilder, $filter);
     }
 
     public function filterRecipes($page, $filter = [], ?User $user = null)

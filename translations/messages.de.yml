@@ -65,6 +65,8 @@ label:
   archived: Archiviert (wird nicht zur Auswahl angezeigt, ist aber einsehbar)
   archived_short: Archiviert
   active: aktiv
+  ingredients_must_have: Enthaltene Zutaten
+  ingredients_must_not_have: Ausgeschlossene Zutaten
 
 action:
   back_to_list: Zurück zur Liste

@@ -8,7 +8,8 @@
     {{ form_row(form.text) }}
     {{ form_row(form.authorRecipeLists, {'attr' : {'class': 'stXtokenField', 'data-availabeTokens': recipeLists|join('|')}}) }}
     {{ form_row(form.recipeTags, {'attr' : {'class': 'stXtokenField', 'data-availabeTokens': recipeTags|join('|')}}) }}
-
+    {{ form_row(form.ingredients, {'attr' : {'class': 'stXtokenField', 'data-availabeTokens': form.ingredients.vars.ingredients|join('|')}}) }}
+    {{ form_row(form.ingredients_exclude, {'attr' : {'class': 'stXtokenField', 'data-availabeTokens': form.ingredients_exclude.vars.ingredients|join('|')}}) }}
     {{ form_row(form.recipeRating) }}
     {{ form_row(form.private) }}
     <div class="row">
