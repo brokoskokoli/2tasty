@@ -18,20 +18,30 @@
 {% endblock %}
 
 {% block header_navigation_links %}
-    <li>
-        <a href="{{ path('recipes_filter') }}">
-            <i class="fa fa-search" aria-hidden="true"></i> {{ 'menu.filter_recipes'|trans }}
+
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" id="recipes_menu">
+            {{ 'menu.recipes'|trans }}
+            <span class="caret"></span>
+            <span class="sr-only">{{ app.user.fullName }}</span>
         </a>
-    </li>
-    <li>
-        <a href="{{ path('recipes_list_my') }}">
-            <i class="fa fa-list-alt" aria-hidden="true"></i> {{ 'menu.recipe_list'|trans }}
-        </a>
-    </li>
-    <li>
-        <a href="{{ path('recipelists_list') }}">
-            <i class="fa fa-list-alt" aria-hidden="true"></i> {{ 'menu.recipelists_list'|trans }}
-        </a>
+        <ul class="dropdown-menu locales" role="menu" aria-labelledby="recipes_menu">
+            <li>
+                <a href="{{ path('recipes_list_my') }}">
+                    <i class="fa fa-fire" aria-hidden="true"></i> {{ 'menu.recipe_list'|trans }}
+                </a>
+            </li>
+            <li>
+                <a href="{{ path('recipelists_list') }}">
+                    <i class="fa fa-book" aria-hidden="true"></i> {{ 'menu.recipelists_list'|trans }}
+                </a>
+            </li>
+            <li>
+                <a href="{{ path('recipes_filter') }}">
+                    <i class="fa fa-search" aria-hidden="true"></i> {{ 'menu.filter_recipes'|trans }}
+                </a>
+            </li>
+        </ul>
     </li>
     {{ parent() }}
 
@@ -43,7 +53,6 @@
                 <span class="sr-only">{{ app.user.fullName }}</span>
             </a>
             <ul class="dropdown-menu locales" role="menu" aria-labelledby="user_menu">
-
                 <li>
                     <a href="{{ path('user_my_profile') }}">
                         <i class="fa fa-user" aria-hidden="true"></i> {{ 'menu.my_profile'|trans }}

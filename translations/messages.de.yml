@@ -124,7 +124,8 @@ rss:
 
 menu:
   toggle_nav: ''
-  recipe_list: 'Rezepte'
+  recipes: 'Rezepte'
+  recipe_list: 'Meine Rezepte'
   homepage: News
   admin_menu: Admin
   search: ''
@@ -136,7 +137,7 @@ menu:
   my_profile: 'Profileinstellungen'
   filter_recipes: 'Erweiterte Suche'
   recipes_to_cook: Rezepte von meiner ToCook Liste
-  recipelists_list: Listen
+  recipelists_list: Rezeptlisten
 
 placeholder:
   livesearch: Livesearch...

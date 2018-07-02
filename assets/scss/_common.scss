@@ -71,6 +71,12 @@ form.quicksearch {
   display: none;
 }
 
+@media (max-width: 575px) {
+  #quicksearchresult {
+    width: 100vw;
+    left: 0vw;
+  }
+}
 .recipe_list_quicksearch {
   font-size: 90%;
 
@@ -150,6 +156,18 @@ Autocomplete
   background-color: #fff;
 }
 
+/**
+ARRAYcollection
+ */
+
+@media (max-width: 575px) {
+  .symfonyArrayCollection>.row {
+    border: 1px solid lightgray;
+    padding: 1em 0.5em;
+    margin: 1em 5px;
+    border-radius: 0.5em;
+  }
+}
 
 /**
 Images
