@@ -99,6 +99,7 @@ action:
   remove_activ_recipelist: Deaktivieren
   add_to_activ_recipelist: In aktive Rezeptliste
   save_active: Speichere als aktive Rezeptliste
+  calculate: Berechnen
 
 dialogs:
   delete_recipe:
@@ -146,6 +147,9 @@ placeholder:
 
 help:
   app_description: |
+    <strong>Version 1.0</strong> <br>
+    - Portionenumrechner<br>
+    <br>
     <strong>Version 0.9</strong> <br>
     - Rezeptlisten<br>
     - Warenkorbfunktion<br>

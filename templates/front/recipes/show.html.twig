@@ -112,6 +112,11 @@
             {{ render(controller('App\\Controller\\RatingController:rateForm', {'recipe': recipe.id})) }}
         </div>
     {% endif %}
+    <div class="section">
+        {{ form_start(displayForm) }}
+        {{ form_end(displayForm) }}
+    </div>
+
 
 
 

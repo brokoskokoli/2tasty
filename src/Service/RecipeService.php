@@ -6,6 +6,7 @@ use App\Entity\Recipe;
 use App\Entity\RecipeLink;
 use App\Entity\RecipeTag;
 use App\Entity\User;
+use App\Form\RecipeDisplaySettingsType;
 use App\Helper\SecurityHelper;
 use App\URLParser\URLParser;
 use App\Utils\Slugger;
@@ -215,5 +216,22 @@ class RecipeService
         }
 
         return $recipe;
+    }
+
+    /**
+     * @param Recipe $recipe
+     * @param $portions
+     */
+    public function calculatePortions(Recipe $recipe, $portions)
+    {
+        $currentPortions = $recipe->getPortions();
+        $recipe->setPortions($portions);
+        $factor = $portions/$currentPortions;
+
+        foreach ($recipe->getRecipeIngredients() as &$recipeIngredient) {
+            if ($recipeIngredient->getAmount() !== null) {
+                $recipeIngredient->setAmount($recipeIngredient->getAmount() * $factor);
+            }
+        }
     }
 }

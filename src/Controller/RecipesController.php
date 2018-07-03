@@ -8,6 +8,7 @@ use App\Entity\Recipe;
 use App\Entity\RecipeTag;
 use App\Events;
 use App\Form\CommentType;
+use App\Form\RecipeDisplaySettingsType;
 use App\Form\RecipeFilterType;
 use App\Form\RecipeImportFromLinkType;
 use App\Form\RecipeType;
@@ -294,14 +295,32 @@ class RecipesController extends AbstractController
      * @param Recipe $recipe
      * @return Response
      */
-    public function show(RecipeRatingService $recipeRatingService, IngredientService $ingredientService, Recipe $recipe): Response
-    {
+    public function show(
+        Request $request,
+        RecipeRatingService $recipeRatingService,
+        RecipeService $recipeService,
+        IngredientService $ingredientService,
+        Recipe $recipe
+    ): Response {
+
+        $form = $this->createForm(RecipeDisplaySettingsType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+            $recipeService->calculatePortions($recipe, intval($data['portions']));
+        } else {
+            $form->get('portions')->setData($recipe->getPortions());
+        }
+
+
         $ratingGlobal = $recipeRatingService->getRatingGlobal($recipe);
 
         return $this->render('front/recipes/show.html.twig', [
             'recipe' => $recipe,
             'user' => $this->getUser(),
             'ratingGlobal' => $ratingGlobal,
+            'displayForm' => $form->createView(),
         ]);
     }
 
