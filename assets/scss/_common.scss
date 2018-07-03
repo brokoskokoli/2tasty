@@ -40,6 +40,10 @@ p.spacer-medium {
   padding: 0;
 }
 
+.no-padding {
+  padding: 0px !important;
+}
+
 select.largepicker {
   height: 20em;
 }
@@ -57,6 +61,12 @@ div.headercontainer {
 
 form.quicksearch {
   margin-top: 6px;
+}
+
+@media (max-width: 575px) {
+  form.quicksearch input.stXquickSearch {
+    width: 150px;
+  }
 }
 
 #quicksearchresult {

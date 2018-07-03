@@ -28,12 +28,12 @@
                             </a>
                         {% endif %}
 
-                        <a href="{{ path('recipelists_show_id', {id: recipeList.id}) }}" class="btn btn-sm btn-default">
-                            <i class="fa fa-eye" aria-hidden="true"></i> {{ 'action.show'|trans }}
+                        <a href="{{ path('recipelists_show_id', {id: recipeList.id}) }}" class="btn btn-sm btn-default" title="{{ 'action.show'|trans }}">
+                            <i class="fa fa-eye" aria-hidden="true"></i>
                         </a>
 
-                        <a href="{{ path('recipelists_edit', {id: recipeList.id}) }}" class="btn btn-sm btn-primary">
-                            <i class="fa fa-edit" aria-hidden="true"></i> {{ 'action.edit'|trans }}
+                        <a href="{{ path('recipelists_edit', {id: recipeList.id}) }}" class="btn btn-sm btn-primary" title="{{ 'action.edit'|trans }}">
+                            <i class="fa fa-edit" aria-hidden="true"></i>
                         </a>
                     </div>
                 </td>
