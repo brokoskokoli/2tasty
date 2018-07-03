@@ -285,7 +285,8 @@ class RecipeRepository extends ServiceEntityRepository
             return;
         }
         $queryBuilder->leftJoin('r.ratings', 'rr');
-        $queryBuilder->having('sum(rr.rating) / count(rr.id)>= '.$filter['recipeRating']);
+        $queryBuilder->andWhere('rr.id is not null');
+        $queryBuilder->having('sum(rr.rating) / count(rr.id) >= '.$filter['recipeRating']);
         $queryBuilder->addGroupBy('r.id');
     }
 
