@@ -216,11 +216,19 @@ class RecipeRepository extends ServiceEntityRepository
             $allIngredientsExclude[] = $term->getId();
         }
         foreach ($filter['ingredients_exclude'] ?? [] as $key => $term) {
-            $fields->add('ie.id = ANY (:ingredients_exclude)');
+            $fields->add('ie.id NOT IN (:ingredients_exclude)');
             $queryBuilder->setParameter('ingredients_exclude', $allIngredientsExclude);
         }
         $queryBuilder->andWhere($fields);
-        //$queryBuilder->having('count(distinct ie.id) = 0');
+
+        $subquery = $this->createQueryBuilder('r2');
+        $subquery->select('count(i2)');
+        $subquery->leftJoin('r2.recipeIngredients', 'r2ie');
+        $subquery->leftJoin('r2ie.ingredient', 'i2');
+        $subquery->where('r2.id = r.id');
+        $subqueryText = $subquery->getDQL();
+
+        $queryBuilder->having('count(distinct ie.id) >= ('.$subqueryText.')');
         $queryBuilder->addGroupBy('r.id');
     }
 
@@ -289,15 +297,13 @@ class RecipeRepository extends ServiceEntityRepository
         $this->applySearchTermFilter($queryBuilder, $filter);
         $this->applyRatingFilter($queryBuilder, $filter);
         $this->applyIngredientsFilter($queryBuilder, $filter);
-        //$this->applyIngredientsExcludeFilter($queryBuilder, $filter);
+        $this->applyIngredientsExcludeFilter($queryBuilder, $filter);
     }
 
     public function filterRecipes($page, $filter = [], ?User $user = null)
     {
         $queryBuilder = $this->createQueryBuilder('r');
         $this->applyRecipeFilters($queryBuilder, $filter);
-
-        //dump($queryBuilder->getQuery());die;
 
         return $this->createPaginator($queryBuilder->getQuery(), $page);
     }
