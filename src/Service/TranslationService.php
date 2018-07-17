@@ -3,11 +3,12 @@
 namespace App\Service;
 
 use App\Entity\Ingredient;
+use App\Entity\RefUnit;
 use Doctrine\ORM\EntityManagerInterface;
 use Translation\Common\Model\Message;
 use Translation\Common\Storage;
 
-class TranslationService implements Storage
+class TranslationService
 {
     /**
      * @var EntityManagerInterface
@@ -29,41 +30,6 @@ class TranslationService implements Storage
         $this->em = $entityManager;
         $this->cacheDir = $cacheDir;
     }
-
-    /**
-     * @param string $locale
-     * @param string $domain
-     * @param string $key
-     * @return Message
-     */
-    public function get($locale, $domain, $key)
-    {
-        $ingredient = $this->em->getRepository(Ingredient::class)->findBy(['name' => $key]);
-        if (!$ingredient) {
-            return new Message($key, $domain, $locale, $key);
-        }
-        $function = 'get' . $locale;
-        return new Message($key, $domain, $locale, $ingredient->$function());
-    }
-
-    public function create(Message $message)
-    {
-        die('TranslationService create');
-        // TODO: Implement create() method.
-    }
-
-    public function update(Message $message)
-    {
-        die('TranslationService update');
-        // TODO: Implement update() method.
-    }
-
-    public function delete($locale, $domain, $key)
-    {
-        die('TranslationService delete');
-        // TODO: Implement delete() method.
-    }
-
 
     public function clearTranslationCache()
     {

@@ -46,6 +46,10 @@ use Symfony\Component\Translation\Translator;
 class RecipesController extends AbstractController
 {
 
+    const PARAMETER_FROM_LINK = 'from_link';
+
+    const FORM_RECIPE_ID = 'recipe';
+
     /**
      * Lists all Recipe entities.
      *
@@ -158,10 +162,23 @@ class RecipesController extends AbstractController
      */
     public function newAction(Request $request, RecipeService $recipeService, IngredientService $ingredientService, RecipeTagService $recipeTagService, $quick = false): Response
     {
-        $recipe = new Recipe();
-        $recipe->setAuthor($this->getUser());
-        if ($quick) {
-            $recipe->addImage(new ImageFile());
+        $recipe = null;
+        if (!$request->request->get(self::FORM_RECIPE_ID)) {
+            if ($request->query->get(self::PARAMETER_FROM_LINK) !== null) {
+                $recipe = $recipeService->createRecipeFromLink($request->get(self::PARAMETER_FROM_LINK), $this->getUser());
+
+                if ($recipe !== null) {
+                    $this->addFlash('success', 'messages.recipe_url_parsed');
+                }
+            }
+        }
+
+        if (!$recipe) {
+            $recipe = new Recipe();
+            $recipe->setAuthor($this->getUser());
+            if ($quick) {
+                $recipe->addImage(new ImageFile());
+            }
         }
 
         // See https://symfony.com/doc/current/book/forms.html#submitting-forms-with-multiple-buttons
@@ -431,26 +448,16 @@ class RecipesController extends AbstractController
     {
         $form = $this->createForm(RecipeImportFromLinkType::class);
         $form->handleRequest($request);
-        $error = false;
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $filters = $form->getData();
 
-            $recipe = $recipeService->createRecipeFromLink($filters['link'], $this->getUser());
-
-            if ($recipe !== null) {
-                $recipeService->saveRecipe($recipe);
-                $this->addFlash('success', 'messages.recipe_created');
-                return $this->redirectToRoute('recipes_edit', ['id' => $recipe->getId()]);
-            }
-
-            $error = true;
+            return $this->redirectToRoute('recipes_new', [self::PARAMETER_FROM_LINK => $filters['link']]);
         }
 
         return $this->render('front/recipes/import_from_link.html.twig', [
             'form' => $form->createView(),
-            'error' => $error,
+            'error' => false,
         ]);
     }
 }

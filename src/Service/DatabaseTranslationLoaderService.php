@@ -13,9 +13,15 @@ class DatabaseTranslationLoaderService implements LoaderInterface
      */
     private $ingredientService;
 
-    public function __construct(IngredientService $ingredientService)
+    /**
+     * @var RefUnitService
+     */
+    private $refUnitService;
+
+    public function __construct(IngredientService $ingredientService, RefUnitService$refUnitService)
     {
         $this->ingredientService = $ingredientService;
+        $this->refUnitService = $refUnitService;
     }
 
 
@@ -27,6 +33,13 @@ class DatabaseTranslationLoaderService implements LoaderInterface
         $function = 'get' . $locale;
         foreach ($ingredients as $ingredient) {
             $messages[$ingredient->getName()] = $ingredient->$function();
+        }
+
+        $units = $this->refUnitService->getAll();
+
+        $function = 'get' . $locale;
+        foreach ($units as $unit) {
+            $messages[$unit->getName()] = $unit->$function();
         }
 
         $messageCatalogue = new MessageCatalogue($locale);

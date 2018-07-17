@@ -3,7 +3,7 @@
 parameters:
     locale: 'de'
     # This parameter defines the codes of the locales (languages) enabled in the application
-    app_locales: de|en|fr
+    app_locales: de|en|fr|es
     app.notifications.email_sender: noreply@recipes.stefanrichter.de
 
 services:
@@ -47,15 +47,18 @@ services:
     app.ingredients:
         alias: App\Service\IngredientService
 
+    app.ref_units:
+        alias: App\Service\RefUnitService
+
 
     translation.loader.db:
         class: App\Service\DatabaseTranslationLoaderService
-        arguments: ["@app.ingredients"]
+        arguments: ["@app.ingredients", "@app.ref_units"]
         tags:
             - { name: translation.loader, alias: db}
 
     translation.dumper.db:
         class: App\Service\DatabaseTranslationDumperService
-        arguments: ["@app.ingredients"]
+        arguments: ["@app.ingredients", "@app.ref_units"]
         tags:
             - { name: translation.dumper, alias: db}

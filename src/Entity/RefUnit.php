@@ -45,6 +45,35 @@ class RefUnit
      */
     private $factorToKg;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $de;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $en;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $fr;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $es;
+
+
     public function __toString()
     {
         return $this->getName();
@@ -123,6 +152,76 @@ class RefUnit
         return $this;
     }
 
+    /**
+     * @return string
+     */
+    public function getDe(): ?string
+    {
+        return $this->de;
+    }
 
+    /**
+     * @param string $de
+     * @return Ingredient
+     */
+    public function setDe(string $de): RefUnit
+    {
+        $this->de = $de;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEn(): ?string
+    {
+        return $this->en;
+    }
+
+    /**
+     * @param string $en
+     * @return Ingredient
+     */
+    public function setEn(string $en): RefUnit
+    {
+        $this->en = $en;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFr(): ?string
+    {
+        return $this->fr;
+    }
+
+    /**
+     * @param string $fr
+     * @return Ingredient
+     */
+    public function setFr(string $fr): RefUnit
+    {
+        $this->fr = $fr;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEs(): ?string
+    {
+        return $this->es;
+    }
+
+    /**
+     * @param string $fr
+     * @return Ingredient
+     */
+    public function setEs(string $es): RefUnit
+    {
+        $this->es = $es;
+        return $this;
+    }
 
 }

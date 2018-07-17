@@ -25,9 +25,9 @@
 {{ form_row(form.waitingTime) }}
 {{ form_row(form.informations) }}
 
-{{ form_row(form.recipeTags, {'attr' : {'class': 'stXtokenField', 'data-availabeTokens': recipeTags|join('|')}}) }}
+{{ form_row(form.recipeTags, {'attr' : {'class': 'stXtokenField', 'data-availabeTokens': form.recipeTags.vars.recipeTags|join('|')}}) }}
 
-{{ form_row(form.authorRecipeLists, {'attr' : {'class': 'stXtokenField', 'data-availabeTokens': recipeLists|join('|')}}) }}
+{{ form_row(form.authorRecipeLists, {'attr' : {'class': 'stXtokenField', 'data-availabeTokens': form.authorRecipeLists.vars.recipeLists|join('|')}}) }}
 
 {{ arrayCollection.start('ingredients', 'title.ingredients', [
     {class: 'col-md-3 stXautoComplete', field: form.recipeIngredients.vars.prototype.ingredient, autocomplete: ingredientList  },

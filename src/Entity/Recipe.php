@@ -276,6 +276,7 @@ class Recipe
         $this->recipeIngredients = new ArrayCollection();
         $this->recipeSteps = new ArrayCollection();
         $this->recipeLinks = new ArrayCollection();
+        $this->recipeLists = new ArrayCollection();
         $this->private = false;
     }
 

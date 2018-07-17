@@ -7,14 +7,9 @@ use Symfony\Component\Translation\MessageCatalogue;
 
 class DatabaseTranslationDumperService  implements DumperInterface
 {
-   /**
-     * @var IngredientService
-     */
-    private $ingredientService;
 
-    public function __construct(IngredientService $ingredientService)
+    public function __construct(IngredientService $ingredientService, RefUnitService$refUnitService)
     {
-        $this->ingredientService = $ingredientService;
     }
 
     public function dump(MessageCatalogue $messages, $options = array())

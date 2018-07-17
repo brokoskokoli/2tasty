@@ -45,7 +45,8 @@ class EntityToTranslatedStringTransformer implements DataTransformerInterface
             return '';
         }
 
-        return $this->translator->trans($ingredient->getName(), [], 'messages');
+        $function = 'get' . $this->translator->getLocale();
+        return $ingredient->$function() ?? $ingredient->getName();
     }
 
     /**

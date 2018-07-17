@@ -49,6 +49,13 @@ class Ingredient
     private $fr;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $es;
+
+    /**
      * @var float
      * @ORM\Column(type="float", nullable=true)
      */
@@ -159,6 +166,24 @@ class Ingredient
     public function setFr(string $fr): Ingredient
     {
         $this->fr = $fr;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEs(): ?string
+    {
+        return $this->es;
+    }
+
+    /**
+     * @param string $fr
+     * @return Ingredient
+     */
+    public function setEs(string $es): Ingredient
+    {
+        $this->es = $es;
         return $this;
     }
 
