@@ -31,6 +31,9 @@ class Recipe
      */
     const NUM_ITEMS = 10;
 
+    const LANGUAGE_GERMAN = 'de';
+    const LANGUAGE_ENGLISH = 'en';
+
     /**
      * @var int
      *
@@ -47,6 +50,13 @@ class Recipe
      * @Assert\NotBlank
      */
     private $title;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $language;
 
     /**
      * @var string
@@ -769,6 +779,25 @@ class Recipe
 
         return floatval($sum)/floatval($count);
     }
+
+    /**
+     * @return string
+     */
+    public function getLanguage(): string
+    {
+        return $this->language;
+    }
+
+    /**
+     * @param string $language
+     * @return Recipe
+     */
+    public function setLanguage(string $language): Recipe
+    {
+        $this->language = $language;
+        return $this;
+    }
+
 
 
 }

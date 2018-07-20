@@ -10,6 +10,7 @@ use App\Helper\FileHelper;
 use App\Service\ImportService;
 use App\Service\RefUnitService;
 use Doctrine\ORM\EntityManagerInterface;
+use PHPHtmlParser\Dom;
 use PHPHtmlParser\Dom\AbstractNode;
 use PHPHtmlParser\Dom\Collection;
 use PHPHtmlParser\Dom\HtmlNode;
@@ -48,6 +49,58 @@ class URLParserBase
         return false;
     }
 
+    protected function parseStringToRecipeIngredient(string $text)
+    {
+
+    }
+
+    protected function addStringListAsRecipeIngredients(array $ingredientStringList)
+    {
+        $ingredients = [];
+        foreach ($ingredientStringList as &$ingredientString) {
+            $ingredient = $this->parseStringToRecipeIngredient()
+            $ingredients[] = $ingredient;
+            if ($ingredient) {
+                $ingredientString = "";
+            }
+        }
+    }
+
+    protected function guessIngredientList(Dom $dom, $asText = true, $tag = 'ul', $classesToCheck = ['ingredient'])
+    {
+        $ingredientsLists = $dom->find('ul');
+        $finalIngredientList = null;
+        foreach ($ingredientsLists as $ingredientsList) {
+            $classes = $ingredientsList->tag->getAttribute('class')['value'];
+            foreach ($classesToCheck as $class) {
+                if (stripos($classes, $class) !== false) {
+                    $finalIngredientList = $ingredientsList;
+                    break;
+                }
+            }
+
+            if ($finalIngredientList) {
+                break;
+            }
+        }
+
+
+        if ($finalIngredientList && $asText) {
+            $result = [];
+
+            foreach ($finalIngredientList as $finalIngredient) {
+                $ingredient = trim(strip_tags($finalIngredient->innerHtml));
+                if ($ingredient) {
+                    $result[] = preg_replace('!\s+!', ' ', $ingredient);
+                }
+            }
+
+            return $result;
+        }
+
+        return $finalIngredientList;
+    }
+
     protected function addListAsRecipeSteps(Recipe $recipe, iterable $list)
     {
         foreach ($list as $preparationStepText) {
@@ -64,12 +117,12 @@ class URLParserBase
                 continue;
             }
 
-            $filename = FileHelper::getTempFileName().'.jpg';
+            $filename = FileHelper::getTempFileName() . '.jpg';
             copy($image, $filename);
             $mimeType = mime_content_type($filename);
-            $size = filesize ($filename);
+            $size = filesize($filename);
 
-            $uploadedFile = new UploadedFile($filename,'image'.$index.'.jpg',$mimeType, $size, null, true);
+            $uploadedFile = new UploadedFile($filename, 'image' . $index . '.jpg', $mimeType, $size, null, true);
 
             $imageFile = new ImageFile();
             $imageFile->setImageFile($uploadedFile);
