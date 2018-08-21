@@ -27,11 +27,23 @@ class IngredientType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        if ($options['recipe'] !== null) {
+            $this->entityTransformer->setRecipe($options['recipe']);
+        }
         $builder->addModelTransformer($this->entityTransformer);
     }
 
     public function getParent()
     {
         return TextType::class;
+    }
+
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults(
+            [
+                'recipe' => null,
+            ]
+        );
     }
 }

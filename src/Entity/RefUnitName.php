@@ -93,7 +93,7 @@ class RefUnitName
     /**
      * @return string
      */
-    public function getUnit(): string
+    public function getUnit(): RefUnit
     {
         return $this->unit;
     }
@@ -102,7 +102,7 @@ class RefUnitName
      * @param string $unit
      * @return RefUnitName
      */
-    public function setUnit(string $unit): RefUnitName
+    public function setUnit(RefUnit $unit): RefUnitName
     {
         $this->unit = $unit;
         return $this;

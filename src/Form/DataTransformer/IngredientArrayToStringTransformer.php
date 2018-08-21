@@ -70,7 +70,7 @@ class IngredientArrayToStringTransformer implements DataTransformerInterface
 
         $ingredients = [];
         foreach ($names as $name) {
-            $ingredients[] = $this->ingredientService->getIngredientFromStringInCurrentLocale($name);
+            $ingredients[] = $this->ingredientService->getIngredientFromString($name);
         }
 
         return $ingredients;

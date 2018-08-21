@@ -5,6 +5,7 @@ namespace App\Service;
 use App\Entity\Ingredient;
 use App\Entity\RecipeIngredient;
 use App\Entity\RefUnit;
+use App\Entity\RefUnitName;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Webit\Util\EvalMath\EvalMath;
@@ -47,53 +48,25 @@ class RefUnitService
         }, $this->getAll());
     }
 
-    /**
-     * @param RecipeIngredient $recipeIngredient
-     * @param $unitString
-     * @return Ingredient|null
-     */
-    public function parseUnitToRecipeIngredientFromString(RecipeIngredient $recipeIngredient, $unitString)
+    public function getUnitTextsForLanguage($languageString = 'en')
     {
-        $unitString = str_replace('&nbsp;', ' ', $unitString);
-        $unitString = html_entity_decode($unitString);
-        $parts = preg_split('/\s+/', $unitString);
-        $units = $this->getAll();
-
-        foreach ($parts as $part) {
-            $preparedPart = trim($part);
-            if (empty($preparedPart)) {
-                continue;
+        $units = $this->em->getRepository(RefUnit::class)->findAll();
+        $result = [];
+        foreach ($units as $unit) {
+            $function = 'get' . $languageString;
+            if ($unit->$function()) {
+                $result[$unit->$function()] = $unit;
             }
-            if (is_numeric($preparedPart)) {
-                $recipeIngredient->setAmount(floatval($preparedPart));
-                continue;
-            }
-            if ($recipeIngredient->getUnit() === null) {
-                $found = false;
-                foreach ($units as $unit) {
-                    if (strtolower($unit->getName()) === strtolower($preparedPart)) {
-                        $recipeIngredient->setUnit($unit);
-                        $found = true;
-                        break;
-                    }
-                }
-                if ($found) {
-                    continue;
-                }
-            }
-            try {
-                $m = new EvalMath;
-                $m->suppress_errors = true;
-                $result = $m->evaluate($preparedPart);
-                if (!$m->last_error) {
-                    $recipeIngredient->setAmount(floatval($result));
-                    continue;
-                }
-            } catch (\Exception $e) {
-                // error transforming number -> do nothing with this part
-            }
-
-            $recipeIngredient->addToText($preparedPart);
         }
+        $unitNames = $this->em->getRepository(RefUnitName::class)->findBy([
+            'language' => $languageString,
+        ]);
+        foreach ($unitNames as $unitName) {
+            if ($unitName->getName()) {
+                $result[$unitName->getName()] = $unitName;
+            }
+        }
+
+        return $result;
     }
 }

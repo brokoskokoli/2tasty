@@ -22,6 +22,8 @@ class URLParserChefkoch extends URLParserBase
             if ($title != '') {
                 $recipe->setTitle($title);
             }
+            $recipe->setLanguage(Recipe::LANGUAGE_GERMAN);
+            $this->importService->initForRecipe($recipe);
             $recipe->setSummary(html_entity_decode($dom->find('div.summary', 0)->text));
             $ingredientsTable = $dom->find('table.incredients');
             $ingredientRows = $ingredientsTable->find('tr');

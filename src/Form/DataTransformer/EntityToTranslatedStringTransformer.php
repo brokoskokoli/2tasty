@@ -3,6 +3,7 @@
 namespace App\Form\DataTransformer;
 
 use App\Entity\Ingredient;
+use App\Entity\Recipe;
 use App\Service\IngredientService;
 use App\Service\TranslationService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -17,6 +18,11 @@ class EntityToTranslatedStringTransformer implements DataTransformerInterface
     private $translationService;
 
     /**
+     * @var Recipe
+     */
+    protected $recipe;
+
+    /**
      * @var IngredientService
      */
     private $ingredientService;
@@ -27,6 +33,11 @@ class EntityToTranslatedStringTransformer implements DataTransformerInterface
         $this->translator = $translator;
         $this->translationService = $translationService;
         $this->ingredientService = $ingredientService;
+    }
+
+    public function setRecipe(Recipe $recipe)
+    {
+        $this->recipe = $recipe;
     }
 
     /**
@@ -45,7 +56,12 @@ class EntityToTranslatedStringTransformer implements DataTransformerInterface
             return '';
         }
 
-        $function = 'get' . $this->translator->getLocale();
+        $locale = $this->translator->getLocale();
+        if ($this->recipe && $this->recipe->getLanguage()) {
+            $locale = $this->recipe->getLanguage();
+        }
+
+        $function = 'get' . $locale;
         return $ingredient->$function() ?? $ingredient->getName();
     }
 
@@ -60,6 +76,11 @@ class EntityToTranslatedStringTransformer implements DataTransformerInterface
             return null;
         }
 
-        return $this->ingredientService->getIngredientFromStringInCurrentLocale($ingredientText);
+        $locale = null;
+        if ($this->recipe && $this->recipe->getLanguage()) {
+            $locale = $this->recipe->getLanguage();
+        }
+
+        return $this->ingredientService->getIngredientFromString($ingredientText, $locale);
     }
 }

@@ -5,7 +5,10 @@ namespace App\URLParser;
 
 use App\Entity\ImageFile;
 use App\Entity\Recipe;
+use App\Entity\RecipeIngredient;
 use App\Entity\RecipeStep;
+use App\Entity\RefUnit;
+use App\Entity\RefUnitName;
 use App\Helper\FileHelper;
 use App\Service\ImportService;
 use App\Service\RefUnitService;
@@ -20,6 +23,7 @@ use Symfony\Component\Translation\TranslatorInterface;
 class URLParserBase
 {
     protected $importService;
+
 
     /**
      * @inheritDoc
@@ -49,26 +53,41 @@ class URLParserBase
         return false;
     }
 
-    protected function parseStringToRecipeIngredient(string $text)
+    protected function parseStringToRecipeIngredient(string $text) : ?RecipeIngredient
     {
+        $recipeIngredient = new RecipeIngredient();
 
+        $this->importService->parseUnit($recipeIngredient, $text);
+        $this->importService->parseAmount($recipeIngredient, $text);
+        $this->importService->parseIngredient($recipeIngredient, $text);
+
+        $recipeIngredient->setText($text);
+
+        if (!$recipeIngredient->getUnit() && !$recipeIngredient->getAmount() && !$recipeIngredient->getIngredient()) {
+            return null;
+        }
+
+        return $recipeIngredient;
     }
 
-    protected function addStringListAsRecipeIngredients(array $ingredientStringList)
+
+
+    protected function addStringListAsRecipeIngredients(Recipe $recipe, array &$ingredientStringList)
     {
         $ingredients = [];
-        foreach ($ingredientStringList as &$ingredientString) {
-            $ingredient = $this->parseStringToRecipeIngredient()
+        foreach ($ingredientStringList as $index => &$ingredientString) {
+            $ingredient = $this->parseStringToRecipeIngredient($ingredientString);
             $ingredients[] = $ingredient;
             if ($ingredient) {
-                $ingredientString = "";
+                unset($ingredientStringList[$index]);
+                $recipe->addRecipeIngredient($ingredient);
             }
         }
     }
 
     protected function guessIngredientList(Dom $dom, $asText = true, $tag = 'ul', $classesToCheck = ['ingredient'])
     {
-        $ingredientsLists = $dom->find('ul');
+        $ingredientsLists = $dom->find($tag);
         $finalIngredientList = null;
         foreach ($ingredientsLists as $ingredientsList) {
             $classes = $ingredientsList->tag->getAttribute('class')['value'];
@@ -99,6 +118,40 @@ class URLParserBase
         }
 
         return $finalIngredientList;
+    }
+
+    protected function guessStepsList(Dom $dom, $asText = true, $tag = 'ol', $classesToCheck = ['steps'])
+    {
+        $stepsLists = $dom->find($tag);
+        $finalStepsList = null;
+        foreach ($stepsLists as $stepsList) {
+            $classes = $stepsList->tag->getAttribute('class')['value'];
+            foreach ($classesToCheck as $class) {
+                if (stripos($classes, $class) !== false) {
+                    $finalStepsList = $stepsList;
+                    break;
+                }
+            }
+
+            if ($finalStepsList) {
+                break;
+            }
+        }
+
+        if ($finalStepsList && $asText) {
+            $result = [];
+
+            foreach ($finalStepsList as $finalIngredient) {
+                $ingredient = trim(strip_tags($finalIngredient->innerHtml));
+                if ($ingredient) {
+                    $result[] = preg_replace('!\s+!', ' ', $ingredient);
+                }
+            }
+
+            return $result;
+        }
+
+        return $finalStepsList;
     }
 
     protected function addListAsRecipeSteps(Recipe $recipe, iterable $list)

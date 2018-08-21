@@ -49,6 +49,7 @@ class RecipesController extends AbstractController
     const PARAMETER_FROM_LINK = 'from_link';
 
     const FORM_RECIPE_ID = 'recipe';
+    const FORM_RECIPE_LANGUAGE = 'language';
 
     /**
      * Lists all Recipe entities.
@@ -86,7 +87,7 @@ class RecipesController extends AbstractController
     ): Response {
         $this->denyAccessUnlessGranted('edit', $recipe, 'Recipes can only be edited by their authors.');
 
-        $form = $this->createForm(RecipeType::class, $recipe, ['user' => $this->getUser()]);
+        $form = $this->createForm(RecipeType::class, $recipe, ['user' => $this->getUser(), 'recipe' => $recipe]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -179,6 +180,7 @@ class RecipesController extends AbstractController
             if ($quick) {
                 $recipe->addImage(new ImageFile());
             }
+            $recipe->setLanguage($request->request->get(self::FORM_RECIPE_ID)[self::FORM_RECIPE_LANGUAGE]);
         }
 
         // See https://symfony.com/doc/current/book/forms.html#submitting-forms-with-multiple-buttons

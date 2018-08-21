@@ -132,9 +132,11 @@ class IngredientService
         return $result;
     }
 
-    public function getIngredientFromStringInCurrentLocale($ingredientString)
+    public function getIngredientFromString($ingredientString, $locale = null)
     {
-        $locale = $this->translator->getLocale();
+        if (!$locale) {
+            $locale = $this->translator->getLocale();
+        }
 
         $ingredient = $this->em
             ->getRepository(Ingredient::class)

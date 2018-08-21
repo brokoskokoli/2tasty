@@ -68,14 +68,14 @@ class Recipe
     /**
      * @var string
      *
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\Column(type="text", nullable=true)
      */
     private $summary;
 
     /**
      * @var string
      *
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\Column(type="text", nullable=true)
      */
     private $informations;
 
@@ -783,7 +783,7 @@ class Recipe
     /**
      * @return string
      */
-    public function getLanguage(): string
+    public function getLanguage(): ?string
     {
         return $this->language;
     }
@@ -792,7 +792,7 @@ class Recipe
      * @param string $language
      * @return Recipe
      */
-    public function setLanguage(string $language): Recipe
+    public function setLanguage(?string $language): Recipe
     {
         $this->language = $language;
         return $this;

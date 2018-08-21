@@ -19,8 +19,8 @@ class URLParserNYTimesCooking extends URLParserBase
             $dom = new Dom;
             $dom->loadFromUrl($url);
 
-
-            $recipe->setLanguage(Recipe::LANGUAGE_GERMAN);
+            $recipe->setLanguage(Recipe::LANGUAGE_ENGLISH);
+            $this->importService->initForRecipe($recipe);
             $title = html_entity_decode($dom->find('h1.recipe-title', 0)->text);
             if ($title != '') {
                 $recipe->setTitle($title);
@@ -29,40 +29,23 @@ class URLParserNYTimesCooking extends URLParserBase
             $recipe->setSummary(html_entity_decode($dom->find('div.recipe-topnote-metadata div.topnote p', 0)->text));
 
             $finalIngredientList = $this->guessIngredientList($dom, true,'ul', ['recipe-ingredients']);
-            $this->addStringListAsRecipeIngredients($finalIngredientList);
+            $this->addStringListAsRecipeIngredients($recipe, $finalIngredientList);
+            $finalStepsList = $this->guessStepsList($dom, true,'ol', ['recipe-steps']);
+            $this->addListAsRecipeSteps($recipe, $finalStepsList);
 
-            dump($finalIngredientList);die;
+            $portionsText = $dom->find('span.recipe-yield-value', 0)->text;
+            $portionsTextParts = explode(' ', $portionsText);
+            $recipe->setPortions(intval(array_shift($portionsTextParts)));
 
-            /*
-            $ingredientsTable = $dom->find('table.incredients');
-            $ingredientRows = $ingredientsTable->find('tr');
-            foreach ($ingredientRows as $ingredientRow) {
-                $recipeIngredient = new RecipeIngredient();
-                if ($text = $this->getNodeFindText($ingredientRow, '.amount')) {
-                    $this->importService->importAmoutAndUnitToRecipeIngredientFromString($recipeIngredient, $text);
-                }
-                if ($text = $this->getNodeFindText($ingredientRow, 'td', 1)) {
-                    $this->importService->importIngredientToRecipeIngredientFromString($recipeIngredient, $text);
-                }
-                $recipe->addRecipeIngredient($recipeIngredient);
+            $recipe->setInformations($dom->find('span.recipe-yield-value', 1)->text);
+
+            $images = [];
+            $slideshow = $dom->find('div.recipe-intro div.media-container');
+            $imgs = $slideshow->find('img');
+            foreach ($imgs as $img) {
+                $images[] = $img->tag->getAttribute('src')['value'];
             }
-            */
-
-//            $preparation = $dom->find('div #rezept-zubereitung', 0)->innerHtml;
-//            $preparationStepTexts = StringHelper::splitString($preparation);
-//            $this->addListAsRecipeSteps($recipe, $preparationStepTexts);
-//            $portionsInput = $dom->find('#divisor', 0);
-//            $recipe->setPortions(intval($portionsInput->tag->getAttribute('value')['value']));
-//            $infoNodeText = $dom->find('#preparation-info', 0)->innerHtml;
-//            $recipe->setInformations(html_entity_decode(trim($infoNodeText)));
-//
-//            $images = [];
-//            $slideshow = $dom->find('#slideshow');
-//            $imgs = $slideshow->find('img.slideshow-image');
-//            foreach ($imgs as $img) {
-//                $images[] = $img->tag->getAttribute('src')['value'];
-//            }
-//            $this->addListAsImages($recipe, $images);
+            $this->addListAsImages($recipe, $images);
 
             return $recipe;
         } catch (\Exception $e) {

@@ -25,6 +25,7 @@ class RecipeIngredientType extends AbstractType
             [
                 'label' => "label.ingredient",
                 'required' => false,
+                'recipe' => $options['recipe'],
             ]
         )->add(
             'amount',
@@ -57,7 +58,8 @@ class RecipeIngredientType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'data_class' => RecipeIngredient::class
+                'data_class' => RecipeIngredient::class,
+                'recipe' => null,
             ]
         );
     }
