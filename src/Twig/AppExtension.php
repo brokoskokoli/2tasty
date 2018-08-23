@@ -101,9 +101,9 @@ class AppExtension extends AbstractExtension
         return $this->parser->toHtml($content);
     }
 
-    public function ingredientText(RecipeIngredient $recipeIngredient): string
+    public function ingredientText(RecipeIngredient $recipeIngredient, $locale): string
     {
-        $result = $this->ingredientService->getTranslatedCalculatedIngredientText($recipeIngredient, $this->user);
+        $result = $this->ingredientService->getTranslatedCalculatedIngredientText($recipeIngredient, $this->user, $locale);
 
         if ($result != '' && $recipeIngredient->getText() != '') {
             $result .= ' - ';

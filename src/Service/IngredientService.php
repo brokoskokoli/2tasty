@@ -59,7 +59,7 @@ class IngredientService
         }, $entries);
     }
 
-    public function getReadableIngredientText(RecipeIngredient $recipeIngredient)
+    public function getReadableIngredientText(RecipeIngredient $recipeIngredient, $locale = null)
     {
         $result = '';
 
@@ -67,7 +67,7 @@ class IngredientService
             $result .= $recipeIngredient->getAmount() . ' ';
         }
         if ($recipeIngredient->getUnit()) {
-            $result .= $this->translator->trans($recipeIngredient->getUnit()->getName()) . ' ';
+            $result .= $this->translator->trans($recipeIngredient->getUnit()->getName(), [], null, $locale) . ' ';
         }
 
         return $result;
@@ -106,7 +106,7 @@ class IngredientService
         return $this->getUserPreferenceIngredientDisplayDefault($ingredient, $user->getIngredientDisplayPreference());
     }
 
-    public function getCalculatedIngredientAmountText(RecipeIngredient $recipeIngredient, ?User $user = null)
+    public function getCalculatedIngredientAmountText(RecipeIngredient $recipeIngredient, ?User $user = null, $locale = null)
     {
         if ($recipeIngredient->getIngredient()) {
             if ($user) {
@@ -118,15 +118,15 @@ class IngredientService
             }
         }
 
-        return $this->getReadableIngredientText($recipeIngredient);
+        return $this->getReadableIngredientText($recipeIngredient, $locale);
     }
 
-    public function getTranslatedCalculatedIngredientText(RecipeIngredient $recipeIngredient, ?User $user = null)
+    public function getTranslatedCalculatedIngredientText(RecipeIngredient $recipeIngredient, ?User $user = null, $locale = null)
     {
-        $result = $this->getCalculatedIngredientAmountText($recipeIngredient, $user);
+        $result = $this->getCalculatedIngredientAmountText($recipeIngredient, $user, $locale);
 
         if ($recipeIngredient->getIngredient()) {
-            $result .= $this->translator->trans($recipeIngredient->getIngredient()->getName());
+            $result .= $this->translator->trans($recipeIngredient->getIngredient()->getName(), [], null, $locale);
         }
 
         return $result;

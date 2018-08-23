@@ -226,7 +226,7 @@ class ImageFile
         if ($uniqueId) {
             $this->uniqueId = $uniqueId;
         }
-        
+
         return $this;
     }
 

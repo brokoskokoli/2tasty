@@ -114,7 +114,7 @@ class RecipeService
 
     public function saveRecipe(Recipe $recipe)
     {
-        $recipe->setSlug(Slugger::slugify($recipe->getAuthor()->getUsername() . '_' . $recipe->getTitle()));
+        $recipe->setSlug(Slugger::slugify($recipe->getAuthor()->getUsername() . '_' . $recipe->getTitle() . '_' . time()));
 
         foreach ($recipe->getRecipeHints() as &$recipeHint) {
             $recipeHint->setRecipe($recipe);
