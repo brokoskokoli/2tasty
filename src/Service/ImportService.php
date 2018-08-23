@@ -194,4 +194,16 @@ class ImportService
         }
     }
 
+    public function storeImages(Recipe $recipe)
+    {
+        foreach ($recipe->getImages() as $image) {
+            $this->em->persist($image);
+        }
+
+        $this->em->flush();
+
+        // man kann die bilder ohne besitze einfach löschen und dann alle bilder, die keinen eintrag in der db haben
+        // bild wird nicht gespeichert
+    }
+
 }

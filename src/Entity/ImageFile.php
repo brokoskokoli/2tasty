@@ -26,6 +26,14 @@ class ImageFile
      *
      * @var string
      */
+    private $uniqueId;
+
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     *
+     * @var string
+     */
     private $altText;
 
     /**
@@ -62,7 +70,7 @@ class ImageFile
      * @var Recipe
      *
      * @ORM\ManyToOne(targetEntity="Recipe", inversedBy="images")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $recipe;
 
@@ -70,6 +78,7 @@ class ImageFile
     {
         $this->setUpdatedAt(new \DateTime());
         $this->altText = '';
+        $this->uniqueId = uniqid();
     }
 
 
@@ -133,6 +142,17 @@ class ImageFile
     }
 
     /**
+     * @param mixed $id
+     * @return ImageFile
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+        return $this;
+    }
+
+
+    /**
      * @return \DateTime
      */
     public function getUpdatedAt(): \DateTime
@@ -186,6 +206,27 @@ class ImageFile
         if (!$this->altText) {
             $this->altText = '';
         }
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUniqueId(): string
+    {
+        return $this->uniqueId;
+    }
+
+    /**
+     * @param string $uniqueId
+     * @return ImageFile
+     */
+    public function setUniqueId(?string $uniqueId): ImageFile
+    {
+        if ($uniqueId) {
+            $this->uniqueId = $uniqueId;
+        }
+        
         return $this;
     }
 

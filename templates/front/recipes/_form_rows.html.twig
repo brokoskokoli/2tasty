@@ -8,12 +8,14 @@
 {{ arrayCollection.start('images', 'title.images', [
     {class: 'col-md-8', field: form.images.vars.prototype.imageFile},
     {class: 'col-md-3', field: form.images.vars.prototype.altText},
+    {class: '', field: form.images.vars.prototype.uniqueId},
 ]) }}
 
 {% for image in form.images %}
     {{ arrayCollection.line([
         {class: 'col-md-8', field: image.imageFile},
         {class: 'col-md-3', field: image.altText},
+        {class: '', field: image.uniqueId},
     ]) }}
 {% endfor %}
 

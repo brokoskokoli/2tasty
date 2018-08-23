@@ -149,6 +149,7 @@ help:
   app_description: |
     <strong>Version 1.0</strong> <br>
     - Portionenumrechner<br>
+    - Besserer Import von Webseiten
     <br>
     <strong>Version 0.9</strong> <br>
     - Rezeptlisten<br>

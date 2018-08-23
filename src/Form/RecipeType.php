@@ -12,6 +12,7 @@
 namespace App\Form;
 
 use App\Entity\Recipe;
+use App\Form\Type\CollectionEntityLoadType;
 use App\Form\Type\DateTimePickerType;
 use App\Form\Type\RecipeAlternativeType;
 use App\Form\Type\RecipeHintType;
@@ -110,12 +111,13 @@ class RecipeType extends AbstractType
                 ]
             )
             ->add('images',
-                CollectionType::class,
+                CollectionEntityLoadType::class,
                 [
                     'entry_type' => RecipeImageType::class,
                     'allow_add' => true,
                     'allow_delete' => true,
-                    'by_reference' => true
+                    'by_reference' => true,
+                    'child_property' => 'uniqueId',
                 ]
             )
             ->add('recipeSteps',

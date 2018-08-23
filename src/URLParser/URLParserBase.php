@@ -25,6 +25,7 @@ class URLParserBase
     protected $importService;
 
 
+
     /**
      * @inheritDoc
      */
@@ -181,6 +182,8 @@ class URLParserBase
             $imageFile->setImageFile($uploadedFile);
             $recipe->addImage($imageFile);
         }
+
+        $this->importService->storeImages($recipe);
     }
 
     protected function getNodeFindText(AbstractNode $node, $selector, $index = 0)
