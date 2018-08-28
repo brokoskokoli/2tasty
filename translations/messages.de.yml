@@ -180,7 +180,7 @@ help:
     <br>
 
   more_information: |
-    Bei Fehlern und Vorschlägen wende dich bitte an <a href="https://github.com/brokoskokoli/myfood/issues">das Githubdirectory</a>
+    Bei Fehlern und Vorschlägen wende dich bitte an <a href="https://github.com/brokoskokoli/2cooks/issues">das Githubdirectory</a>
   mit_license: MIT-Lizenz
 
 static:
@@ -219,7 +219,7 @@ page:
 
 
 emails:
-  subjectprefix: '[MyFood] '
+  subjectprefix: '[2tasty] '
   forgot_password:
     subject: Passwort zurücksetzen
     text: |

@@ -11,7 +11,7 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
--- Export de la structure de la table myfood. ref_ingredient_display_preference
+-- Export de la structure de la table 2tasty. ref_ingredient_display_preference
 DROP TABLE IF EXISTS `ref_ingredient_display_preference`;
 CREATE TABLE IF NOT EXISTS `ref_ingredient_display_preference` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS `ref_ingredient_display_preference` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- Export de données de la table myfood.ref_ingredient_display_preference : ~2 rows (environ)
+-- Export de données de la table 2tasty.ref_ingredient_display_preference : ~2 rows (environ)
 DELETE FROM `ref_ingredient_display_preference`;
 /*!40000 ALTER TABLE `ref_ingredient_display_preference` DISABLE KEYS */;
 INSERT INTO `ref_ingredient_display_preference` (`id`, `name`) VALUES
@@ -28,7 +28,7 @@ INSERT INTO `ref_ingredient_display_preference` (`id`, `name`) VALUES
 	(3, 'ingredient_preferences.US');
 /*!40000 ALTER TABLE `ref_ingredient_display_preference` ENABLE KEYS */;
 
--- Export de la structure de la table myfood. ref_unit
+-- Export de la structure de la table 2tasty. ref_unit
 DROP TABLE IF EXISTS `ref_unit`;
 CREATE TABLE IF NOT EXISTS `ref_unit` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS `ref_unit` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- Export de données de la table myfood.ref_unit : ~11 rows (environ)
+-- Export de données de la table 2tasty.ref_unit : ~11 rows (environ)
 DELETE FROM `ref_unit`;
 /*!40000 ALTER TABLE `ref_unit` DISABLE KEYS */;
 INSERT INTO `ref_unit` (`id`, `name`, `factor_to_liter`, `factor_to_kg`) VALUES

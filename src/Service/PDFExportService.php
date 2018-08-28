@@ -52,7 +52,7 @@ class PDFExportService
         $pdf->SetCreator(PDF_CREATOR);
         $pdf->SetAuthor($recipe->getAuthor()->getFullName());
         $pdf->SetTitle($recipe->getTitle());
-        $pdf->SetSubject('MyFood recipe');
+        $pdf->SetSubject('2tasty recipe');
         $pdf->SetKeywords('recipe, '.join(', ', $recipe->getTags()->toArray()));
 
         $pdf->AddPage();
