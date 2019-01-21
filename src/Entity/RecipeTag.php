@@ -42,17 +42,31 @@ class RecipeTag implements \JsonSerializable
      */
     private $recipes;
 
-    public function getId(): int
+    public function __construct()
+    {
+        $this->recipes = new ArrayCollection();
+    }
+
+
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function setName(string $name): void
+    /**
+     * @param int $id
+     */
+    public function setId(?int $id)
+    {
+        $this->id = $id;
+    }
+
+    public function setName(?string $name): void
     {
         $this->name = $name;
     }
 
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }

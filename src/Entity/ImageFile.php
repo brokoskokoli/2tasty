@@ -212,7 +212,7 @@ class ImageFile
     /**
      * @return string
      */
-    public function getUniqueId(): string
+    public function getUniqueId(): ?string
     {
         return $this->uniqueId;
     }
