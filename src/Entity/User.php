@@ -202,6 +202,9 @@ class User implements UserInterface, \Serializable
         $this->setUpdatedAt(new \DateTime());
         $this->altText = '';
         $this->ingredientDisplayPreferenceOverrides = new ArrayCollection();
+        $this->recipeCookings = new ArrayCollection();
+        $this->collected_recipes = new ArrayCollection();
+        $this->recipes = new ArrayCollection();
     }
 
 
