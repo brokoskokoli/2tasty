@@ -201,7 +201,6 @@ class User implements UserInterface, \Serializable
     {
         $this->setUpdatedAt(new \DateTime());
         $this->altText = '';
-        $this->ingredientDisplayPreference = self::DISPLAY_PREFERENCE_NATIVE;
         $this->ingredientDisplayPreferenceOverrides = new ArrayCollection();
     }
 
