@@ -132,6 +132,7 @@ class User implements UserInterface, \Serializable
      * @ORM\ManyToOne(
      *     targetEntity="App\Entity\RefIngredientDisplayPreference",
      *     fetch="EAGER")
+     * @ORM\JoinColumn(nullable=true)
      */
     private $ingredientDisplayPreference;
 
