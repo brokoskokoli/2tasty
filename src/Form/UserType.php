@@ -13,6 +13,7 @@ use App\Form\Type\RecipeImageType;
 use App\Form\Type\RecipeIngredientType;
 use App\Form\Type\RecipeStepType;
 use App\Form\Type\RecipeTagsInputType;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -34,6 +35,7 @@ class UserType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $user = $builder->getData();
         $builder
             ->add(
                 'fullName',
@@ -75,6 +77,20 @@ class UserType extends AbstractType
                     'allow_add' => true,
                     'allow_delete' => true,
                     'by_reference' => true
+                ]
+            )
+            ->add('dailyDishRecipeList',
+                EntityType::class,
+                [
+                    'class' => RecipeListType::class,
+                    'choice_label' => 'name',
+                    'label' => "label.daily_dish_recipe_list",
+                    'query_builder' => function (EntityRepository $er) use ($user) {
+                        $queryBuilder = $er->createQueryBuilder('rl');
+                        $queryBuilder->andWhere('rl.author = :user');
+                        $queryBuilder->setParameter('user', $user);
+                        return $queryBuilder;
+                    },
                 ]
             )
             ->add(

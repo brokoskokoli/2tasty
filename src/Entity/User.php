@@ -197,6 +197,14 @@ class User implements UserInterface, \Serializable
      */
     private $recipeCookings;
 
+    /**
+     * @var RecipeList
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\RecipeList")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $dailyDishRecipeList;
+
     public function __construct()
     {
         $this->setUpdatedAt(new \DateTime());
@@ -586,5 +594,24 @@ class User implements UserInterface, \Serializable
 
         return $this;
     }
+
+    /**
+     * @return RecipeList
+     */
+    public function getDailyDishRecipeList(): ?RecipeList
+    {
+        return $this->dailyDishRecipeList;
+    }
+
+    /**
+     * @param RecipeList $dailyDishRecipeList
+     * @return User
+     */
+    public function setDailyDishRecipeList(RecipeList $dailyDishRecipeList): User
+    {
+        $this->dailyDishRecipeList = $dailyDishRecipeList;
+        return $this;
+    }
+
 
 }
