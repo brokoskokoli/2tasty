@@ -21,6 +21,7 @@ use App\Service\RecipeListService;
 use App\Service\RecipeRatingService;
 use App\Service\RecipeService;
 use App\Service\RecipeTagService;
+use App\Service\RecipeUserService;
 use App\Utils\Slugger;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -379,19 +380,6 @@ class RecipesController extends AbstractController
     {
         $exportService->generateRecipePDF($recipe);
         die;
-    }
-
-    /**
-     * @Route("/recipe_of_the_day", name="recipes_recipe_recipe_of_the_day")
-     * @Method("GET")
-     */
-    public function myRecipeOfTheDayAction(RecipeService $recipeService)
-    {
-        $recipe = $recipeService->getRandom([]);
-
-        return $this->render(':front/recipes:dish_of_the_day_show.html.twig', [
-            'recipe' => $recipe,
-        ]);
     }
 
     /**

@@ -29,7 +29,7 @@
     <p class="spacer-medium">&nbsp;</p>
     {{ include('front/recipes/_recipe_tags.html.twig') }}
 
-    {% if shortview|default(false) %}
+    {% if not shortview|default(false) %}
 
         <p class="spacer-medium">&nbsp;</p>
         {% if not recipe.recipeLists.empty %}

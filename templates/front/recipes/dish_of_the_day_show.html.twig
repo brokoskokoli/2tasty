@@ -11,8 +11,23 @@
 {% block sidebar %}
 
     <div class="section">
-        <a href="{{ path('recipes_cooked_show', {slug: recipe.slug}) }}" class="btn btn-lg btn-block btn-success">
-            <i class="fa fa-eye" aria-hidden="true"></i> {{ 'action.will_be_cooked'|trans }}
+        <a href="{{ path('recipe_user_cook_now', {'id': recipe.id}) }}" class="btn btn-lg btn-block btn-success">
+            <i class="fa fa-play" aria-hidden="true"></i> {{ 'action.will_be_cooked_now'|trans }}
+        </a>
+    </div>
+    <div class="section">
+        <a href="{{ path('recipe_user_recipe_of_the_day') }}" class="btn btn-lg btn-block btn-warning">
+            <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> {{ 'action.the_next_one'|trans }}
+        </a>
+    </div>
+    <div class="section">
+        <a href="{{ path('recipe_user_cook_soon', {'id': recipe.id}) }}" class="btn btn-lg btn-block btn-success">
+            <i class="fa fa-play" aria-hidden="true"></i> {{ 'action.will_be_cooked_soon'|trans }}
+        </a>
+    </div>
+    <div class="section">
+        <a href="{{ path('recipe_user_cooked_recently', {'id': recipe.id}) }}" class="btn btn-lg btn-block btn-success">
+            <i class="fa fa-play" aria-hidden="true"></i> {{ 'action.has_been_cooked_recently'|trans }}
         </a>
     </div>
 
@@ -27,47 +42,4 @@
     gab es gerade
 
     #}
-    {% if is_granted('edit', recipe) %}
-        <div class="section">
-            <a class="btn btn-lg btn-block btn-success" href="{{ path('recipes_edit', {id: recipe.id}) }}">
-                <i class="fa fa-edit" aria-hidden="true"></i> {{ 'action.edit_recipe'|trans }}
-            </a>
-        </div>
-
-        <div class="section">
-            {{ include('front/recipes/_delete_form.html.twig', {recipe: recipe}, with_context = false) }}
-        </div>
-        <hr>
-    {% else %}
-        {% if canAddToCollection(recipe) %}
-            <div class="section">
-                <a class="btn btn-lg btn-block btn-success"
-                   href="{{ path('recipes_add_to_collection', {id: recipe.id}) }}">
-                    <i class="fa fa-plus" aria-hidden="true"></i> {{ 'action.add_to_collection'|trans }}
-                </a>
-            </div>
-        {% endif %}
-        {% if canRemoveFromCollection(recipe) %}
-            <div class="section">
-                <a class="btn btn-lg btn-block btn-danger"
-                   href="{{ path('recipes_remove_from_collection', {id: recipe.id}) }}">
-                    <i class="fa fa-minus" aria-hidden="true"></i> {{ 'action.remove_from_collection'|trans }}
-                </a>
-            </div>
-        {% endif %}
-    {% endif %}
-
-    {% if app.user and app.user.activeRecipeList and not app.user.activeRecipeList.getRecipes.contains(recipe) %}
-        <div class="section">
-            <a class="btn btn-lg btn-block btn-success"
-               href="{{ path('recipelists_add_to_active', {'id': recipe.id}) }}">
-                {{ 'action.add_to_activ_recipelist'|trans }}
-            </a>
-        </div>
-    {% endif %}
-
-    {# the parent() function includes the contents defined by the parent template
-      ('base.html.twig') for this block ('sidebar'). This is a very convenient way
-      to share common contents in different templates #}
-    {{ parent() }}
 {% endblock %}

@@ -159,7 +159,7 @@ class RecipeService
      * @param $filter
      * @return Recipe
      */
-    public function getRandom($filter)
+    public function getRandom($filter = [])
     {
         $recipes = $this->em->getRepository(Recipe::class)->findAll();
         $index = array_rand($recipes);

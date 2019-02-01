@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Recipe;
 use App\Entity\RecipeList;
 use App\Entity\RecipeUserFlags;
 use App\Entity\User;
@@ -15,21 +16,22 @@ class RecipeUserFlagsRepository extends ServiceEntityRepository
         parent::__construct($registry, RecipeUserFlags::class);
     }
 
-
     /**
-     * @return RecipeList[]|array
+     * @author Stefan RICHTER <srichter@webnet.fr>
+     * @param Recipe $recipe
+     * @param User $user
+     * @return RecipeUserFlags|null
      */
-    public function getAllForUser(?User $user = null, $onlyNotArchived = false)
+    public function getRecipeUserFlags(Recipe $recipe, User $user)
     {
-        $queryBuilder = $this->createQueryBuilder('rl');
-        $queryBuilder->andWhere('rl.author = :user or rl.author is null');
-        if ($onlyNotArchived) {
-            $queryBuilder->andWhere('rl.archived = 0');
+        $recipeTags = $this->findOneBy(['author' => $user, 'recipe' => $recipe]);
+        if (!$recipeTags) {
+            $recipeTags = new RecipeUserFlags();
+            $recipeTags->setAuthor($user);
+            $recipeTags->setRecipe($recipe);
+            $this->_em->persist($recipeTags);
         }
 
-        $queryBuilder->setParameter('user', $user);
-        $queryBuilder->orderBy('rl.archived', 'ASC');
-
-        return $queryBuilder->getQuery()->getResult();
+        return $recipeTags;
     }
 }

@@ -38,16 +38,16 @@ class RecipeUserFlags
     /**
      * @var \DateTime
      *
-     * @ORM\Column(type="datetime")
-     * @Assert\DateTime
+     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $wantToCook;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(type="datetime")
-     * @Assert\DateTime
+     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $proposed;
 
@@ -84,7 +84,7 @@ class RecipeUserFlags
     /**
      * @return \DateTime
      */
-    public function getWantToCook(): \DateTime
+    public function getWantToCook(): ?\DateTime
     {
         return $this->wantToCook;
     }
@@ -93,16 +93,22 @@ class RecipeUserFlags
      * @param \DateTime $wantToCook
      * @return RecipeUserFlags
      */
-    public function setWantToCook(\DateTime $wantToCook): RecipeUserFlags
+    public function setWantToCook(\DateTime $wantToCook = null): RecipeUserFlags
     {
         $this->wantToCook = $wantToCook;
+        return $this;
+    }
+
+    public function setWantToCookNow(): RecipeUserFlags
+    {
+        $this->wantToCook = new \DateTime();
         return $this;
     }
 
     /**
      * @return \DateTime
      */
-    public function getProposed(): \DateTime
+    public function getProposed(): ?\DateTime
     {
         return $this->proposed;
     }
@@ -111,9 +117,15 @@ class RecipeUserFlags
      * @param \DateTime $proposed
      * @return RecipeUserFlags
      */
-    public function setProposed(\DateTime $proposed): RecipeUserFlags
+    public function setProposed(\DateTime $proposed = null): RecipeUserFlags
     {
         $this->proposed = $proposed;
+        return $this;
+    }
+
+    public function setProposedNow(): RecipeUserFlags
+    {
+        $this->proposed = new \DateTime();
         return $this;
     }
 

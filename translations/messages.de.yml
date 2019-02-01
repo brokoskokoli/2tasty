@@ -100,6 +100,10 @@ action:
   add_to_activ_recipelist: In aktive Rezeptliste
   save_active: Speichere als aktive Rezeptliste
   calculate: Berechnen
+  will_be_cooked_now: Wird jetzt gekocht
+  the_next_one: Was anderes
+  will_be_cooked_soon: Wird bald gekocht
+  has_been_cooked_recently: Wurde gerade gekocht
 
 dialogs:
   delete_recipe:
