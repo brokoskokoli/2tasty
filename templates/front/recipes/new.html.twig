@@ -36,6 +36,11 @@
         {% do form.recipeTags.setRendered %}
         {% do form.portions.setRendered %}
         {% do form.summary.setRendered %}
+        {% do form.workingTime.setRendered %}
+        {% do form.waitingTime.setRendered %}
+        {% do form.informations.setRendered %}
+        {% do form.recipeLinks.setRendered %}
+        {% do form.authorRecipeLists.setRendered %}
 
     {% else %}
         {{ include('front/recipes/_form_rows.html.twig', {

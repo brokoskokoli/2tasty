@@ -4,42 +4,38 @@
 
 {% block main %}
 
-    {{ include('front/recipes/_recipe.html.twig', {'shortview' : true}) }}
+    {% if recipe is not null %}
+        {{ include('front/recipes/_recipe.html.twig', {'shortview' : true}) }}
+    {% else %}
+        <p>{{ 'messages.no_recipes_found'|trans }}</p>
+    {% endif %}
 
 {% endblock %}
 
 {% block sidebar %}
 
-    <div class="section">
-        <a href="{{ path('recipe_user_cook_now', {'id': recipe.id}) }}" class="btn btn-lg btn-block btn-success">
-            <i class="fa fa-play" aria-hidden="true"></i> {{ 'action.will_be_cooked_now'|trans }}
-        </a>
-    </div>
-    <div class="section">
-        <a href="{{ path('recipe_user_recipe_of_the_day') }}" class="btn btn-lg btn-block btn-warning">
-            <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> {{ 'action.the_next_one'|trans }}
-        </a>
-    </div>
-    <div class="section">
-        <a href="{{ path('recipe_user_cook_soon', {'id': recipe.id}) }}" class="btn btn-lg btn-block btn-success">
-            <i class="fa fa-play" aria-hidden="true"></i> {{ 'action.will_be_cooked_soon'|trans }}
-        </a>
-    </div>
-    <div class="section">
-        <a href="{{ path('recipe_user_cooked_recently', {'id': recipe.id}) }}" class="btn btn-lg btn-block btn-success">
-            <i class="fa fa-play" aria-hidden="true"></i> {{ 'action.has_been_cooked_recently'|trans }}
-        </a>
-    </div>
+    {% if recipe is not null %}
+        <div class="section">
+            <a href="{{ path('recipe_user_cook_now', {'id': recipe.id}) }}" class="btn btn-lg btn-block btn-success">
+                <i class="fa fa-play" aria-hidden="true"></i> {{ 'action.will_be_cooked_now'|trans }}
+            </a>
+        </div>
+        <div class="section">
+            <a href="{{ path('recipe_user_recipe_of_the_day') }}" class="btn btn-lg btn-block btn-warning">
+                <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> {{ 'action.the_next_one'|trans }}
+            </a>
+        </div>
 
-    {#
+        <div class="section">
+            <a href="{{ path('recipe_user_cook_soon', {'id': recipe.id}) }}" class="btn btn-lg btn-block btn-primary">
+                <i class="fa fa-clock-o" aria-hidden="true"></i> {{ 'action.will_be_cooked_soon'|trans }}
+            </a>
+        </div>
+        <div class="section">
+            <a href="{{ path('recipe_user_cooked_recently', {'id': recipe.id}) }}" class="btn btn-lg btn-block btn-default">
+                <i class="fa fa-calendar-check-o" aria-hidden="true"></i> {{ 'action.has_been_cooked_recently'|trans }}
+            </a>
+        </div>
+    {% endif %}
 
-    wird gekocht
-
-    was anderes
-
-    bald wieder
-
-    gab es gerade
-
-    #}
 {% endblock %}

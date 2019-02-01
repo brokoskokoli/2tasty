@@ -275,6 +275,18 @@ class Recipe
      */
     private $collectors;
 
+    /**
+     * @var RecipeUserFlags[]|ArrayCollection
+     *
+     * @ORM\OneToMany(
+     *     targetEntity="App\Entity\RecipeUserFlags",
+     *      mappedBy="recipe",
+     *      orphanRemoval=true,
+     *      cascade={"persist"}
+     * )
+     */
+    private $userFlags;
+
     public function __construct()
     {
         $this->images = new ArrayCollection();
@@ -287,6 +299,7 @@ class Recipe
         $this->recipeSteps = new ArrayCollection();
         $this->recipeLinks = new ArrayCollection();
         $this->recipeLists = new ArrayCollection();
+        $this->userFlags = new ArrayCollection();
         $this->private = false;
     }
 
@@ -798,6 +811,13 @@ class Recipe
         return $this;
     }
 
+    /**
+     * @return RecipeUserFlags[]|ArrayCollection
+     */
+    public function getUserFlags()
+    {
+        return $this->userFlags;
+    }
 
 
 }

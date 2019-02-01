@@ -67,6 +67,7 @@ label:
   active: aktiv
   ingredients_must_have: Enthaltene Zutaten
   ingredients_must_not_have: Ausgeschlossene Zutaten
+  daily_dish_recipe_list: Rezeptliste der Rezepte des Tages
 
 action:
   back_to_list: Zurück zur Liste

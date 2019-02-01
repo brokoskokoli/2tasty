@@ -22,7 +22,7 @@ class RecipeUserFlags
     /**
      * @var Recipe
      *
-     * @ORM\ManyToOne(targetEntity="Recipe")
+     * @ORM\ManyToOne(targetEntity="Recipe", inversedBy="userFlags")
      * @ORM\JoinColumn(nullable=false)
      */
     private $recipe;

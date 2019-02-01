@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\IngredientDisplayPreferenceOverride;
 use App\Entity\Recipe;
+use App\Entity\RecipeList;
 use App\Entity\RefIngredientDisplayPreference;
 use App\Entity\User;
 use App\Form\Type\IngredientDisplayPreferenceOverrideType;
@@ -82,8 +83,9 @@ class UserType extends AbstractType
             ->add('dailyDishRecipeList',
                 EntityType::class,
                 [
-                    'class' => RecipeListType::class,
+                    'class' => RecipeList::class,
                     'choice_label' => 'name',
+                    'placeholder' => 'Alle Rezepte',
                     'label' => "label.daily_dish_recipe_list",
                     'query_builder' => function (EntityRepository $er) use ($user) {
                         $queryBuilder = $er->createQueryBuilder('rl');

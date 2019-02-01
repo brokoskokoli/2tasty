@@ -43,7 +43,14 @@ class RecipeUserService
 
     public function getRecipeProposal(User $user)
     {
-        $recipe = $this->recipeService->getRandom();
+        $recipes = $this->em->getRepository(Recipe::class)->getMyProposedRecipes($user);
+        if (empty($recipes)) {
+            return null;
+        }
+
+        $index = array_rand($recipes);
+        $recipe = $recipes[$index];
+
         if ($recipe) {
             $recipeTags = $this->em->getRepository(RecipeUserFlags::class)->getRecipeUserFlags($recipe, $user);
             $recipeTags->setProposedNow();

@@ -59,7 +59,7 @@ class RecipeRepository extends ServiceEntityRepository
     }
 
 
-    public function getMyRecipes($user)
+    public function getMyRecipes(User $user)
     {
         $queryBuilder = $this->createQueryBuilder('r');
         $queryBuilder->leftJoin('r.collectors', 'c');
@@ -72,6 +72,69 @@ class RecipeRepository extends ServiceEntityRepository
         $queryBuilder->orderBy('r.createdAt', 'DESC');
 
         return $queryBuilder->getQuery()->getResult();
+    }
+
+
+    protected function getMyProposedRecipesQueryBuilder(User $user)
+    {
+        $proposalRecipeList = $user->getDailyDishRecipeList();
+        $queryBuilder = $this->createQueryBuilder('r');
+        if ($proposalRecipeList) {
+            $queryBuilder->leftJoin('r.recipeLists', 'rl');
+            $queryBuilder->andWhere('rl.id = :recipelist');
+            $queryBuilder->setParameter('recipelist', $proposalRecipeList);
+        } else {
+            $queryBuilder->leftJoin('r.collectors', 'c');
+            $userGroup = $queryBuilder->expr()->orX();
+            $userGroup->add('r.author = :user');
+            $userGroup->add('c.id = :user');
+            $queryBuilder->andWhere($userGroup);
+        }
+
+        $queryBuilder->leftJoin('r.userFlags', 'ruf', 'WITH', 'ruf.author = :user');
+
+        $proposedGroup = $queryBuilder->expr()->orX();
+        $proposedGroup->add('ruf.proposed < :limitProposed');
+        $proposedGroup->add('ruf.proposed IS NULL');
+        $queryBuilder->andWhere($proposedGroup);
+
+        $queryBuilder->setParameter('limitProposed', new \DateTime('-6 hours'), \Doctrine\DBAL\Types\Type::DATETIME);
+        $queryBuilder->setParameter('user', $user);
+
+        return $queryBuilder;
+    }
+
+    public function getMyWantedProposedRecipes(User $user)
+    {
+        $queryBuilder = $this->getMyProposedRecipesQueryBuilder($user);
+        $queryBuilder->andWhere('ruf.wantToCook IS NOT NULL');
+        $queryBuilder->orderBy('ruf.proposed', 'ASC');
+
+        $queryBuilder->setMaxResults(10);
+
+        return $queryBuilder->getQuery()->getResult();
+    }
+
+    public function getMyRestOfProposedRecipes(User $user)
+    {
+        $queryBuilder = $this->getMyProposedRecipesQueryBuilder($user);
+
+        $queryBuilder->andWhere('ruf.wantToCook IS NULL');
+        $queryBuilder->leftJoin('r.recipeCookings', 'rc', 'WITH', 'rc.author = :user');
+        $queryBuilder->orderBy('rc.cookedAt', 'ASC');
+        $queryBuilder->setMaxResults(10);
+
+        return $queryBuilder->getQuery()->getResult();
+    }
+
+    public function getMyProposedRecipes(User $user)
+    {
+        $recipes = $this->getMyWantedProposedRecipes($user);
+        if (empty($recipes)) {
+            $recipes = $this->getMyRestOfProposedRecipes($user);
+        }
+
+        return $recipes;
     }
 
 
