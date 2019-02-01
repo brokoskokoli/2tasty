@@ -389,7 +389,7 @@ class RecipesController extends AbstractController
     {
         $recipe = $recipeService->getRandom([]);
 
-        return $this->render('front/recipes/show.html.twig', [
+        return $this->render(':front/recipes:dish_of_the_day_show.html.twig', [
             'recipe' => $recipe,
         ]);
     }

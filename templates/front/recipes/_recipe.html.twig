@@ -29,82 +29,85 @@
     <p class="spacer-medium">&nbsp;</p>
     {{ include('front/recipes/_recipe_tags.html.twig') }}
 
-    <p class="spacer-medium">&nbsp;</p>
-    {% if not recipe.recipeLists.empty %}
-        <p>{{ 'label.recipeLists'|trans({}, "messages", recipe.language) }}</p>
-        <p class="recipe-recipeTags">
+    {% if shortview|default(false) %}
+
+        <p class="spacer-medium">&nbsp;</p>
+        {% if not recipe.recipeLists.empty %}
+            <p>{{ 'label.recipeLists'|trans({}, "messages", recipe.language) }}</p>
+            <p class="recipe-recipeTags">
+                <ul>
+                {% for list in recipe.recipeLists %}
+                    <li>
+                        <a href="{{ path('recipelists_show', {'slug': list.slug}) }}">{{ list.name }}</a>
+                    </li>
+                {% endfor %}
+                </ul>
+            </p>
+        {% endif %}
+
+
+
+        <p>{{ 'label.portions'|trans({}, "messages", recipe.language) }} : {{ recipe.portions }}</p>
+        <p>{{ 'label.working_time'|trans({}, "messages", recipe.language) }} : {{ recipe.workingTime|default(' -- ') }}</p>
+        <p>{{ 'label.waiting_time'|trans({}, "messages", recipe.language) }} : {{ recipe.waitingTime|default(' -- ') }}</p>
+        <p>{{ recipe.informations|purify }}</p>
+
+        <p class="spacer-medium">&nbsp;</p>
+        <div class="ingredients">
+            <h2>{{ 'title.ingredients'|trans({}, "messages", recipe.language) }}</h2>
             <ul>
-            {% for list in recipe.recipeLists %}
-                <li>
-                    <a href="{{ path('recipelists_show', {'slug': list.slug}) }}">{{ list.name }}</a>
-                </li>
-            {% endfor %}
-            </ul>
-        </p>
-    {% endif %}
-
-
-
-    <p>{{ 'label.portions'|trans({}, "messages", recipe.language) }} : {{ recipe.portions }}</p>
-    <p>{{ 'label.working_time'|trans({}, "messages", recipe.language) }} : {{ recipe.workingTime|default(' -- ') }}</p>
-    <p>{{ 'label.waiting_time'|trans({}, "messages", recipe.language) }} : {{ recipe.waitingTime|default(' -- ') }}</p>
-    <p>{{ recipe.informations|purify }}</p>
-
-    <p class="spacer-medium">&nbsp;</p>
-    <div class="ingredients">
-        <h2>{{ 'title.ingredients'|trans({}, "messages", recipe.language) }}</h2>
-        <ul>
-            {% for ingredient in recipe.recipeIngredients %}
-                <li>{{ ingredient|ingredientText(recipe.language) }}</li>
-            {% endfor %}
-        </ul>
-    </div>
-    <p class="spacer-medium">&nbsp;</p>
-    <div class="steps">
-        <h2>{{ 'title.steps'|trans({}, "messages", recipe.language) }}</h2>
-        <ol>
-            {% for step in recipe.recipeSteps %}
-                <li><p>{{ step.text|default('')|md2html }}</p><span class="details">{% if step.duration %}{{ step.duration }} {{ 'static.durations.minutes'|trans }}{% endif %}</span></li>
-            {% endfor %}
-        </ol>
-    </div>
-
-    {% if recipe.recipeHints|length > 0 %}
-        <p class="spacer-medium">&nbsp;</p>
-        <div class="hints">
-            <h2>{{ 'title.hints'|trans({}, "messages", recipe.language) }}</h2>
-            {% for hint in recipe.recipeHints %}
-                <div class="panel panel-default">
-                    <div class="panel-body">{{ hint.text|default('')|md2html }}</div>
-                </div>
-            {% endfor %}
-        </div>
-    {% endif %}
-
-    {% if recipe.recipeAlternatives|length > 0 %}
-        <p class="spacer-medium">&nbsp;</p>
-        <div class="alternatives">
-            <h2>{{ 'title.recipeAlternatives'|trans({}, "messages", recipe.language) }}</h2>
-            {% for alternative in recipe.recipeAlternatives %}
-                <div class="panel panel-default">
-                    <div class="panel-body">{{ alternative.text|default('')|md2html }}</div>
-                </div>
-            {% endfor %}
-        </div>
-    {% endif %}
-
-    {% if recipe.recipeLinks|length > 0 %}
-        <p class="spacer-medium">&nbsp;</p>
-        <div class="links">
-            <h2>{{ 'title.links'|trans({}, "messages", recipe.language) }}</h2>
-            <ul>
-            {% for link in recipe.recipeLinks %}
-                <li>
-                    <a href="{{ link.url }}">{{ link.linkText }}</a>
-                </li>
-            {% endfor %}
+                {% for ingredient in recipe.recipeIngredients %}
+                    <li>{{ ingredient|ingredientText(recipe.language) }}</li>
+                {% endfor %}
             </ul>
         </div>
+        <p class="spacer-medium">&nbsp;</p>
+        <div class="steps">
+            <h2>{{ 'title.steps'|trans({}, "messages", recipe.language) }}</h2>
+            <ol>
+                {% for step in recipe.recipeSteps %}
+                    <li><p>{{ step.text|default('')|md2html }}</p><span class="details">{% if step.duration %}{{ step.duration }} {{ 'static.durations.minutes'|trans }}{% endif %}</span></li>
+                {% endfor %}
+            </ol>
+        </div>
+
+        {% if recipe.recipeHints|length > 0 %}
+            <p class="spacer-medium">&nbsp;</p>
+            <div class="hints">
+                <h2>{{ 'title.hints'|trans({}, "messages", recipe.language) }}</h2>
+                {% for hint in recipe.recipeHints %}
+                    <div class="panel panel-default">
+                        <div class="panel-body">{{ hint.text|default('')|md2html }}</div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% if recipe.recipeAlternatives|length > 0 %}
+            <p class="spacer-medium">&nbsp;</p>
+            <div class="alternatives">
+                <h2>{{ 'title.recipeAlternatives'|trans({}, "messages", recipe.language) }}</h2>
+                {% for alternative in recipe.recipeAlternatives %}
+                    <div class="panel panel-default">
+                        <div class="panel-body">{{ alternative.text|default('')|md2html }}</div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% if recipe.recipeLinks|length > 0 %}
+            <p class="spacer-medium">&nbsp;</p>
+            <div class="links">
+                <h2>{{ 'title.links'|trans({}, "messages", recipe.language) }}</h2>
+                <ul>
+                {% for link in recipe.recipeLinks %}
+                    <li>
+                        <a href="{{ link.url }}">{{ link.linkText }}</a>
+                    </li>
+                {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
     {% endif %}
 
 </div>
