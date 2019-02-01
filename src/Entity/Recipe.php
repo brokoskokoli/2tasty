@@ -229,7 +229,7 @@ class Recipe
      * @var RecipeIngredient[]|ArrayCollection
      *
      * @ORM\OneToMany(
-     *     targetEntity="App\Entity\RecipeIngredient",
+     *     targetEntity="App\Entity\RecipeIngredientList",
      *      mappedBy="recipe",
      *      orphanRemoval=true,
      *      cascade={"persist"}
@@ -237,7 +237,7 @@ class Recipe
      * @ORM\OrderBy({"id": "ASC"})
      * @Assert\Valid()
      */
-    private $recipeIngredients;
+    private $recipeIngredientLists;
 
     /**
      * @var RecipeLink[]|ArrayCollection
@@ -694,29 +694,6 @@ class Recipe
         $recipeAlternative->setRecipe(null);
         return $this;
     }
-
-    /**
-     * @return RecipeIngredient[]|ArrayCollection
-     */
-    public function getRecipeIngredients() : Collection
-    {
-        return $this->recipeIngredients;
-    }
-
-    public function addRecipeIngredient(RecipeIngredient $recipeIngredient) : Recipe
-    {
-        $this->recipeIngredients->add($recipeIngredient);
-        $recipeIngredient->setRecipe($this);
-        return $this;
-    }
-
-    public function removeRecipeIngredient(RecipeIngredient $recipeIngredient) : Recipe
-    {
-        $this->recipeIngredients->remove($recipeIngredient);
-        $recipeIngredient->setRecipe(null);
-        return $this;
-    }
-
 
     /**
      * @return RecipeLink[]|ArrayCollection

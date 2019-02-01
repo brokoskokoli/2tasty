@@ -49,12 +49,12 @@ class RecipeIngredient
     private $ingredient;
 
     /**
-     * @var Recipe
+     * @var RecipeIngredientList
      *
-     * @ORM\ManyToOne(targetEntity="Recipe", inversedBy="recipeIngredients")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\ManyToOne(targetEntity="App\Entity\RecipeIngredientList", inversedBy="recipeIngredients")
+     * @ORM\JoinColumn(nullable=true)
      */
-    private $recipe;
+    private $recipeIngredientList;
 
     public function __construct()
     {
