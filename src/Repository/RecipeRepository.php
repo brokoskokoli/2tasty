@@ -74,8 +74,7 @@ class RecipeRepository extends ServiceEntityRepository
         return $queryBuilder->getQuery()->getResult();
     }
 
-
-    protected function getMyProposedRecipesQueryBuilder(User $user)
+    protected function getMyProposedRecipesBaseQueryBuilder(User $user)
     {
         $proposalRecipeList = $user->getDailyDishRecipeList();
         $queryBuilder = $this->createQueryBuilder('r');
@@ -93,6 +92,12 @@ class RecipeRepository extends ServiceEntityRepository
 
         $queryBuilder->leftJoin('r.userFlags', 'ruf', 'WITH', 'ruf.author = :user');
 
+        return $queryBuilder;
+    }
+
+    protected function getMyProposedRecipesQueryBuilder(User $user)
+    {
+        $queryBuilder = $this->getMyProposedRecipesBaseQueryBuilder($user);
         $proposedGroup = $queryBuilder->expr()->orX();
         $proposedGroup->add('ruf.proposed < :limitProposed');
         $proposedGroup->add('ruf.proposed IS NULL');
@@ -127,11 +132,24 @@ class RecipeRepository extends ServiceEntityRepository
         return $queryBuilder->getQuery()->getResult();
     }
 
+    public function getAllOfProposedRecipes(User $user)
+    {
+        $queryBuilder = $this->getMyProposedRecipesQueryBuilder($user);
+
+        $queryBuilder->orderBy('ruf.proposed', 'ASC');
+        $queryBuilder->setMaxResults(10);
+
+        return $queryBuilder->getQuery()->getResult();
+    }
+
     public function getMyProposedRecipes(User $user)
     {
         $recipes = $this->getMyWantedProposedRecipes($user);
         if (empty($recipes)) {
             $recipes = $this->getMyRestOfProposedRecipes($user);
+        }
+        if (empty($recipes)) {
+            $recipes = $this->getAllOfProposedRecipes($user);
         }
 
         return $recipes;

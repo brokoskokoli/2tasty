@@ -24,7 +24,7 @@ class URLParserBase
 {
     protected $importService;
 
-
+    const MAX_NUMBER_OF_IMGAES = 10;
 
     /**
      * @inheritDoc
@@ -168,6 +168,10 @@ class URLParserBase
     {
         foreach ($images as $index => $image) {
             if (pathinfo($image, PATHINFO_EXTENSION) != 'jpg') {
+                continue;
+            }
+
+            if ($index >= self::MAX_NUMBER_OF_IMGAES) {
                 continue;
             }
 
