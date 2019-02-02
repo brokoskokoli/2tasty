@@ -87,6 +87,7 @@ action:
   import_recipe_from_link: Importiere Rezept
   import: Import
   download_firefox_extension: Lade die Firefox Erweiterung herunter
+  download_chrome_extension: Lade die Chrome Erweiterung herunter
   random_recipe: Zufallsrezept
   create_recipeList: Erstelle Rezeptliste
   edit_recipe_list: Rezeptliste bearbeiten
