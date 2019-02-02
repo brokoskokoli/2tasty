@@ -240,3 +240,14 @@ footer #footer-resources i {
   margin-left: 0.5em;
   margin-bottom: 0.5em;
 }
+
+@media (min-width: 800px) {
+  .pull-right-lg {
+    float: right;
+  }
+}
+@media (min-width: 800px) {
+  .pull-left-lg {
+    float: left;
+  }
+}
