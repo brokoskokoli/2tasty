@@ -36,6 +36,7 @@ class RecipeImageType extends AbstractType
                 'download_label' => '...',
                 'download_uri' => true,
                 'image_uri' => true,
+                'required' => false,
             ]
         )->add(
             'altText',

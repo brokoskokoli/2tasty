@@ -98,6 +98,10 @@ class RecipesController extends AbstractController
             return $this->redirectToRoute('recipes_edit', ['id' => $recipe->getId()]);
         }
 
+        if ($form->isSubmitted() && !$form->isValid()) {
+            $this->addFlash('danger', 'messages.recipe_faulty');
+        }
+
         return $this->render('front/recipes/edit.html.twig', [
             'recipe' => $recipe,
             'ingredientList' => $ingredientService->getAllNames(),
@@ -212,6 +216,11 @@ class RecipesController extends AbstractController
             }
 
             return $this->redirectToRoute('recipes_edit', ['id' => $recipe->getId()]);
+        }
+
+
+        if ($form->isSubmitted() && !$form->isValid()) {
+            $this->addFlash('danger', 'messages.recipe_faulty');
         }
 
         return $this->render('front/recipes/new.html.twig', [

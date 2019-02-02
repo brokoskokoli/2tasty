@@ -11,7 +11,7 @@
     {{ include('front/recipes/_delete_recipe_confirmation.html.twig') }}
 {% endif %}
 
-{{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+{{ form_start(form) }}
     {{ include('front/recipes/_form_rows.html.twig', {
         form: form,
         ingredientList: ingredientList,

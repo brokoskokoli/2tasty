@@ -215,6 +215,7 @@ messages:
   recipelist_remove_activ: Rezeptliste deaktiviert
   recipe_added: Rezept hinzugefügt
   recipe_url_parsed: Rezept wurde von URL gelesen! Bitte überprüfen und speichern!
+  recipe_faulty: Das Rezept enthält Fehler und konnte nicht gespeichert werden! Bitte überprüfen.
 
 page:
   forgot_password:
