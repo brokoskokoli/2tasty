@@ -90,6 +90,7 @@ class RecipeRepository extends ServiceEntityRepository
             $queryBuilder->andWhere($userGroup);
         }
 
+        $queryBuilder->setParameter('user', $user);
         $queryBuilder->leftJoin('r.userFlags', 'ruf', 'WITH', 'ruf.author = :user');
 
         return $queryBuilder;
@@ -104,7 +105,6 @@ class RecipeRepository extends ServiceEntityRepository
         $queryBuilder->andWhere($proposedGroup);
 
         $queryBuilder->setParameter('limitProposed', new \DateTime('-6 hours'), \Doctrine\DBAL\Types\Type::DATETIME);
-        $queryBuilder->setParameter('user', $user);
 
         return $queryBuilder;
     }
@@ -134,7 +134,7 @@ class RecipeRepository extends ServiceEntityRepository
 
     public function getAllOfProposedRecipes(User $user)
     {
-        $queryBuilder = $this->getMyProposedRecipesQueryBuilder($user);
+        $queryBuilder = $this->getMyProposedRecipesBaseQueryBuilder($user);
 
         $queryBuilder->orderBy('ruf.proposed', 'ASC');
         $queryBuilder->setMaxResults(10);
