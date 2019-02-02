@@ -33,16 +33,16 @@
 
 {{ arrayCollection.start('ingredients', 'title.ingredients', [
     {class: 'col-md-3 stXautoComplete', field: form.recipeIngredients.vars.prototype.ingredient, autocomplete: ingredientList  },
-    {class: 'col-md-2', field: form.recipeIngredients.vars.prototype.amount},
-    {class: 'col-md-2', field: form.recipeIngredients.vars.prototype.unit},
+    {class: 'col-md-2 amount', field: form.recipeIngredients.vars.prototype.amount},
+    {class: 'col-md-2 unit', field: form.recipeIngredients.vars.prototype.unit},
     {class: 'col-md-4', field: form.recipeIngredients.vars.prototype.text},
 ]) }}
 
 {% for ingredient in form.recipeIngredients %}
     {{ arrayCollection.line([
         {class: 'col-md-3 stXautoComplete', field: ingredient.ingredient, autocomplete: ingredientList},
-        {class: 'col-md-2', field: ingredient.amount},
-        {class: 'col-md-2', field: ingredient.unit},
+        {class: 'col-md-2 amount', field: ingredient.amount},
+        {class: 'col-md-2 unit', field: ingredient.unit},
         {class: 'col-md-4', field: ingredient.text},
     ]) }}
 {% endfor %}
