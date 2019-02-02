@@ -15,6 +15,14 @@
     }, with_context = false) }}
 {% endblock %}
 
+
+{% block header_container %}
+
+    <button type="submit" class="{{ button_css|default("btn btn-primary") }}" form="recipe_form">
+        <i class="fa fa-save" aria-hidden="true"></i> {{ 'action.save'|trans }}
+    </button>
+{% endblock %}
+
 {% block javascripts %}
     {{ parent() }}
 

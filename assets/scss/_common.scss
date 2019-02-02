@@ -57,6 +57,10 @@ span.label {
 
 div.headercontainer {
   display: inline-block;
+
+  button {
+    margin-top: 7px;
+  }
 }
 
 form.quicksearch {
@@ -250,4 +254,8 @@ footer #footer-resources i {
   .pull-left-lg {
     float: left;
   }
+}
+
+.body-container {
+  margin-top: 50px;
 }
