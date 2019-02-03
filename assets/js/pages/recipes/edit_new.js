@@ -18,7 +18,7 @@ $(function () {
         };
         $element.tokenfield(settings);
     });
-/*
+
     $('div.ingredients').on('keyup', 'div.amount input', function (event) {
         var $this = $(this);
         var amountText = $this.val();
@@ -30,7 +30,7 @@ $(function () {
 
         var parts = amountText.split(" ");
         var lastPart = parts[parts.length - 1];
-        var $select = $this.parents('div.row').find('div.unit select');
+        var $select = $this.parents('div.row').first().find('div.unit select');
         $select.find('option').each(function (index, element) {
             var $element = $(element);
             var text = $element.html();
@@ -42,5 +42,5 @@ $(function () {
                 $select.focus();
             }
         });
-    });*/
+    });
 });
