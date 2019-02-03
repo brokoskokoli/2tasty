@@ -21,13 +21,21 @@ $(function () {
 
     $('div.ingredients').on('keyup', 'div.amount input', function (event) {
         var $this = $(this);
-        var parts = $this.val().split(" ");
+        var amountText = $this.val();
+        var lastChar = amountText[amountText.length -1];
+        if (lastChar.length === 1 && lastChar.match(/[a-z]/i) && amountText.indexOf(' ') <= -1) {
+            amountText = amountText.substring(0, amountText.length - 1) + ' ' + lastChar;
+            $this.val(amountText);
+        }
+
+        var parts = amountText.split(" ");
         var lastPart = parts[parts.length - 1];
         var $select = $this.parents('div.row').find('div.unit select');
         $select.find('option').each(function (index, element) {
             var $element = $(element);
-            if ($element.html() == lastPart) {
-                $select.val(lastPart);
+            var text = $element.html();
+            if (text != '' && text == lastPart) {
+                $select.val($element.val());
                 $element.attr('selected', 'selected');
                 parts.pop();
                 $this.val(parts.join(' '));
