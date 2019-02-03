@@ -18,7 +18,7 @@ $(function () {
         };
         $element.tokenfield(settings);
     });
-
+/*
     $('div.ingredients').on('keyup', 'div.amount input', function (event) {
         var $this = $(this);
         var amountText = $this.val();
@@ -42,5 +42,5 @@ $(function () {
                 $select.focus();
             }
         });
-    });
+    });*/
 });
