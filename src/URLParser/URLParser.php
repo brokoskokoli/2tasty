@@ -10,6 +10,9 @@ class URLParser
     /** @var array|URLParserBase[]  */
     protected static $parser = [];
 
+    /** @var null  */
+    protected static $baseParser = null;
+
     public static function readParser(ImportService $importService)
     {
         if (empty(self::$parser)) {
@@ -19,14 +22,19 @@ class URLParser
                 if (is_file($filename)) {
                     require_once($filename);
 
+                    $className = basename($file, '.php');
+
                     // get the file name of the current file without the extension
                     // which is essentially the class name
-                    $class = __NAMESPACE__.'\\'.basename($file, '.php');
-
+                    $class = __NAMESPACE__.'\\'.$className;
                     if (class_exists($class))
                     {
                         if (method_exists($class, 'canHandleUrl')) {
-                            self::$parser[] = new $class($importService);
+                            if ($className == 'URLParserBase') {
+                                self::$baseParser = new $class($importService);
+                            } else {
+                                self::$parser[] = new $class($importService);
+                            }
                         }
                     }
                 }
@@ -43,6 +51,6 @@ class URLParser
             }
         }
 
-        return null;
+        return self::$baseParser;
     }
 }

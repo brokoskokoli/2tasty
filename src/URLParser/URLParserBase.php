@@ -42,7 +42,42 @@ class URLParserBase
      */
     public function readSingleRecipeFromUrl(Recipe $recipe, $url)
     {
-        return $recipe;
+        try {
+            $dom = new Dom;
+            $dom->loadFromUrl($url);
+
+            $recipe->setLanguage(Recipe::LANGUAGE_GERMAN);
+            $this->importService->initForRecipe($recipe);
+            $title = html_entity_decode(trim(strip_tags($dom->find('h1', 0)->innerHtml)));
+            if ($title != '') {
+                $recipe->setTitle($title);
+            }
+
+            $element = $dom->find('div.summary', 0);
+            if ($element) {
+                $recipe->setSummary(html_entity_decode($element->text));
+            }
+
+            $finalIngredientList = $this->guessIngredientList($dom, true,'ul');
+            $this->addStringListAsRecipeIngredients($recipe, $finalIngredientList);
+
+            $finalStepsList = $this->guessStepsList($dom, true,'ol');
+            if (!is_iterable($finalStepsList)) {
+                $finalStepsList = $this->guessStepsList($dom, true,'ul');
+            }
+            if (is_iterable($finalStepsList)) {
+                $this->addListAsRecipeSteps($recipe, $finalStepsList);
+            }
+
+
+            $images = $this->guessImageList($dom);
+            $this->addListAsImages($recipe, $images);
+
+            return $recipe;
+        } catch (\Exception $e) {
+            dump($e);
+            return null;
+        }
     }
 
     /**
@@ -51,15 +86,15 @@ class URLParserBase
      */
     public function canHandleUrl($url)
     {
-        return false;
+        return true;
     }
 
     protected function parseStringToRecipeIngredient(string $text) : ?RecipeIngredient
     {
         $recipeIngredient = new RecipeIngredient();
 
-        $this->importService->parseUnit($recipeIngredient, $text);
         $this->importService->parseAmount($recipeIngredient, $text);
+        $this->importService->parseUnit($recipeIngredient, $text);
         $this->importService->parseIngredient($recipeIngredient, $text);
 
         $recipeIngredient->setText($text);
@@ -86,10 +121,10 @@ class URLParserBase
         }
     }
 
-    protected function guessIngredientList(Dom $dom, $asText = true, $tag = 'ul', $classesToCheck = ['ingredient'])
+    protected function guessIngredientList(Dom $dom, $asText = true, $tag = 'ul', $classesToCheck = ['recipe-ingredients', 'ingredients'])
     {
         $ingredientsLists = $dom->find($tag);
-        $finalIngredientList = null;
+        $finalIngredientList = [];
         foreach ($ingredientsLists as $ingredientsList) {
             $classes = $ingredientsList->tag->getAttribute('class')['value'];
             foreach ($classesToCheck as $class) {
@@ -121,7 +156,26 @@ class URLParserBase
         return $finalIngredientList;
     }
 
-    protected function guessStepsList(Dom $dom, $asText = true, $tag = 'ol', $classesToCheck = ['steps'])
+    protected function guessImageList(Dom $dom, $tags = ['.images', '.recipe-img'])
+    {
+        $images = [];
+        foreach ($tags as $tag) {
+
+            /** @var Collection $slideshow */
+            $slideshow = $dom->find($tag);
+
+            if ($slideshow->count()) {
+                $imgs = $slideshow->find('img');
+                foreach ($imgs as $img) {
+                    $images[] = $img->tag->getAttribute('src')['value'];
+                }
+            }
+        }
+
+        return $images;
+    }
+
+    protected function guessStepsList(Dom $dom, $asText = true, $tag = 'ol', $classesToCheck = ['recipe-steps', 'steps', 'preparation'])
     {
         $stepsLists = $dom->find($tag);
         $finalStepsList = null;
@@ -176,7 +230,11 @@ class URLParserBase
             }
 
             $filename = FileHelper::getTempFileName() . '.jpg';
-            copy($image, $filename);
+            if (stripos($image, 'http') !== 0) {
+                $image = 'http:' . $image;
+            }
+
+            file_put_contents($filename, fopen($image, 'r'));
             $mimeType = mime_content_type($filename);
             $size = filesize($filename);
 
