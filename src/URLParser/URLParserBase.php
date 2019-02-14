@@ -206,24 +206,24 @@ class URLParserBase
      * @param Recipe $recipe
      * @param Dom $dom
      */
-    protected function addGuessedImages(Recipe $recipe, Dom $dom, $tags = ['.images', '.recipe-img'])
+    protected function addGuessedImages(Recipe $recipe, Dom $dom, $tags = ['.images', '.recipe-img'], $tagInner = 'img', $tagInnerAttribute = 'src')
     {
-        $images = $this->guessImageList($dom, $tags);
+        $images = $this->guessImageList($dom, $tags, $tagInner, $tagInnerAttribute);
         $this->addListAsImages($recipe, $images);
     }
 
-    protected function guessImageList(Dom $dom, $tags = ['.images', '.recipe-img'])
+    protected function guessImageList(Dom $dom, $tags = ['.images', '.recipe-img'], $tagInner = 'img', $tagInnerAttribute = 'src')
     {
         $images = [];
-        foreach ($tags as $tag) {
+        foreach ($tags as $tagOuter) {
 
             /** @var Collection $slideshow */
-            $slideshow = $dom->find($tag);
+            $slideshow = $dom->find($tagOuter);
 
             if ($slideshow->count()) {
-                $imgs = $slideshow->find('img');
+                $imgs = $slideshow->find($tagInner);
                 foreach ($imgs as $img) {
-                    $images[] = $img->tag->getAttribute('src')['value'];
+                    $images[] = $img->tag->getAttribute($tagInnerAttribute)['value'];
                 }
             }
         }
@@ -276,22 +276,25 @@ class URLParserBase
 
     protected function addListAsImages(Recipe $recipe, $images)
     {
+        $number = 0;
         foreach ($images as $index => $image) {
-            if (pathinfo($image, PATHINFO_EXTENSION) != 'jpg') {
+            if ($number >= self::MAX_NUMBER_OF_IMGAES) {
                 continue;
             }
 
-            if ($index >= self::MAX_NUMBER_OF_IMGAES) {
-                continue;
-            }
+            $filename = FileHelper::getTempFileName() . '.temp';
 
-            $filename = FileHelper::getTempFileName() . '.jpg';
             if (stripos($image, 'http') !== 0) {
                 $image = 'http:' . $image;
             }
 
             file_put_contents($filename, fopen($image, 'r'));
             $mimeType = mime_content_type($filename);
+
+            if ($mimeType != 'image/jpeg') {
+                continue;
+            }
+
             $size = filesize($filename);
 
             $uploadedFile = new UploadedFile($filename, 'image' . $index . '.jpg', $mimeType, $size, null, true);
@@ -299,6 +302,7 @@ class URLParserBase
             $imageFile = new ImageFile();
             $imageFile->setImageFile($uploadedFile);
             $recipe->addImage($imageFile);
+            $number++;
         }
 
         $this->importService->storeImages($recipe);
