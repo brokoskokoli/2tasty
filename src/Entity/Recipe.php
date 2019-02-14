@@ -33,6 +33,7 @@ class Recipe
 
     const LANGUAGE_GERMAN = 'de';
     const LANGUAGE_ENGLISH = 'en';
+    const LANGUAGE_FRENCH = 'fr';
 
     /**
      * @var int
@@ -582,7 +583,7 @@ class Recipe
      * @param int $portions
      * @return Recipe
      */
-    public function setPortions(int $portions): Recipe
+    public function setPortions(?int $portions): Recipe
     {
         $this->portions = $portions;
         return $this;

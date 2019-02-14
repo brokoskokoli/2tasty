@@ -3,7 +3,7 @@ parameters:
     database_host: 127.0.0.1
     database_port: null
     database_name: myfood
-    database_user: myfood
-    database_password: myfood
+    database_user: root
+    database_password: toto44
     max_per_page: 20
 

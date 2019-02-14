@@ -33,7 +33,7 @@
 
         <p class="spacer-medium">&nbsp;</p>
         {% if not recipe.recipeLists.empty %}
-            <p>{{ 'label.recipeLists'|trans({}, "messages", recipe.language) }}</p>
+            <p>{{ 'label.recipeLists'|trans({}, "messages") }}</p>
             <p class="recipe-recipeTags">
                 <ul>
                 {% for list in recipe.recipeLists %}
@@ -47,14 +47,14 @@
 
 
 
-        <p>{{ 'label.portions'|trans({}, "messages", recipe.language) }} : {{ recipe.portions }}</p>
-        <p>{{ 'label.working_time'|trans({}, "messages", recipe.language) }} : {{ recipe.workingTime|default(' -- ') }}</p>
-        <p>{{ 'label.waiting_time'|trans({}, "messages", recipe.language) }} : {{ recipe.waitingTime|default(' -- ') }}</p>
+        <p>{{ 'label.portions'|trans({}, "messages") }} : {{ recipe.portions }}</p>
+        <p>{{ 'label.working_time'|trans({}, "messages") }} : {{ recipe.workingTime|default(' -- ') }}</p>
+        <p>{{ 'label.waiting_time'|trans({}, "messages") }} : {{ recipe.waitingTime|default(' -- ') }}</p>
         <p>{{ recipe.informations|purify }}</p>
 
         <p class="spacer-medium">&nbsp;</p>
         <div class="ingredients">
-            <h2>{{ 'title.ingredients'|trans({}, "messages", recipe.language) }}</h2>
+            <h2>{{ 'title.ingredients'|trans({}, "messages") }}</h2>
             <ul>
                 {% for ingredient in recipe.recipeIngredients %}
                     <li>{{ ingredient|ingredientText(recipe.language) }}</li>
@@ -63,7 +63,7 @@
         </div>
         <p class="spacer-medium">&nbsp;</p>
         <div class="steps">
-            <h2>{{ 'title.steps'|trans({}, "messages", recipe.language) }}</h2>
+            <h2>{{ 'title.steps'|trans({}, "messages") }}</h2>
             <ol>
                 {% for step in recipe.recipeSteps %}
                     <li><p>{{ step.text|default('')|md2html }}</p><span class="details">{% if step.duration %}{{ step.duration }} {{ 'static.durations.minutes'|trans }}{% endif %}</span></li>
@@ -74,7 +74,7 @@
         {% if recipe.recipeHints|length > 0 %}
             <p class="spacer-medium">&nbsp;</p>
             <div class="hints">
-                <h2>{{ 'title.hints'|trans({}, "messages", recipe.language) }}</h2>
+                <h2>{{ 'title.hints'|trans({}, "messages") }}</h2>
                 {% for hint in recipe.recipeHints %}
                     <div class="panel panel-default">
                         <div class="panel-body">{{ hint.text|default('')|md2html }}</div>
@@ -86,7 +86,7 @@
         {% if recipe.recipeAlternatives|length > 0 %}
             <p class="spacer-medium">&nbsp;</p>
             <div class="alternatives">
-                <h2>{{ 'title.recipeAlternatives'|trans({}, "messages", recipe.language) }}</h2>
+                <h2>{{ 'title.recipeAlternatives'|trans({}, "messages") }}</h2>
                 {% for alternative in recipe.recipeAlternatives %}
                     <div class="panel panel-default">
                         <div class="panel-body">{{ alternative.text|default('')|md2html }}</div>
@@ -98,7 +98,7 @@
         {% if recipe.recipeLinks|length > 0 %}
             <p class="spacer-medium">&nbsp;</p>
             <div class="links">
-                <h2>{{ 'title.links'|trans({}, "messages", recipe.language) }}</h2>
+                <h2>{{ 'title.links'|trans({}, "messages") }}</h2>
                 <ul>
                 {% for link in recipe.recipeLinks %}
                     <li>
