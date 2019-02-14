@@ -24,7 +24,7 @@
 
     <p class="recipe-metadata">{{ recipe.author.fullName }} - {{ recipe.createdAt|localizeddate('long', 'medium', null, 'UTC') }}</p>
 
-    {{ recipe.summary|md2html }}
+    {{ recipe.summary|default('')|md2html }}
 
     <p>{{ 'label.portions'|trans }} : {{ recipe.portions }}</p>
     <p>{{ 'title.recipeTags'|trans }} : {{ recipe.recipeTags|join(', ') }}</p>
@@ -33,7 +33,7 @@
         <h2>{{ 'title.ingredients'|trans }}</h2>
         <ul>
             {% for ingredient in recipe.recipeIngredients %}
-                <li>{{ ingredient|ingredientText }}</li>
+                <li>{{ ingredient|ingredientText(recipe.language) }}</li>
             {% endfor %}
         </ul>
     </div>
