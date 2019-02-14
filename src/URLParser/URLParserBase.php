@@ -26,6 +26,12 @@ class URLParserBase
 
     const MAX_NUMBER_OF_IMGAES = 10;
 
+    const PORTIONS_TEXT_AREA = 50;
+
+    protected $hosts = ['*'];
+
+    protected $pathMatch = '';
+
     /**
      * @inheritDoc
      */
@@ -34,6 +40,29 @@ class URLParserBase
         $this->importService = $importService;
     }
 
+    public function getText($node)
+    {
+        return trim(strip_tags($node->innerHTML));
+    }
+
+    protected function guessPortions($dom, $keys = ['portion'])
+    {
+        $fulltext = $this->getText($dom);
+        foreach ($keys as $keyWord) {
+            if ($pos = stripos($fulltext, $keyWord)) {
+                $area = substr($fulltext, $pos - self::PORTIONS_TEXT_AREA/2,self::PORTIONS_TEXT_AREA);
+                $parts = explode(' ', $area);
+                foreach ($parts as $part) {
+                    if (is_numeric($part)) {
+                        return $part;
+                        break;
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
 
     /**
      * @param Recipe $recipe
@@ -53,7 +82,9 @@ class URLParserBase
                 $recipe->setTitle($title);
             }
 
-            $element = $dom->find('div.summary', 0);
+            $recipe->setPortions($this->guessPortions($dom));
+
+            $element = $dom->find('.summary', 0);
             if ($element) {
                 $recipe->setSummary(html_entity_decode($element->text));
             }
@@ -69,23 +100,33 @@ class URLParserBase
                 $this->addListAsRecipeSteps($recipe, $finalStepsList);
             }
 
-
             $images = $this->guessImageList($dom);
             $this->addListAsImages($recipe, $images);
 
             return $recipe;
         } catch (\Exception $e) {
-            dump($e);
             return null;
         }
     }
 
-    /**
-     * @param $url
-     * @return bool
-     */
     public function canHandleUrl($url)
     {
+        $parts = parse_url($url);
+
+        $domainMatch = false;
+        foreach ($this->hosts as $host) {
+            if ('*' === $host ||$parts['host'] === $host) {
+                $domainMatch = true;
+            }
+        }
+        if (!$domainMatch) {
+            return false;
+        }
+
+        if (preg_match($this->pathMatch, $parts['path']) !== 1) {
+            return false;
+        }
+
         return true;
     }
 
