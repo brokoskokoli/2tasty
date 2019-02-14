@@ -32,6 +32,8 @@ class URLParserBase
 
     protected $pathMatch = '';
 
+    protected $language = Recipe::LANGUAGE_ENGLISH;
+
     /**
      * @inheritDoc
      */
@@ -64,6 +66,34 @@ class URLParserBase
         return null;
     }
 
+    public function readRecipeFromDom(Recipe $recipe, Dom $dom)
+    {
+        $title = html_entity_decode(trim(strip_tags($dom->find('h1', 0)->innerHtml)));
+        if ($title != '') {
+            $recipe->setTitle($title);
+        }
+
+        $recipe->setPortions($this->guessPortions($dom));
+
+        $element = $dom->find('.summary', 0);
+        if ($element) {
+            $recipe->setSummary(html_entity_decode($element->text));
+        }
+
+        $finalIngredientList = $this->guessIngredientList($dom, true,'ul');
+        $this->addStringListAsRecipeIngredients($recipe, $finalIngredientList);
+
+        $finalStepsList = $this->guessStepsList($dom, true,'ol');
+        if (!is_iterable($finalStepsList)) {
+            $finalStepsList = $this->guessStepsList($dom, true,'ul');
+        }
+        if (is_iterable($finalStepsList)) {
+            $this->addListAsRecipeSteps($recipe, $finalStepsList);
+        }
+
+        $this->addGuessedImages($recipe, $dom);
+    }
+
     /**
      * @param Recipe $recipe
      * @param $url
@@ -75,34 +105,9 @@ class URLParserBase
             $dom = new Dom;
             $dom->loadFromUrl($url);
 
-            $recipe->setLanguage(Recipe::LANGUAGE_GERMAN);
+            $recipe->setLanguage($this->language);
             $this->importService->initForRecipe($recipe);
-            $title = html_entity_decode(trim(strip_tags($dom->find('h1', 0)->innerHtml)));
-            if ($title != '') {
-                $recipe->setTitle($title);
-            }
-
-            $recipe->setPortions($this->guessPortions($dom));
-
-            $element = $dom->find('.summary', 0);
-            if ($element) {
-                $recipe->setSummary(html_entity_decode($element->text));
-            }
-
-            $finalIngredientList = $this->guessIngredientList($dom, true,'ul');
-            $this->addStringListAsRecipeIngredients($recipe, $finalIngredientList);
-
-            $finalStepsList = $this->guessStepsList($dom, true,'ol');
-            if (!is_iterable($finalStepsList)) {
-                $finalStepsList = $this->guessStepsList($dom, true,'ul');
-            }
-            if (is_iterable($finalStepsList)) {
-                $this->addListAsRecipeSteps($recipe, $finalStepsList);
-            }
-
-            $images = $this->guessImageList($dom);
-            $this->addListAsImages($recipe, $images);
-
+            $this->readRecipeFromDom($recipe, $dom);
             return $recipe;
         } catch (\Exception $e) {
             return null;
@@ -195,6 +200,16 @@ class URLParserBase
         }
 
         return $finalIngredientList;
+    }
+
+    /**
+     * @param Recipe $recipe
+     * @param Dom $dom
+     */
+    protected function addGuessedImages(Recipe $recipe, Dom $dom, $tags = ['.images', '.recipe-img'])
+    {
+        $images = $this->guessImageList($dom, $tags);
+        $this->addListAsImages($recipe, $images);
     }
 
     protected function guessImageList(Dom $dom, $tags = ['.images', '.recipe-img'])
