@@ -56,6 +56,8 @@ class RefUnitService
             $function = 'get' . $languageString;
             if ($unit->$function()) {
                 $result[$unit->$function()] = $unit;
+            } else {
+                $result[$unit->getName()] = $unit;
             }
         }
         $unitNames = $this->em->getRepository(RefUnitName::class)->findBy([
