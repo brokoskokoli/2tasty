@@ -14,6 +14,7 @@
 !var/SymfonyRequirements.php
 /public/build/fonts/glyphicons-*
 /public/build/images/glyphicons-*
+/config/packages/parameters.yml
 
 /.idea
 
