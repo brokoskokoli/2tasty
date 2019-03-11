@@ -164,7 +164,7 @@ class ImageFile
      * @param \DateTime $updatedAt
      * @return ImageFile
      */
-    public function setUpdatedAt(\DateTime $updatedAt): ImageFile
+    public function setUpdatedAt(\DateTimeInterface $updatedAt): ImageFile
     {
         $this->updatedAt = $updatedAt;
         return $this;
