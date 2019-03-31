@@ -95,7 +95,7 @@ form.quicksearch {
   font-size: 90%;
 
   img.smallimage {
-    height: 110px;
+    height: 100px;
   }
 
   span.metadata, span.recipe-recipeTags {
@@ -188,15 +188,10 @@ Images
  */
 
 .recipe_list_with_details {
-  min-height: 150px;
+  min-height: 50px;
   border-bottom: lighten($text-color, 50%) 1px solid;
-  margin-top: 1em;
-  margin-bottom: 1em;
-
-  img.smallimage {
-    height: 130px;
-  }
-
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
 }
 
 .addButton button.btn:active, .addButton button.btn:hover, .addButton button.btn:focus,

@@ -12,6 +12,7 @@
         "exercise/htmlpurifier-bundle": "^1.0",
         "ezyang/htmlpurifier": "^4.10",
         "friendsofsymfony/ckeditor-bundle": "^1.1",
+        "liip/imagine-bundle": "^2.1",
         "paquettg/php-html-parser": "^1.7",
         "php-translation/loco-adapter": "^0.6.3",
         "php-translation/symfony-bundle": "^0.6.1",

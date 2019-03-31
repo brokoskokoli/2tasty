@@ -2,36 +2,46 @@
 
 <article class="recipe_list_with_details">
     <div class="row">
-        <div class="col-md-8">
-            <h2>
+        <div class="col-md-1">
+            {% if recipe.images|length > 0 %}
+                <img class="smallimage" src="{{ vich_uploader_asset(recipe.images[0], 'imageFile') | imagine_filter('recipe_thumb_small') }}">
+            {% endif %}
+        </div>
+        <div class="col-md-9">
+            <h3>
                 <a href="{{ path('recipes_show', {slug: recipe.slug}) }}">
                     {{ recipe.title }}
                 </a>
-            </h2>
+            </h3>
 
-            <p class="recipe-metadata">
-                <span class="metadata"><i class="fa fa-calendar"></i> {{ recipe.createdAt|localizeddate('long', 'none', null, null) }}</span>
-
-                <span class="metadata"><a href="{{ path('user_profile', {'username': recipe.author.username}) }}"><i class="fa fa-user"></i> {{ recipe.author.fullName }}</a></span>
-
-            </p>
+            {% if not app.user or not app.user == recipe.author %}
+                <p class="recipe-metadata">
+                    <span class="metadata"><a href="{{ path('user_profile', {'username': recipe.author.username}) }}"><i class="fa fa-user"></i> {{ recipe.author.fullName }}</a></span>
+                </p>
+            {% endif %}
 
             {{ recipe.summary|default('')|md2html }}
             {% if recipe.ratingGlobal %}
                 <span class="metadata">{{ recipe.ratingGlobal|rating(5, "fa-norm", true) }} ({{ recipe.ratingGlobal }})</span>
             {% endif %}
             {{ include('front/recipes/_recipe_tags.html.twig') }}
+        </div>
+        <div class="col-md-2">
+
+            <h3>
             {% if app.user and app.user.activeRecipeList and not app.user.activeRecipeList.getRecipes.contains(recipe) %}
                 <a class=""
                    href="{{ path('recipelists_add_to_active', {'id': recipe.id}) }}">
                     {{ 'action.add_to_activ_recipelist'|trans }}
                 </a><br><br>
             {% endif %}
-        </div>
-        <div class="col-md-4">
-            {% if recipe.images|length > 0 %}
-                <img class="smallimage" src="{{ vich_uploader_asset(recipe.images[0], 'imageFile') }}">
+            {% if app.user and app.user == recipe.author %}
+
+                    <a href="{{ path('recipes_edit', {id: recipe.id}) }}" class="btn btn-sm btn-primary" title="{{ 'action.edit'|trans }}">
+                        <i class="fa fa-edit" aria-hidden="true"></i> {{ 'action.edit'|trans }}
+                    </a>
             {% endif %}
+            </h3>
         </div>
     </div>
 </article>

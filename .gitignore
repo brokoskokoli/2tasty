@@ -42,3 +42,7 @@
 ###< friendsofphp/php-cs-fixer ###
 public/images/recipes/
 config/packages/parameters.yml
+
+###> liip/imagine-bundle ###
+/public/media/cache/
+###< liip/imagine-bundle ###

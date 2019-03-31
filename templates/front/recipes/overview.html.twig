@@ -5,13 +5,17 @@
 {% block main %}
     <h1>{{ 'title.recipe_list'|trans }}</h1>
 
-    {% for recipeList in recipeLists %}
-        <p><a href="{{ path('recipelists_show', {slug: recipeList.slug}) }}" class="btn btn-block btn-primary" title="{{ recipeList.name }}">{{ recipeList.name }}</a></p>
-    {% endfor %}
-    <hr>
-    <p><a href="{{ path('recipes_list_my') }}" class="btn btn-block btn-primary">{{ 'title.all_recipes'|trans }}</a></p>
-    <p><a href="{{ path('recipes_list_my', {only_without_recipe_list: 1}) }}" class="btn btn-block btn-primary">{{ 'title.all_recipes_without_list'|trans }}</a></p>
+    <div class="list-group">
+        {% for recipeList in recipeLists %}
+            <a href="{{ path('recipelists_show', {slug: recipeList.slug}) }}" class="list-group-item list-group-item-action" title="{{ recipeList.name }}">{{ recipeList.name }}</a>
+        {% endfor %}
+    </div>
+        <hr>
+    <div class="list-group">
 
+        <a href="{{ path('recipes_list_my') }}" class="list-group-item list-group-item-action">{{ 'title.all_recipes'|trans }}</a>
+        <a href="{{ path('recipes_list_my', {only_without_recipe_list: 1}) }}" class="list-group-item list-group-item-action">{{ 'title.all_recipes_without_list'|trans }}</a>
+    </div>
 
 {% endblock %}
 

@@ -2,3 +2,14 @@
 @import "lumen/variables";
 @import "bootstrap-sass/assets/stylesheets/bootstrap";
 @import "lumen/bootswatch";
+
+.list-group-item {
+  border: 1px solid #ccc;
+}
+
+a.list-group-item:hover, a.list-group-item:focus, button.list-group-item:hover, button.list-group-item:focus {
+  text-decoration: none;
+  color: #FFF;
+  background-color: #158CBA;
+}
+
