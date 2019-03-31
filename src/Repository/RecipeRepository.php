@@ -59,9 +59,13 @@ class RecipeRepository extends ServiceEntityRepository
     }
 
 
-    public function getMyRecipes(User $user)
+    public function getMyRecipes(User $user, $onlyWithoutRecipeList = false)
     {
         $queryBuilder = $this->createQueryBuilder('r');
+        if ($onlyWithoutRecipeList) {
+            $queryBuilder->leftJoin('r.recipeLists', 'rl', 'WITH', 'rl.author = :user');
+            $queryBuilder->andWhere('rl.author IS NULL');
+        }
         $queryBuilder->leftJoin('r.collectors', 'c');
         $userGroup = $queryBuilder->expr()->orX();
         $userGroup->add('r.author = :user');

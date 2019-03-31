@@ -1,1 +1,1 @@
-php bin/console server:start
+php bin/console server:run

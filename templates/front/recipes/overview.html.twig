@@ -1,0 +1,31 @@
+{% extends 'front/layout.html.twig' %}
+
+{% block body_id 'admin_recipe_index' %}
+
+{% block main %}
+    <h1>{{ 'title.recipe_list'|trans }}</h1>
+
+    {% for recipeList in recipeLists %}
+        <p><a href="{{ path('recipelists_show', {slug: recipeList.slug}) }}" class="btn btn-block btn-primary" title="{{ recipeList.name }}">{{ recipeList.name }}</a></p>
+    {% endfor %}
+    <hr>
+    <p><a href="{{ path('recipes_list_my') }}" class="btn btn-block btn-primary">{{ 'title.all_recipes'|trans }}</a></p>
+    <p><a href="{{ path('recipes_list_my', {only_without_recipe_list: 1}) }}" class="btn btn-block btn-primary">{{ 'title.all_recipes_without_list'|trans }}</a></p>
+
+
+{% endblock %}
+
+{% block sidebar %}
+    <div class="section actions">
+        <a href="{{ path('recipes_new') }}" class="btn btn-lg btn-block btn-success">
+            <i class="fa fa-plus" aria-hidden="true"></i> {{ 'action.create_recipe'|trans }}
+        </a>
+    </div>
+    <div class="section actions">
+        <a href="{{ path('recipes_import_from_link') }}" class="btn btn-lg btn-block btn-success">
+            <i class="fa fa-cloud-download" aria-hidden="true"></i> {{ 'action.import_recipe_from_link'|trans }}
+        </a>
+    </div>
+
+    {{ parent() }}
+{% endblock %}

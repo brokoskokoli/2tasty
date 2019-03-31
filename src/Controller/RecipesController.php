@@ -35,6 +35,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Translation\Translator;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Controller used to manage blog contents in the public part of the site.
@@ -53,21 +54,45 @@ class RecipesController extends AbstractController
     const FORM_RECIPE_LANGUAGE = 'language';
 
     /**
-     * Lists all Recipe entities.
+     * Recipes overview.
      *
-     * @Route("/", name="recipes_list_my")
+     * @Route("/", name="recipes_overview")
      * @Security("has_role('ROLE_USER')")
      * @Method("GET")
      */
-    public function listMyAction(RecipeRepository $recipes): Response
+    public function myOverviewAction(RecipeListService $recipeListService): Response
     {
-        $authorRecipes = $recipes->getMyRecipes($this->getUser());
+
+        $authorRecipeLists = $recipeListService->getAllForUser($this->getUser());
+
+        return $this->render(
+            'front/recipes/overview.html.twig',
+            [
+                'recipeLists' => $authorRecipeLists,
+                'user' => $this->getUser(),
+            ]
+        );
+    }
+
+    /**
+     * Lists all Recipe entities.
+     *
+     * @Route("/my_recipes", name="recipes_list_my")
+     * @Security("has_role('ROLE_USER')")
+     * @Method("GET")
+     */
+    public function listMyAction(Request $request, RecipeRepository $recipes, TranslatorInterface $translator): Response
+    {
+        $onlyWithoutRecipeList = boolval($request->query->get('only_without_recipe_list'));
+        $authorRecipes = $recipes->getMyRecipes($this->getUser(), $onlyWithoutRecipeList);
+        $title = $onlyWithoutRecipeList ? $translator->trans('title.all_recipes_without_list') : $translator->trans('title.all_recipes');
 
         return $this->render(
             'front/recipes/list.html.twig',
             [
                 'recipes' => $authorRecipes,
                 'user' => $this->getUser(),
+                'site_title' => $title,
             ]
         );
     }

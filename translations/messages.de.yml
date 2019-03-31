@@ -21,6 +21,8 @@ title:
   recipeLists: Rezeptlisten
   edit_recipelist: Rezeptliste bearbeiten
   recipes: Rezepte
+  all_recipes: Alle Rezepte
+  all_recipes_without_list: Alle Rezepte ohne Rezeptbuch
 
 
 label:
