@@ -30,20 +30,20 @@
         <div class="col-md-2">
 
             {% if app.user and app.user.activeRecipeList and not app.user.activeRecipeList.getRecipes.contains(recipe) %}
-                <p>
+                {# <p>
                     <a class=""
                        href="{{ path('recipelists_add_to_active', {'id': recipe.id}) }}">
                         {{ 'action.add_to_activ_recipelist'|trans }}
                     </a>
-                </p>
+                </p>#}
             {% endif %}
             {% if app.user and app.user == recipe.author %}
-                {#
+
                 <h3>
                     <a href="{{ path('recipes_edit', {id: recipe.id}) }}" class="btn btn-sm btn-primary"
                        title="{{ 'action.edit'|trans }}">
                         <i class="fa fa-edit" aria-hidden="true"></i> {{ 'action.edit'|trans }}
-                    </a></h3>#}
+                    </a></h3>
             {% endif %}
         </div>
     </div>
