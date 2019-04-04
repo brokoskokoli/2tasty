@@ -155,6 +155,10 @@ placeholder:
 
 help:
   app_description: |
+    <strong>Version 2.0</strong> <br>
+    - Technische Optimierungen<br>
+    - Rezept des Tages<br>
+    <br>
     <strong>Version 1.0</strong> <br>
     - Portionenumrechner<br>
     - Besserer Import von Webseiten
