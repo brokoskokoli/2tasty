@@ -76,6 +76,7 @@ class RecipeListType extends AbstractType
                     'class' => Recipe::class,
                     'choice_label' => 'title',
                     'multiple' => true,
+                    'by_reference' => false,
                     'query_builder' => function (EntityRepository $er) use ($user) {
                         $queryBuilder = $er->createQueryBuilder('r')
                             ->leftJoin('r.collectors', 'c');
