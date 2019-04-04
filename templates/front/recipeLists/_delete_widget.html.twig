@@ -1,0 +1,25 @@
+<div class="modal fade" id="confirmationModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <h4>{{ 'dialogs.delete_recipelist.title'|trans }}</h4>
+                <p>{{ 'dialogs.delete_recipelist.body'|trans }}</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" id="btnNo" data-dismiss="modal">
+                    <i class="fa fa-ban" aria-hidden="true"></i> {{ 'action.cancel'|trans }}
+                </button>
+                <button type="button" class="btn btn-danger" id="btnYes" data-dismiss="modal">
+                    <i class="fa fa-trash" aria-hidden="true"></i> {{ 'action.delete_recipelist'|trans }}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<form action="{{ url('recipelists_delete', {id: recipeList.id}) }}" method="post" data-confirmation="true" id="delete-form">
+    <input type="hidden" name="token" value="{{ csrf_token('delete') }}" />
+    <button type="submit" class="btn btn-lg btn-block btn-danger">
+        <i class="fa fa-trash" aria-hidden="true"></i>
+        {{ 'action.delete_recipelist'|trans }}
+    </button>
+</form>

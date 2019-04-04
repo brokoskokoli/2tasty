@@ -270,9 +270,9 @@ class RecipesController extends AbstractController
      */
     public function delete(Request $request, RecipeService $recipeService, Recipe $recipe): Response
     {
-        /*if (!$this->isCsrfTokenValid('delete', $request->request->get('token'))) {
-            return $this->redirectToRoute('admin_recipe_index');
-        }*/
+        if (!$this->isCsrfTokenValid('delete', $request->request->get('token'))) {
+            return $this->redirectToRoute('recipes_list_my');
+        }
 
         $ok = $recipeService->deleteRecipe($recipe);
 

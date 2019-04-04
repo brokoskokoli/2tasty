@@ -117,24 +117,21 @@ class RecipeListsController extends AbstractController
      *
      * @Route("/{id}/delete", name="recipelists_delete")
      * @Method("POST")
-     * @Security("is_granted('delete', recipe)")
-     *
-     * The Security annotation value is an expression (if it evaluates to false,
-     * the authorization mechanism will prevent the user accessing this resource).
      */
-    public function delete(Request $request, RecipeService $recipeService, Recipe $recipe): Response
+    public function delete(Request $request, RecipeListService $recipeListService, RecipeList $recipeList): Response
     {
-        /*if (!$this->isCsrfTokenValid('delete', $request->request->get('token'))) {
-            return $this->redirectToRoute('admin_recipe_index');
-        }*/
-
-        $ok = $recipeService->deleteRecipe($recipe);
-
-        if ($ok) {
-            $this->addFlash('success', 'messages.recipe_deleted');
+        if (!$this->isCsrfTokenValid('delete', $request->request->get('token'))) {
+            return $this->redirectToRoute('recipes_list_my');
         }
 
-        return $this->redirectToRoute('recipes_list_my');
+        if ($recipeList->getAuthor()->getId() !== $this->getUser()->getId()) {
+            return $this->redirectToRoute('recipelists_list');
+        }
+
+        $recipeListService->deleteRecipeList($recipeList);
+        $this->addFlash('success', 'messages.recipelist_deleted');
+
+        return $this->redirectToRoute('recipelists_list');
     }
 
 

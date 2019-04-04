@@ -99,4 +99,10 @@ class RecipeListService
         return true;
     }
 
+    public function deleteRecipeList(RecipeList $recipeList)
+    {
+        $this->em->remove($recipeList);
+        $this->em->flush();
+    }
+
 }

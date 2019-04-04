@@ -38,6 +38,9 @@
     </div>
     {% endif %}
 
+    {% if recipeList.author == app.user %}
+    {{ include('front/recipeLists/_delete_widget.html.twig') }}
+    {% endif %}
     {#
     <div class="section actions">
         {{ include('front/recipes/_delete_form.html.twig', {recipe: recipe}, with_context = false) }}

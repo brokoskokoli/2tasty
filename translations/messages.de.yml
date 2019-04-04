@@ -94,6 +94,7 @@ action:
   create_recipeList: Erstelle Rezeptliste
   edit_recipe_list: Rezeptliste bearbeiten
   show_recipe_list: Zeige Rezeptliste
+  delete_recipelist: Rezeptliste löschen
   add_to_collection: Füge zur Sammlung hinzu
   remove_from_collection: Entferne aus der Sammlung
   send: Absenden!
@@ -113,6 +114,9 @@ dialogs:
   delete_recipe:
     title: Rezept löschen
     body: Möchtest du dieses Rezept wirklich löschen?
+  delete_recipelist:
+    title: Rezeptliste löschen
+    body: Möchtest du diese Rezeptliste wirklich löschen?
   share_email:
     title: Per Mail teilen
 
@@ -220,6 +224,7 @@ messages:
   recipe_deleted: Rezept gelöscht!
   recipelist_make_activ: Rezeptliste aktiviert
   recipelist_remove_activ: Rezeptliste deaktiviert
+  recipelist_deleted: Rezeptliste entgültig gelöscht
   recipe_added: Rezept hinzugefügt
   recipe_url_parsed: Rezept wurde von URL gelesen! Bitte überprüfen und speichern!
   recipe_faulty: Das Rezept enthält Fehler und konnte nicht gespeichert werden! Bitte überprüfen.
