@@ -63,10 +63,6 @@ class RecipeListService
         $recipeList->setAuthor($user);
         $recipeList->createSlug();
 
-        foreach ($recipeList->getRecipes() as $recipe) {
-            $recipe->addRecipeList($recipeList);
-        }
-
         $this->em->persist($recipeList);
         $this->em->flush();
     }

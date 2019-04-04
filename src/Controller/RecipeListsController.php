@@ -194,7 +194,7 @@ class RecipeListsController extends AbstractController
      * @Route("/add_recipe_to_active/{id}", requirements={"id": "\d+"}, name="recipelists_add_to_active")
      * @Method("GET")
      */
-    public function addRecipeToActiveRecipeList(Request $request, RecipeListService $recipeListService, Recipe $recipe)
+    public function addRecipeToActiveRecipeList(Request $request, RecipeListService $recipeListService, RecipeService $recipeService, Recipe $recipe)
     {
         $user = $this->getUser();
         if (!$user instanceof User) {
@@ -205,6 +205,7 @@ class RecipeListsController extends AbstractController
             return $this->redirectToRoute('recipes_list_my');
         }
 
+        $recipeService->addRecipeToUserCollection($recipe, $user);
 
         if ($recipeListService->addRecipeToList($user->getActiveRecipeList(), $recipe)) {
             $this->addFlash('success', 'messages.recipe_added');
