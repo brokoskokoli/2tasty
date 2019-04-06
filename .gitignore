@@ -46,3 +46,9 @@ config/packages/parameters.yml
 ###> liip/imagine-bundle ###
 /public/media/cache/
 ###< liip/imagine-bundle ###
+
+yarn\.lock
+
+yarn-error\.log
+
+package-lock\.json
