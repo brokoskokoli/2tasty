@@ -227,10 +227,10 @@ class Recipe
     private $recipeAlternatives;
 
     /**
-     * @var RecipeIngredient[]|ArrayCollection
+     * @var RecipeIngredientList[]|ArrayCollection
      *
      * @ORM\OneToMany(
-     *     targetEntity="App\Entity\RecipeIngredient",
+     *     targetEntity="App\Entity\RecipeIngredientList",
      *      mappedBy="recipe",
      *      orphanRemoval=true,
      *      cascade={"persist"}
@@ -238,7 +238,7 @@ class Recipe
      * @ORM\OrderBy({"id": "ASC"})
      * @Assert\Valid()
      */
-    private $recipeIngredients;
+    private $recipeIngredientLists;
 
     /**
      * @var RecipeLink[]|ArrayCollection
@@ -296,7 +296,7 @@ class Recipe
         $this->recipeTags = new ArrayCollection();
         $this->recipeHints = new ArrayCollection();
         $this->recipeAlternatives = new ArrayCollection();
-        $this->recipeIngredients = new ArrayCollection();
+        $this->recipeIngredientLists = new ArrayCollection();
         $this->recipeSteps = new ArrayCollection();
         $this->recipeLinks = new ArrayCollection();
         $this->recipeLists = new ArrayCollection();
@@ -710,29 +710,6 @@ class Recipe
     }
 
     /**
-     * @return RecipeIngredient[]|ArrayCollection
-     */
-    public function getRecipeIngredients() : Collection
-    {
-        return $this->recipeIngredients;
-    }
-
-    public function addRecipeIngredient(RecipeIngredient $recipeIngredient) : Recipe
-    {
-        $this->recipeIngredients->add($recipeIngredient);
-        $recipeIngredient->setRecipe($this);
-        return $this;
-    }
-
-    public function removeRecipeIngredient(RecipeIngredient $recipeIngredient) : Recipe
-    {
-        $this->recipeIngredients->remove($recipeIngredient);
-        $recipeIngredient->setRecipe(null);
-        return $this;
-    }
-
-
-    /**
      * @return RecipeLink[]|ArrayCollection
      */
     public function getRecipeLinks() : Collection
@@ -751,6 +728,27 @@ class Recipe
     {
         $this->recipeLinks->remove($recipeLink);
         $recipeLink->setRecipe(null);
+        return $this;
+    }
+
+
+    /**
+     * @return RecipeIngredient[]|ArrayCollection
+     */
+    public function getRecipeIngredientLists()
+    {
+        return $this->recipeIngredientLists;
+    }
+
+    public function addRecipeIngredientList(RecipeIngredientList $recipeIngredientList)
+    {
+        $this->recipeIngredientLists->add($recipeIngredientList);
+        return $this;
+    }
+
+    public function removeRecipeIngredientList(RecipeIngredientList $recipeIngredientList)
+    {
+        $this->recipeIngredientLists->remove($recipeIngredientList);
         return $this;
     }
 

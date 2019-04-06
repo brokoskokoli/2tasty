@@ -12,11 +12,13 @@
 namespace App\Form;
 
 use App\Entity\Recipe;
+use App\Entity\RecipeIngredientList;
 use App\Form\Type\CollectionEntityLoadType;
 use App\Form\Type\DateTimePickerType;
 use App\Form\Type\RecipeAlternativeType;
 use App\Form\Type\RecipeHintType;
 use App\Form\Type\RecipeImageType;
+use App\Form\Type\RecipeIngredientListType;
 use App\Form\Type\RecipeIngredientType;
 use App\Form\Type\RecipeLinkType;
 use App\Form\Type\RecipeListsInputType;
@@ -98,10 +100,10 @@ class RecipeType extends AbstractType
                     'required' => false,
                 ]
             )
-            ->add('recipeIngredients',
+            ->add('recipeIngredientLists',
                 CollectionType::class,
                 [
-                    'entry_type' => RecipeIngredientType::class,
+                    'entry_type' => RecipeIngredientListType::class,
                     'allow_add' => true,
                     'allow_delete' => true,
                     'by_reference' => true,

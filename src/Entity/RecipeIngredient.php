@@ -49,12 +49,12 @@ class RecipeIngredient
     private $ingredient;
 
     /**
-     * @var Recipe
+     * @var RecipeIngredientList
      *
-     * @ORM\ManyToOne(targetEntity="Recipe", inversedBy="recipeIngredients")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\ManyToOne(targetEntity="App\Entity\RecipeIngredientList", inversedBy="recipeIngredients")
+     * @ORM\JoinColumn(nullable=true)
      */
-    private $recipe;
+    private $recipeIngredientList;
 
     public function __construct()
     {
@@ -124,24 +124,6 @@ class RecipeIngredient
     }
 
     /**
-     * @return Recipe
-     */
-    public function getRecipe(): Recipe
-    {
-        return $this->recipe;
-    }
-
-    /**
-     * @param Recipe $recipe
-     * @return Recipe
-     */
-    public function setRecipe(Recipe $recipe)
-    {
-        $this->recipe = $recipe;
-        return $recipe;
-    }
-
-    /**
      * @return string
      */
     public function getUnit() : ?RefUnit
@@ -185,4 +167,25 @@ class RecipeIngredient
         }
         $this->text .= $text;
     }
+
+    /**
+     * @return RecipeIngredientList
+     */
+    public function getRecipeIngredientList(): RecipeIngredientList
+    {
+        return $this->recipeIngredientList;
+    }
+
+    /**
+     * @param RecipeIngredientList $recipeIngredientList
+     * @return RecipeIngredient
+     */
+    public function setRecipeIngredientList(RecipeIngredientList $recipeIngredientList): RecipeIngredient
+    {
+        $this->recipeIngredientList = $recipeIngredientList;
+        return $this;
+    }
+
+
+
 }

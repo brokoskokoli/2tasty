@@ -8,3 +8,4 @@ parameters:
     database_user: root
     database_password: 1234test
     max_per_page: 20
+    locale: de
