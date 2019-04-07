@@ -7,6 +7,7 @@ use App\Entity\RecipeIngredient;
 use App\Entity\RecipeStep;
 use App\Helper\StringHelper;
 use PHPHtmlParser\Dom;
+use Symfony\Component\DomCrawler\Crawler;
 
 class URLParserEssenUndTrinken extends URLParserBase
 {
@@ -21,7 +22,7 @@ class URLParserEssenUndTrinken extends URLParserBase
 
     protected $language = Recipe::LANGUAGE_GERMAN;
 
-    public function readRecipeFromDom(Recipe $recipe, Dom $dom)
+    public function readRecipeFromDom(Recipe $recipe, Crawler $dom)
     {
         $title = html_entity_decode(trim(strip_tags($dom->find('h1', 0)->innerHtml)));
         if ($title != '') {

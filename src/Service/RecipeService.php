@@ -197,10 +197,12 @@ class RecipeService
         $index = array_rand($recipes);
         return $recipes[$index];
     }
+
     /**
      * @param $link
      * @param User $user
      * @return Recipe|null
+     * @throws \Doctrine\ORM\ORMException
      */
     public function createRecipeFromLink($link, User $user)
     {

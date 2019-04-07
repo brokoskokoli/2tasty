@@ -70,7 +70,10 @@ class ImportService
      */
     public function importAmoutAndUnitToRecipeIngredientFromString(RecipeIngredient $recipeIngredient, $unitString)
     {
-        $text = $unitString;
+        $text = trim($unitString);
+        $text = str_replace('&nbsp;', ' ', $text);
+        $text = str_replace("\xc2\xa0", ' ', $text);
+        $text = html_entity_decode($text);
         $this->parseUnit($recipeIngredient, $text);
         $this->parseAmount($recipeIngredient, $text);
         $recipeIngredient->setText($text);
@@ -102,10 +105,7 @@ class ImportService
      */
     public function parseUnit(RecipeIngredient $recipeIngredient, &$string)
     {
-        $string = str_replace('&nbsp;', ' ', $string);
-        $string = html_entity_decode($string);
         $parts = preg_split('/\s+/', $string);
-
         foreach ($parts as $index => &$part) {
             $preparedPart = trim($part);
             if (empty($preparedPart)) {

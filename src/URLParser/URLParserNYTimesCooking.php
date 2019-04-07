@@ -7,6 +7,7 @@ use App\Entity\RecipeIngredient;
 use App\Entity\RecipeStep;
 use App\Helper\StringHelper;
 use PHPHtmlParser\Dom;
+use Symfony\Component\DomCrawler\Crawler;
 
 class URLParserNYTimesCooking extends URLParserBase
 {
@@ -18,7 +19,7 @@ class URLParserNYTimesCooking extends URLParserBase
 
     protected $language = Recipe::LANGUAGE_ENGLISH;
 
-    public function readRecipeFromDom(Recipe $recipe, Dom $dom)
+    public function readRecipeFromDom(Recipe $recipe, Crawler $dom)
     {
         $title = html_entity_decode($dom->find('h1.recipe-title', 0)->text);
         if ($title != '') {

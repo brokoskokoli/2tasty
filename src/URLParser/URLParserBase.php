@@ -17,6 +17,7 @@ use PHPHtmlParser\Dom;
 use PHPHtmlParser\Dom\AbstractNode;
 use PHPHtmlParser\Dom\Collection;
 use PHPHtmlParser\Dom\HtmlNode;
+use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Translation\TranslatorInterface;
 
@@ -66,7 +67,7 @@ class URLParserBase
         return null;
     }
 
-    public function readRecipeFromDom(Recipe $recipe, Dom $dom)
+    public function readRecipeFromDom(Recipe $recipe, Crawler $dom)
     {
         $title = html_entity_decode(trim(strip_tags($dom->find('h1', 0)->innerHtml)));
         if ($title != '') {
@@ -102,14 +103,15 @@ class URLParserBase
     public function readSingleRecipeFromUrl(Recipe $recipe, $url)
     {
         try {
-            $dom = new Dom;
-            $dom->loadFromUrl($url);
-
+            $html = @file_get_contents($url);
+            $dom = new Crawler($html);
             $recipe->setLanguage($this->language);
             $this->importService->initForRecipe($recipe);
             $this->readRecipeFromDom($recipe, $dom);
             return $recipe;
         } catch (\Exception $e) {
+
+            dump($e);
             return null;
         }
     }
@@ -308,12 +310,12 @@ class URLParserBase
         $this->importService->storeImages($recipe);
     }
 
-    protected function getNodeFindText(AbstractNode $node, $selector, $index = 0)
+    protected function getNodeFindText(Crawler $dom, $selector, $index = 0)
     {
-        /** @var Collection $nodes */
-        $nodes = $node->find($selector);
-        if ($nodes->count() > $index) {
-            return $nodes[$index]->text(true);
+        $result = $dom->filter($selector);
+
+        if ($result->count() > $index) {
+            return $result->eq($index)->text();
         }
 
         return '';
