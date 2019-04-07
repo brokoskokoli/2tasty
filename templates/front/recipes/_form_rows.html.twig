@@ -31,23 +31,78 @@
 
 {{ form_row(form.authorRecipeLists, {'attr' : {'class': 'stXtokenField', 'data-availabeTokens': form.authorRecipeLists.vars.recipeLists|join('|')}}) }}
 
-{{ arrayCollection.start('ingredients', 'title.ingredients', [
-    {class: 'col-md-3 stXautoComplete', field: form.recipeIngredients.vars.prototype.ingredient, autocomplete: ingredientList  },
-    {class: 'col-md-2 amount', field: form.recipeIngredients.vars.prototype.amount},
-    {class: 'col-md-2 unit', field: form.recipeIngredients.vars.prototype.unit},
-    {class: 'col-md-4', field: form.recipeIngredients.vars.prototype.text},
-]) }}
 
-{% for ingredient in form.recipeIngredients %}
-    {{ arrayCollection.line([
-        {class: 'col-md-3 stXautoComplete', field: ingredient.ingredient, autocomplete: ingredientList},
-        {class: 'col-md-2 amount', field: ingredient.amount},
-        {class: 'col-md-2 unit', field: ingredient.unit},
-        {class: 'col-md-4', field: ingredient.text},
-    ]) }}
-{% endfor %}
 
-{{ arrayCollection.end(form.recipeIngredients) }}
+<div class="row">
+    <div class="col-md-12">
+        <h3>{{ 'title.ingredients'|trans }}</h3>
+        {% set prototype %}
+            <div class="row ingredientList">
+                <div class="col-md-12">
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            {{ form_row(form.recipeIngredientLists.vars.prototype.title) }}
+                        </div>
+                        <div class="col-md-6 deleteButtonContainer">
+                        </div>
+                    </div>
+
+                    {{ arrayCollection.start('ingredients', 'title.ingredients', [
+                        {class: 'col-md-3 stXautoComplete', field: form.recipeIngredientLists.vars.prototype.recipeIngredients.vars.prototype.ingredient, autocomplete: ingredientList  },
+                        {class: 'col-md-2 amount', field: form.recipeIngredientLists.vars.prototype.recipeIngredients.vars.prototype.amount},
+                        {class: 'col-md-2 unit', field: form.recipeIngredientLists.vars.prototype.recipeIngredients.vars.prototype.unit},
+                        {class: 'col-md-4', field: form.recipeIngredientLists.vars.prototype.recipeIngredients.vars.prototype.text},
+                    ]) }}
+
+                    {{ arrayCollection.end(form.recipeIngredientLists.vars.prototype.recipeIngredients) }}
+                </div>
+            </div>
+        {% endset %}
+
+
+
+
+        <div class="recipeIngredientLists symfonyArrayCollection" data-add-text="{{ 'action.add_ingredient_list'|trans }}" data-remove-text="{{ 'action.remove_ingredient_list'|trans }}" data-prototype="{{ prototype|e('html_attr') }}">
+
+            {% for currectIngredientList in form.recipeIngredientLists %}
+
+            <div class="row ingredientList">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-6">
+                            {{ form_row(currectIngredientList.title) }}
+                        </div>
+                        <div class="col-md-6 deleteButtonContainer">
+                        </div>
+                    </div>
+
+                    {{ arrayCollection.start('ingredients', null, [
+                        {class: 'col-md-3 stXautoComplete', field: currectIngredientList.recipeIngredients.vars.prototype.ingredient, autocomplete: ingredientList  },
+                        {class: 'col-md-2 amount', field: currectIngredientList.recipeIngredients.vars.prototype.amount},
+                        {class: 'col-md-2 unit', field: currectIngredientList.recipeIngredients.vars.prototype.unit},
+                        {class: 'col-md-4', field: currectIngredientList.recipeIngredients.vars.prototype.text},
+                    ]) }}
+
+                    {% for ingredient in currectIngredientList.recipeIngredients %}
+                        {{ arrayCollection.line([
+                            {class: 'col-md-3 stXautoComplete', field: ingredient.ingredient, autocomplete: ingredientList},
+                            {class: 'col-md-2 amount', field: ingredient.amount},
+                            {class: 'col-md-2 unit', field: ingredient.unit},
+                            {class: 'col-md-4', field: ingredient.text},
+                        ]) }}
+                    {% endfor %}
+
+                    {{ arrayCollection.end(currectIngredientList.recipeIngredients) }}
+                </div>
+            </div>
+
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+
 
 {{ arrayCollection.start('recipeSteps', 'title.steps', [
     {class: 'col-md-9', field: form.recipeSteps.vars.prototype.text},

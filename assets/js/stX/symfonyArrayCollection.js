@@ -22,9 +22,21 @@ $.fn.stXarrayCollection = function() {
         var newIndex = deleteButtonCounter++;
         var removeButtonId = "deleteButton" + uniqueid + newIndex;
 
-        $element.append('<div class="' + removeButtonClass + '" >'+
-            '<button class="btn" id="'+removeButtonId+'"><i class="fa fa-remove" aria-hidden="true"></i></button>'+
+        let removeText = widget.data('remove-text');
+        if(!removeText) {
+            removeText = '<i class="fa fa-plus" aria-hidden="true"></i>';
+        }
+
+        let $deleteButton = $('<div class="' + removeButtonClass + '" >'+
+            '<button class="btn" id="'+removeButtonId+'">'+removeText+'</button>'+
             '</div>');
+        let $container = $element.find('.deleteButtonContainer');
+
+        if ($container.length > 0) {
+            $container.append($deleteButton);
+        } else {
+            $element.append($deleteButton);
+        }
 
         $('#'+removeButtonId).click(function (e) {
             $element.remove();
@@ -33,16 +45,21 @@ $.fn.stXarrayCollection = function() {
     };
 
     this.addDeleteButtons = function () {
-        widget.find('div.row').each(function (index, obj) {
+        widget.find('>div.row').each(function (index, obj) {
             widget.addDeleteButton($(obj));
         });
     };
 
     this.addAddButton = function () {
-        var addButtonId = widget.buttonId;
+        const addButtonId = widget.buttonId;
+
+        let addText = widget.data('add-text');
+        if(!addText) {
+            addText = '<i class="fa fa-plus" aria-hidden="true"></i>';
+        }
 
         widget.parent().append('<div title="Crtl + Space" class="' + addbuttonClass + '" >'+
-            '<button class="btn" id="'+addButtonId+'"><i class="fa fa-plus" aria-hidden="true"></i></button>'+
+            '<button class="btn" id="'+addButtonId+'">'+addText+'</button>'+
             '</div>');
 
         $('#'+addButtonId).click(function (e) {
@@ -62,6 +79,9 @@ $.fn.stXarrayCollection = function() {
         $content.find('.stXautoComplete').each(function (index, obj) {
             $(obj).stXautoComplete();
         });
+        $content.find('div.symfonyArrayCollection').each(function (index, obj) {
+            $(obj).stXarrayCollection();
+        })
         return false;
     }
 

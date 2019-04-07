@@ -25,7 +25,6 @@ class RecipeIngredientList
      * @var string
      *
      * @ORM\Column(type="string")
-     * @Assert\NotBlank
      */
     private $title;
 
@@ -65,6 +64,7 @@ class RecipeIngredientList
     {
         $this->createdAt = new \DateTime();
         $this->recipeIngredients = new ArrayCollection();
+        $this->title = '';
     }
 
     public function __toString()
@@ -84,7 +84,7 @@ class RecipeIngredientList
 
     public function setTitle(?string $title): void
     {
-        $this->title = $title;
+        $this->title = $title ?? '';
     }
 
     /**

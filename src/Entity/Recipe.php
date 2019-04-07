@@ -733,7 +733,7 @@ class Recipe
 
 
     /**
-     * @return RecipeIngredient[]|ArrayCollection
+     * @return RecipeIngredientList[]|ArrayCollection
      */
     public function getRecipeIngredientLists()
     {

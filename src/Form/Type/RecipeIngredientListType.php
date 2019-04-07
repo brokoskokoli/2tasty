@@ -3,20 +3,14 @@
 namespace App\Form\Type;
 
 
-use App\Entity\Ingredient;
 use App\Entity\Recipe;
-use App\Entity\RecipeIngredient;
 use App\Entity\RecipeIngredientList;
-use App\Entity\RefUnit;
-use App\Form\DataTransformer\EntityToTranslatedStringTransformer;
-use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Translation\TranslatorInterface;
 
 class RecipeIngredientListType extends AbstractType
 {
@@ -24,22 +18,22 @@ class RecipeIngredientListType extends AbstractType
     {
         $builder->add(
             'title',
-            IngredientType::class,
+            TextType::class,
             [
-                'label' => "label.ingredient",
+                'label' => "label.title",
                 'required' => false,
-                'recipe' => $options['recipe'],
             ]
         )
-        ->add('recipes',
-            EntityType::class,
+        ->add('recipeIngredients',
+            CollectionType::class,
             [
-                'label' => "label.recipes",
-                'required' => false,
-                'class' => Recipe::class,
-                'choice_label' => 'title',
-                'multiple' => true,
-                'by_reference' => false,
+                'entry_type' => RecipeIngredientType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'by_reference' => true,
+                'entry_options' => [
+                    'recipe' => $options['recipe'],
+                ]
             ]
         );
     }

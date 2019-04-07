@@ -55,11 +55,20 @@
         <p class="spacer-medium">&nbsp;</p>
         <div class="ingredients">
             <h2>{{ 'title.ingredients'|trans({}, "messages") }}</h2>
-            <ul>
-                {% for ingredient in recipe.recipeIngredients %}
-                    <li>{{ ingredient|ingredientText(recipe.language) }}</li>
+            <div>
+                {% for ingredientList in recipe.recipeIngredientLists %}
+                    <div>
+                        {% if ingredientList.title != '' %}
+                            <h3>{{ ingredientList.title }}</h3>
+                        {% endif %}
+                    <ul>
+                    {% for ingredient in ingredientList.recipeIngredients %}
+                        <li>{{ ingredient|ingredientText(recipe.language) }}</li>
+                    {% endfor %}
+                    </ul>
+                    </div>
                 {% endfor %}
-            </ul>
+            </div>
         </div>
         <p class="spacer-medium">&nbsp;</p>
         <div class="steps">

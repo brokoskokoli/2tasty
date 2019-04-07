@@ -43,4 +43,8 @@ $(function () {
             }
         });
     });
+
+    $('#add_ingredient_list').on('click', function (event) {
+        alert('add');
+    });
 });
