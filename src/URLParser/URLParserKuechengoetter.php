@@ -9,7 +9,7 @@ use App\Helper\StringHelper;
 use PHPHtmlParser\Dom;
 use Symfony\Component\DomCrawler\Crawler;
 
-class URLParserKuechengoetter extends URLParserBase
+class URLParserKuechengoetter extends URLParserAdvanced
 {
     protected $hosts = [
         'www.kuechengoetter.de',
@@ -43,6 +43,6 @@ class URLParserKuechengoetter extends URLParserBase
         $infoNodeText = $dom->find('div.recipe-information', 0)->innerHtml;
         $recipe->setInformations($purifier->purify($infoNodeText));
 
-        $this->addGuessedImages($recipe, $dom, ['#carousel-1'], 'meta', 'content');
+        $this->guessImagesAndAddThem($recipe, $dom, ['#carousel-1'], 'meta', 'content');
     }
 }

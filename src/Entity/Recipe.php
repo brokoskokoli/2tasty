@@ -322,7 +322,7 @@ class Recipe
 
     public function setTitle(?string $title): void
     {
-        $this->title = $title;
+        $this->title = trim($title) ;
     }
 
     public function getSlug(): ?string

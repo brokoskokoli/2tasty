@@ -220,7 +220,7 @@ class RecipeService
 
         $parser = URLParser::getParser($link, $this->importService);
         if ($parser) {
-            $parser->readSingleRecipeFromUrl($recipe, $link);
+            return $parser->readSingleRecipeFromUrl($recipe, $link);
         }
 
         return $recipe;

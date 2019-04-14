@@ -5,12 +5,10 @@ namespace App\URLParser;
 use App\Entity\Recipe;
 use App\Entity\RecipeIngredient;
 use App\Entity\RecipeIngredientList;
-use App\Entity\RecipeStep;
 use App\Helper\StringHelper;
-use PHPHtmlParser\Dom;
 use Symfony\Component\DomCrawler\Crawler;
 
-class URLParserChefkoch extends URLParserBase
+class URLParserChefkoch extends URLParserAdvanced
 {
     protected $hosts = [
         'www.chefkoch.de',
@@ -21,9 +19,10 @@ class URLParserChefkoch extends URLParserBase
 
     protected $language = Recipe::LANGUAGE_GERMAN;
 
+    protected $titleFilter = 'h1.page-title';
+
     public function readRecipeFromDom(Recipe $recipe, Crawler $dom)
     {
-        $recipe->setTitle($this->getNodeFindText($dom, 'h1.page-title'));
         $recipe->setSummary($this->getNodeFindText($dom, 'div.summary'));
         $ingredientRows = $dom->filter('table.incredients tr');
         $recipeIngredientList = null;
@@ -60,7 +59,10 @@ class URLParserChefkoch extends URLParserBase
 
         $preparation = $dom->filter('div #rezept-zubereitung')->html();
         $preparationStepTexts = StringHelper::splitString($preparation);
-        $this->addListAsRecipeSteps($recipe, $preparationStepTexts);
+        $steps = array_map(function ($element) {
+            return [self::TEXT => $element];
+        }, $preparationStepTexts);
+        $this->addListAsRecipeSteps($recipe, $steps);
 
         $portionsInput = $dom->filter('#divisor')->first();
         $recipe->setPortions(intval($portionsInput->attr('value')));

@@ -9,7 +9,7 @@ use App\Helper\StringHelper;
 use PHPHtmlParser\Dom;
 use Symfony\Component\DomCrawler\Crawler;
 
-class URLParserNYTimesCooking extends URLParserBase
+class URLParserNYTimesCooking extends URLParserAdvanced
 {
     protected $hosts = [
         'cooking.nytimes.com',

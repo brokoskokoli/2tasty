@@ -2,32 +2,23 @@
 
 namespace App\URLParser;
 
-
-use App\Entity\ImageFile;
 use App\Entity\Recipe;
-use App\Entity\RecipeIngredient;
-use App\Entity\RecipeStep;
-use App\Entity\RefUnit;
-use App\Entity\RefUnitName;
-use App\Helper\FileHelper;
 use App\Service\ImportService;
-use App\Service\RefUnitService;
-use Doctrine\ORM\EntityManagerInterface;
-use PHPHtmlParser\Dom;
-use PHPHtmlParser\Dom\AbstractNode;
-use PHPHtmlParser\Dom\Collection;
-use PHPHtmlParser\Dom\HtmlNode;
 use Symfony\Component\DomCrawler\Crawler;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\Translation\TranslatorInterface;
 
 class URLParserBase
 {
-    protected $importService;
-
     const MAX_NUMBER_OF_IMGAES = 10;
 
     const PORTIONS_TEXT_AREA = 50;
+
+    const KEY = 'key';
+
+    const SUBKEY = 'subkey';
+
+    const ATTRIBUTE = 'attribute';
+
+    protected $importService;
 
     protected $hosts = ['*'];
 
@@ -43,56 +34,9 @@ class URLParserBase
         $this->importService = $importService;
     }
 
-    public function getText($node)
+    public function getText(Crawler $dom)
     {
-        return trim(strip_tags($node->innerHTML));
-    }
-
-    protected function guessPortions($dom, $keys = ['portion'])
-    {
-        $fulltext = $this->getText($dom);
-        foreach ($keys as $keyWord) {
-            if ($pos = stripos($fulltext, $keyWord)) {
-                $area = substr($fulltext, $pos - self::PORTIONS_TEXT_AREA/2,self::PORTIONS_TEXT_AREA);
-                $parts = explode(' ', $area);
-                foreach ($parts as $part) {
-                    if (is_numeric($part)) {
-                        return $part;
-                        break;
-                    }
-                }
-            }
-        }
-
-        return null;
-    }
-
-    public function readRecipeFromDom(Recipe $recipe, Crawler $dom)
-    {
-        $title = html_entity_decode(trim(strip_tags($dom->find('h1', 0)->innerHtml)));
-        if ($title != '') {
-            $recipe->setTitle($title);
-        }
-
-        $recipe->setPortions($this->guessPortions($dom));
-
-        $element = $dom->find('.summary', 0);
-        if ($element) {
-            $recipe->setSummary(html_entity_decode($element->text));
-        }
-
-        $finalIngredientList = $this->guessIngredientList($dom, true,'ul');
-        $this->addStringListAsRecipeIngredients($recipe, $finalIngredientList);
-
-        $finalStepsList = $this->guessStepsList($dom, true,'ol');
-        if (!is_iterable($finalStepsList)) {
-            $finalStepsList = $this->guessStepsList($dom, true,'ul');
-        }
-        if (is_iterable($finalStepsList)) {
-            $this->addListAsRecipeSteps($recipe, $finalStepsList);
-        }
-
-        $this->addGuessedImages($recipe, $dom);
+        return trim(strip_tags($dom->html()));
     }
 
     /**
@@ -104,9 +48,11 @@ class URLParserBase
     {
         try {
             $html = @file_get_contents($url);
+            if (!$html) {
+                return null;
+            }
             $dom = new Crawler($html);
-            $recipe->setLanguage($this->language);
-            $this->importService->initForRecipe($recipe);
+            $this->prepareRecipe($recipe, $dom);
             $this->readRecipeFromDom($recipe, $dom);
             return $recipe;
         } catch (\Exception $e) {
@@ -114,6 +60,10 @@ class URLParserBase
             dump($e);
             return null;
         }
+    }
+
+    public function readRecipeFromDom(Recipe $recipe, Crawler $dom)
+    {
     }
 
     public function canHandleUrl($url)
@@ -137,177 +87,27 @@ class URLParserBase
         return true;
     }
 
-    protected function parseStringToRecipeIngredient(string $text) : ?RecipeIngredient
+    protected function cleanString($string, $stripTags = true)
     {
-        $recipeIngredient = new RecipeIngredient();
-
-        $this->importService->parseAmount($recipeIngredient, $text);
-        $this->importService->parseUnit($recipeIngredient, $text);
-        $this->importService->parseIngredient($recipeIngredient, $text);
-
-        $recipeIngredient->setText($text);
-
-        if (!$recipeIngredient->getUnit() && !$recipeIngredient->getAmount() && !$recipeIngredient->getIngredient()) {
-            return null;
+        $text = trim($string);
+        $text = str_replace('&nbsp;', ' ', $text);
+        $text = str_replace("\xc2\xa0", ' ', $text);
+        $text = preg_replace('!\s+!', ' ', $text);
+        if ($stripTags) {
+            $text = strip_tags($text);
         }
 
-        return $recipeIngredient;
-    }
-
-
-
-    protected function addStringListAsRecipeIngredients(Recipe $recipe, array &$ingredientStringList)
-    {
-        $ingredients = [];
-        foreach ($ingredientStringList as $index => &$ingredientString) {
-            $ingredient = $this->parseStringToRecipeIngredient($ingredientString);
-            $ingredients[] = $ingredient;
-            if ($ingredient) {
-                unset($ingredientStringList[$index]);
-                $recipe->addRecipeIngredient($ingredient);
-            }
-        }
-    }
-
-    protected function guessIngredientList(Dom $dom, $asText = true, $tag = 'ul', $classesToCheck = ['recipe-ingredients', 'ingredients'])
-    {
-        $ingredientsLists = $dom->find($tag);
-        $finalIngredientList = [];
-        foreach ($ingredientsLists as $ingredientsList) {
-            $classes = $ingredientsList->tag->getAttribute('class')['value'];
-            foreach ($classesToCheck as $class) {
-                if (stripos($classes, $class) !== false) {
-                    $finalIngredientList = $ingredientsList;
-                    break;
-                }
-            }
-
-            if ($finalIngredientList) {
-                break;
-            }
-        }
-
-
-        if ($finalIngredientList && $asText) {
-            $result = [];
-
-            foreach ($finalIngredientList as $finalIngredient) {
-                $ingredient = trim(strip_tags($finalIngredient->innerHtml));
-                if ($ingredient) {
-                    $result[] = preg_replace('!\s+!', ' ', $ingredient);
-                }
-            }
-
-            return $result;
-        }
-
-        return $finalIngredientList;
+        return $text;
     }
 
     /**
      * @param Recipe $recipe
-     * @param Dom $dom
+     * @param Crawler $dom
      */
-    protected function addGuessedImages(Recipe $recipe, Dom $dom, $tags = ['.images', '.recipe-img'], $tagInner = 'img', $tagInnerAttribute = 'src')
+    public function prepareRecipe(Recipe $recipe, Crawler $dom)
     {
-        $images = $this->guessImageList($dom, $tags, $tagInner, $tagInnerAttribute);
-        $this->addListAsImages($recipe, $images);
-    }
-
-    protected function guessImageList(Dom $dom, $tags = ['.images', '.recipe-img'], $tagInner = 'img', $tagInnerAttribute = 'src')
-    {
-        $images = [];
-        foreach ($tags as $tagOuter) {
-
-            /** @var Collection $slideshow */
-            $slideshow = $dom->find($tagOuter);
-
-            if ($slideshow->count()) {
-                $imgs = $slideshow->find($tagInner);
-                foreach ($imgs as $img) {
-                    $images[] = $img->tag->getAttribute($tagInnerAttribute)['value'];
-                }
-            }
-        }
-
-        return $images;
-    }
-
-    protected function guessStepsList(Dom $dom, $asText = true, $tag = 'ol', $classesToCheck = ['recipe-steps', 'steps', 'preparation'])
-    {
-        $stepsLists = $dom->find($tag);
-        $finalStepsList = null;
-        foreach ($stepsLists as $stepsList) {
-            $classes = $stepsList->tag->getAttribute('class')['value'];
-            foreach ($classesToCheck as $class) {
-                if (stripos($classes, $class) !== false) {
-                    $finalStepsList = $stepsList;
-                    break;
-                }
-            }
-
-            if ($finalStepsList) {
-                break;
-            }
-        }
-
-        if ($finalStepsList && $asText) {
-            $result = [];
-
-            foreach ($finalStepsList as $finalIngredient) {
-                $ingredient = trim(strip_tags($finalIngredient->innerHtml));
-                if ($ingredient) {
-                    $result[] = preg_replace('!\s+!', ' ', $ingredient);
-                }
-            }
-
-            return $result;
-        }
-
-        return $finalStepsList;
-    }
-
-    protected function addListAsRecipeSteps(Recipe $recipe, iterable $list)
-    {
-        foreach ($list as $preparationStepText) {
-            $step = new RecipeStep();
-            $step->setText(html_entity_decode($preparationStepText));
-            $recipe->addRecipeStep($step);
-        }
-    }
-
-    protected function addListAsImages(Recipe $recipe, $images)
-    {
-        $number = 0;
-        foreach ($images as $index => $image) {
-            if ($number >= self::MAX_NUMBER_OF_IMGAES) {
-                continue;
-            }
-
-            $filename = FileHelper::getTempFileName() . '.temp';
-
-            if (stripos($image, 'http') !== 0) {
-                $image = 'http:' . $image;
-            }
-
-            file_put_contents($filename, fopen($image, 'r'));
-            $mimeType = mime_content_type($filename);
-
-            if ($mimeType != 'image/jpeg') {
-                continue;
-            }
-
-            $size = filesize($filename);
-
-            $uploadedFile = new UploadedFile($filename, 'image' . $index . '.jpg', $mimeType, $size, null, true);
-
-            $imageFile = new ImageFile();
-            $imageFile->setImageFile($uploadedFile);
-            $recipe->addImage($imageFile);
-            $number++;
-        }
-
-        $this->importService->storeImages($recipe);
+        $recipe->setLanguage($this->language);
+        $this->importService->initForRecipe($recipe);
     }
 
     protected function getNodeFindText(Crawler $dom, $selector, $index = 0)

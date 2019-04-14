@@ -7,6 +7,7 @@ use App\Entity\Recipe;
 use App\Entity\RecipeIngredient;
 use App\Entity\RefUnit;
 use App\Entity\RefUnitName;
+use App\URLParser\URLParserBase;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Webit\Util\EvalMath\EvalMath;
@@ -204,6 +205,23 @@ class ImportService
 
         // man kann die bilder ohne besitze einfach löschen und dann alle bilder, die keinen eintrag in der db haben
         // bild wird nicht gespeichert
+    }
+
+    public function parseStringToRecipeIngredient(string $text): ?RecipeIngredient
+    {
+        $recipeIngredient = new RecipeIngredient();
+
+        $this->parseAmount($recipeIngredient, $text);
+        $this->parseUnit($recipeIngredient, $text);
+        $this->parseIngredient($recipeIngredient, $text);
+
+        $recipeIngredient->setText($text);
+
+        if (!$recipeIngredient->getUnit() && !$recipeIngredient->getAmount() && !$recipeIngredient->getIngredient()) {
+            return null;
+        }
+
+        return $recipeIngredient;
     }
 
 }

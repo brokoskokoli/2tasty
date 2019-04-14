@@ -3,13 +3,9 @@
 namespace App\URLParser;
 
 use App\Entity\Recipe;
-use App\Entity\RecipeIngredient;
-use App\Entity\RecipeStep;
-use App\Helper\StringHelper;
-use PHPHtmlParser\Dom;
 use Symfony\Component\DomCrawler\Crawler;
 
-class URLParserEssenUndTrinken extends URLParserBase
+class URLParserEssenUndTrinken extends URLParserAdvanced
 {
 
     protected $hosts = [
@@ -22,27 +18,60 @@ class URLParserEssenUndTrinken extends URLParserBase
 
     protected $language = Recipe::LANGUAGE_GERMAN;
 
+    protected $titleFilter = 'h1';
+
+    protected $portionsText = ['Portionen'];
+
+
+    protected $ingredientsFilter = [
+        self::KEY => 'ul.preparation',
+        self::SUBKEY => [
+            'li.preparation-step > div > p',
+        ],
+    ];
+
+    protected $informationsFilter = 'div.right-col';
+    protected $baseURL = 'https://www.essen-und-trinken.de';
+
+    protected $summaryFilter = 'div.intro';
+
+    protected $portionsFilter = 'div.servings';
+
+    protected $imagesFilter = [
+        self::KEY => 'figure.recipe-img',
+        self::SUBKEY => 'img',
+        self::ATTRIBUTE => 'src',
+    ];
+
+
     public function readRecipeFromDom(Recipe $recipe, Crawler $dom)
     {
-        $title = html_entity_decode(trim(strip_tags($dom->find('h1', 0)->innerHtml)));
-        if ($title != '') {
-            $recipe->setTitle($title);
+        $finalIngredientList = $this->guessIngredientList($dom, false,'section.ingredients ul', ['ingredients-list']);
+        $finalIngredientList = $this->generateRecipeIngredientList($finalIngredientList);
+        $this->addListStringRecursiveAsRecipeIngredients($recipe, $finalIngredientList);
+    }
+
+    protected function generateRecipeIngredientList(?Crawler $crawler)
+    {
+        if (!$crawler instanceof Crawler) {
+            return [];
         }
 
-        $recipe->setPortions($this->guessPortions($dom));
+        $lastIndex = '';
+        $crawler->filter('li')->each(function (Crawler $finalIngredient, $i) use (&$result, &$lastIndex) {
+            $class = $finalIngredient->attr('class');
+            if ($class == 'ingredients-zwiti') {
+                $lastIndex = $this->cleanString($finalIngredient->html());
+                return null;
+            }
+            $ingredient = $finalIngredient->html();
+            $ingredient = $this->cleanString($ingredient, false);
+            if ($ingredient) {
+                $result[$lastIndex][] = preg_replace('!\s+!', ' ', $ingredient);
+            }
+        });
 
-        $finalIngredientList = $this->guessIngredientList($dom, true,'ul');
-        $this->addStringListAsRecipeIngredients($recipe, $finalIngredientList);
-
-        $finalStepsList = $this->guessStepsList($dom, true,'ol');
-        if (!is_iterable($finalStepsList)) {
-            $finalStepsList = $this->guessStepsList($dom, true,'ul');
-        }
-        if (is_iterable($finalStepsList)) {
-            array_shift($finalStepsList);
-            $this->addListAsRecipeSteps($recipe, $finalStepsList);
-        }
-
-        $this->addGuessedImages($recipe, $dom);
+        return $result;
     }
 }
+

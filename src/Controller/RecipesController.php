@@ -200,6 +200,8 @@ class RecipesController extends AbstractController
 
                 if ($recipe !== null) {
                     $this->addFlash('success', 'messages.recipe_url_parsed');
+                } else {
+                    $this->addFlash('success', 'messages.recipe_url_parsing_error');
                 }
             }
         }

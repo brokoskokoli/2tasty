@@ -229,6 +229,7 @@ messages:
   recipelist_deleted: Rezeptliste entgültig gelöscht
   recipe_added: Rezept hinzugefügt
   recipe_url_parsed: Rezept wurde von URL gelesen! Bitte überprüfen und speichern!
+  recipe_url_parsing_error: Fehler beim Lesen der URL! Bitte URL prüfen und erneut versuchen.
   recipe_faulty: Das Rezept enthält Fehler und konnte nicht gespeichert werden! Bitte überprüfen.
 
 page:
