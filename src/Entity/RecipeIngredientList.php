@@ -72,7 +72,7 @@ class RecipeIngredientList
         return $this->getId() . '-' . $this->getTitle();
     }
 
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
