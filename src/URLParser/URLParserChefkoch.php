@@ -4,11 +4,11 @@ namespace App\URLParser;
 
 use App\Entity\Recipe;
 use App\Entity\RecipeIngredient;
-use App\Entity\RecipeStep;
+use App\Entity\RecipeIngredientList;
 use App\Helper\StringHelper;
-use PHPHtmlParser\Dom;
+use Symfony\Component\DomCrawler\Crawler;
 
-class URLParserChefkoch extends URLParserBase
+class URLParserChefkoch extends URLParserAdvanced
 {
     protected $hosts = [
         'www.chefkoch.de',
@@ -19,16 +19,28 @@ class URLParserChefkoch extends URLParserBase
 
     protected $language = Recipe::LANGUAGE_GERMAN;
 
-    public function readRecipeFromDom(Recipe $recipe, Dom $dom)
+    protected $titleFilter = 'h1.page-title';
+
+    public function readRecipeFromDom(Recipe $recipe, Crawler $dom)
     {
-        $title = html_entity_decode($dom->find('h1.page-title', 0)->text);
-        if ($title != '') {
-            $recipe->setTitle($title);
-        }
-        $recipe->setSummary(html_entity_decode($dom->find('div.summary', 0)->text));
-        $ingredientsTable = $dom->find('table.incredients');
-        $ingredientRows = $ingredientsTable->find('tr');
-        foreach ($ingredientRows as $ingredientRow) {
+        $recipe->setSummary($this->getNodeFindText($dom, 'div.summary'));
+        $ingredientRows = $dom->filter('table.incredients tr');
+        $recipeIngredientList = null;
+        $ingredientRows->each(function (Crawler $ingredientRow, $i) use (&$recipeIngredientList, &$recipe) {
+            if (strpos($this->getNodeFindText($ingredientRow, 'td', 1), 'Für') !== false) {
+                if ($recipeIngredientList) {
+                    $recipe->addRecipeIngredientList($recipeIngredientList);
+                }
+
+                $recipeIngredientList = new RecipeIngredientList();
+                $recipeIngredientList->setTitle(trim($this->getNodeFindText($ingredientRow, 'td', 1)));
+                return false;
+            }
+
+            if (!$recipeIngredientList) {
+                $recipeIngredientList = new RecipeIngredientList();
+            }
+
             $recipeIngredient = new RecipeIngredient();
             if ($text = $this->getNodeFindText($ingredientRow, '.amount')) {
                 $this->importService->importAmoutAndUnitToRecipeIngredientFromString($recipeIngredient, $text);
@@ -36,23 +48,32 @@ class URLParserChefkoch extends URLParserBase
             if ($text = $this->getNodeFindText($ingredientRow, 'td', 1)) {
                 $this->importService->importIngredientToRecipeIngredientFromString($recipeIngredient, $text);
             }
-            $recipe->addRecipeIngredient($recipeIngredient);
+
+            $recipeIngredientList->addRecipeIngredient($recipeIngredient);
+        });
+
+        if ($recipeIngredientList) {
+            $recipe->addRecipeIngredientList($recipeIngredientList);
         }
 
-        $preparation = $dom->find('div #rezept-zubereitung', 0)->innerHtml;
+
+        $preparation = $dom->filter('div #rezept-zubereitung')->html();
         $preparationStepTexts = StringHelper::splitString($preparation);
-        $this->addListAsRecipeSteps($recipe, $preparationStepTexts);
-        $portionsInput = $dom->find('#divisor', 0);
-        $recipe->setPortions(intval($portionsInput->tag->getAttribute('value')['value']));
-        $infoNodeText = $dom->find('#preparation-info', 0)->innerHtml;
+        $steps = array_map(function ($element) {
+            return [self::TEXT => $element];
+        }, $preparationStepTexts);
+        $this->addListAsRecipeSteps($recipe, $steps);
+
+        $portionsInput = $dom->filter('#divisor')->first();
+        $recipe->setPortions(intval($portionsInput->attr('value')));
+        $infoNodeText = $dom->filter('#preparation-info')->html();
         $recipe->setInformations(html_entity_decode(trim($infoNodeText)));
 
-        $images = [];
-        $slideshow = $dom->find('#slideshow');
-        $imgs = $slideshow->find('img.slideshow-image');
-        foreach ($imgs as $img) {
-            $images[] = $img->tag->getAttribute('src')['value'];
-        }
+        $imgs = $dom->filter('#slideshow img.slideshow-image');
+
+        $images = $imgs->each(function (Crawler $img, $i) {
+            return $img->attr('src');
+        });
         $this->addListAsImages($recipe, $images);
     }
 }

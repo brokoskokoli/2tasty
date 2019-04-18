@@ -1,6 +1,9 @@
 
 {% macro start(indicator, title, header) %}
-    <h3>{{ title|trans }}</h3>
+
+    {% if title is not null %}
+        <h3>{{ title|trans }}</h3>
+    {% endif %}
     <div class="row">
         <div class="col-md-12">
             {% set prototype %}

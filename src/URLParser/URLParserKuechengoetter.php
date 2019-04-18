@@ -7,8 +7,9 @@ use App\Entity\RecipeIngredient;
 use App\Entity\RecipeStep;
 use App\Helper\StringHelper;
 use PHPHtmlParser\Dom;
+use Symfony\Component\DomCrawler\Crawler;
 
-class URLParserKuechengoetter extends URLParserBase
+class URLParserKuechengoetter extends URLParserAdvanced
 {
     protected $hosts = [
         'www.kuechengoetter.de',
@@ -18,30 +19,29 @@ class URLParserKuechengoetter extends URLParserBase
 
     protected $language = Recipe::LANGUAGE_GERMAN;
 
-    public function readRecipeFromDom(Recipe $recipe, Dom $dom)
-    {
-        $title = html_entity_decode(trim(strip_tags($dom->find('h1', 0)->innerHtml)));
-        if ($title != '') {
-            $recipe->setTitle($title);
-        }
+    protected $titleFilter = 'h1 span.headline__title';
 
-        $finalIngredientList = $this->guessIngredientList($dom, true,'ul');
-        $this->addStringListAsRecipeIngredients($recipe, $finalIngredientList);
+    protected $portionsFilter = 'div.recipe-information div.recipe-information__item--servings p.recipe-information__item-text';
 
-        $finalStepsList = $this->guessStepsList($dom, true,'ol');
-        if (!is_iterable($finalStepsList)) {
-            $finalStepsList = $this->guessStepsList($dom, true,'ul');
-        }
-        if (is_iterable($finalStepsList)) {
-            array_shift($finalStepsList);
-            $this->addListAsRecipeSteps($recipe, $finalStepsList);
-        }
+    protected $informationsFilter = 'div.recipe-information';
 
-        $purifier = \HTMLPurifier::getInstance();
+    protected $summaryFilter = 'p.recipe-teaser';
 
-        $infoNodeText = $dom->find('div.recipe-information', 0)->innerHtml;
-        $recipe->setInformations($purifier->purify($infoNodeText));
+    protected $stepsFilter = [
+        self::KEY => 'ol.recipe-preparation__list',
+        self::SUBKEY => [
+            'li span.recipe-preparation__text',
+        ],
+    ];
 
-        $this->addGuessedImages($recipe, $dom, ['#carousel-1'], 'meta', 'content');
-    }
+    protected $ingredientsFilter = 'ul.recipe-ingredients__list li';
+
+    protected $baseURL = 'https://www.kuechengoetter.de';
+
+    protected $imagesFilter = [
+        self::KEY => 'div.recipe-gallery',
+        self::SUBKEY => 'section > div > meta',
+        self::ATTRIBUTE => 'content',
+    ];
+
 }

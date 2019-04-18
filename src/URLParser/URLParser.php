@@ -31,6 +31,9 @@ class URLParser
                     {
                         if (method_exists($class, 'canHandleUrl')) {
                             if ($className == 'URLParserBase') {
+                                continue;
+                            }
+                            if ($className == 'URLParserAdvanced') {
                                 self::$baseParser = new $class($importService);
                             } else {
                                 self::$parser[] = new $class($importService);

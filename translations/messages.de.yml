@@ -109,6 +109,8 @@ action:
   the_next_one: Was anderes
   will_be_cooked_soon: Wird bald gekocht
   has_been_cooked_recently: Wurde gerade gekocht
+  remove_ingredient_list: Entferne Zutatenliste
+  add_ingredient_list: Neue Zutatenliste
 
 dialogs:
   delete_recipe:
@@ -227,6 +229,7 @@ messages:
   recipelist_deleted: Rezeptliste entgültig gelöscht
   recipe_added: Rezept hinzugefügt
   recipe_url_parsed: Rezept wurde von URL gelesen! Bitte überprüfen und speichern!
+  recipe_url_parsing_error: Fehler beim Lesen der URL! Bitte URL prüfen und erneut versuchen.
   recipe_faulty: Das Rezept enthält Fehler und konnte nicht gespeichert werden! Bitte überprüfen.
 
 page:

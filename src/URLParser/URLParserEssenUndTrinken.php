@@ -3,12 +3,10 @@
 namespace App\URLParser;
 
 use App\Entity\Recipe;
-use App\Entity\RecipeIngredient;
-use App\Entity\RecipeStep;
-use App\Helper\StringHelper;
-use PHPHtmlParser\Dom;
+use App\Entity\RecipeIngredientList;
+use Symfony\Component\DomCrawler\Crawler;
 
-class URLParserEssenUndTrinken extends URLParserBase
+class URLParserEssenUndTrinken extends URLParserAdvanced
 {
 
     protected $hosts = [
@@ -21,27 +19,42 @@ class URLParserEssenUndTrinken extends URLParserBase
 
     protected $language = Recipe::LANGUAGE_GERMAN;
 
-    public function readRecipeFromDom(Recipe $recipe, Dom $dom)
+    protected $titleFilter = 'h1';
+
+    protected $stepsFilter = [
+        self::KEY => 'ul.preparation',
+        self::SUBKEY => [
+            'li.preparation-step > div > p',
+        ],
+    ];
+
+    protected $ingredientsFilter = 'ul.ingredients-list li';
+
+    protected $informationsFilter = 'div.right-col';
+    protected $baseURL = 'https://www.essen-und-trinken.de';
+
+    protected $summaryFilter = 'div.intro';
+
+    protected $portionsFilter = 'div.servings';
+
+    protected $imagesFilter = [
+        self::KEY => 'figure.recipe-img',
+        self::SUBKEY => 'img',
+        self::ATTRIBUTE => 'src',
+    ];
+
+    protected function getRecipeIngredientListFromNode(Crawler $crawler)
     {
-        $title = html_entity_decode(trim(strip_tags($dom->find('h1', 0)->innerHtml)));
-        if ($title != '') {
-            $recipe->setTitle($title);
+
+        $class = $crawler->attr('class');
+        if ($class == 'ingredients-zwiti') {
+            $title = $this->cleanString($crawler->html());
+            $recipeIngredientsList = new RecipeIngredientList();
+            $recipeIngredientsList->setTitle($title);
+            return $recipeIngredientsList;
         }
 
-        $recipe->setPortions($this->guessPortions($dom));
-
-        $finalIngredientList = $this->guessIngredientList($dom, true,'ul');
-        $this->addStringListAsRecipeIngredients($recipe, $finalIngredientList);
-
-        $finalStepsList = $this->guessStepsList($dom, true,'ol');
-        if (!is_iterable($finalStepsList)) {
-            $finalStepsList = $this->guessStepsList($dom, true,'ul');
-        }
-        if (is_iterable($finalStepsList)) {
-            array_shift($finalStepsList);
-            $this->addListAsRecipeSteps($recipe, $finalStepsList);
-        }
-
-        $this->addGuessedImages($recipe, $dom);
+        return null;
     }
 }
+

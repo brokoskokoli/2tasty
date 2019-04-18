@@ -8,7 +8,7 @@ use App\Entity\RecipeStep;
 use App\Helper\StringHelper;
 use PHPHtmlParser\Dom;
 
-class URLParserJournalDesFemmes extends URLParserBase
+class URLParserJournalDesFemmes extends URLParserAdvanced
 {
     protected $hosts = [
         'cuisine.journaldesfemmes.fr',

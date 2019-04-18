@@ -118,22 +118,26 @@ class RecipeService
             $recipe->setSlug(Slugger::slugify($recipe->getAuthor()->getUsername() . '_' . $recipe->getTitle() . '_' . time()));
         }
 
-        foreach ($recipe->getRecipeHints() as &$recipeHint) {
+        foreach ($recipe->getRecipeHints() as $recipeHint) {
             $recipeHint->setRecipe($recipe);
         }
-        foreach ($recipe->getRecipeSteps() as &$recipeStep) {
+        foreach ($recipe->getRecipeSteps() as $recipeStep) {
             $recipeStep->setRecipe($recipe);
         }
-        foreach ($recipe->getRecipeIngredients() as &$recipeIngredient) {
-            $recipeIngredient->setRecipe($recipe);
+        foreach ($recipe->getRecipeIngredientLists() as $recipeIngredientList) {
+            $recipeIngredientList->setRecipe($recipe);
+            foreach($recipeIngredientList->getRecipeIngredients() as $recipeIngredient) {
+                $recipeIngredient->setRecipeIngredientList($recipeIngredientList);
+            }
         }
+
         foreach ($recipe->getRecipeAlternatives() as &$recipeAlternative) {
             $recipeAlternative->setRecipe($recipe);
         }
-        foreach ($recipe->getRecipeLinks() as &$recipeLink) {
+        foreach ($recipe->getRecipeLinks() as $recipeLink) {
             $recipeLink->setRecipe($recipe);
         }
-        foreach ($recipe->getImages() as &$recipeImage) {
+        foreach ($recipe->getImages() as $recipeImage) {
             if ($recipeImage->getImageName() === null && $recipeImage->getImageFile() === null) {
                 $recipe->removeImage($recipeImage);
             } else {
@@ -193,10 +197,12 @@ class RecipeService
         $index = array_rand($recipes);
         return $recipes[$index];
     }
+
     /**
      * @param $link
      * @param User $user
      * @return Recipe|null
+     * @throws \Doctrine\ORM\ORMException
      */
     public function createRecipeFromLink($link, User $user)
     {
@@ -214,7 +220,7 @@ class RecipeService
 
         $parser = URLParser::getParser($link, $this->importService);
         if ($parser) {
-            $parser->readSingleRecipeFromUrl($recipe, $link);
+            return $parser->readSingleRecipeFromUrl($recipe, $link);
         }
 
         return $recipe;
@@ -230,9 +236,11 @@ class RecipeService
         $recipe->setPortions($portions);
         $factor = $portions/$currentPortions;
 
-        foreach ($recipe->getRecipeIngredients() as &$recipeIngredient) {
-            if ($recipeIngredient->getAmount() !== null) {
-                $recipeIngredient->setAmount($recipeIngredient->getAmount() * $factor);
+        foreach ($recipe->getRecipeIngredientLists() as &$recipeIngredientList) {
+            foreach ($recipeIngredientList->getRecipeIngredients() as &$recipeIngredient) {
+                if ($recipeIngredient->getAmount() !== null) {
+                    $recipeIngredient->setAmount($recipeIngredient->getAmount() * $factor);
+                }
             }
         }
     }
