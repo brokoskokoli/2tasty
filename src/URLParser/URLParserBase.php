@@ -22,7 +22,7 @@ class URLParserBase
 
     protected $hosts = ['*'];
 
-    protected $pathMatch = '';
+    protected $pathMatch = '/.*/';
 
     protected $language = Recipe::LANGUAGE_ENGLISH;
 

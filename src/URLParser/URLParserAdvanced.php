@@ -279,15 +279,24 @@ class URLParserAdvanced extends URLParserBase
             return '';
         }
 
+        $informationsHtml = '';
+
+        $informations->each(function (Crawler $crawler, $i) use (&$informationsHtml) {
+            $informationsHtml .= $crawler->html();
+        });
+
+
+
+
         $config = HTMLPurifier_Config::createDefault();
         if (!empty($this->baseURL)) {
             $config->set('URI.Base', $this->baseURL);
             $config->set('URI.MakeAbsolute', true);
         }
         $purifier = new HTMLPurifier($config);
-        $informations = $purifier->purify($informations->html());
+        $informationsHtml = $purifier->purify($informationsHtml);
 
-        return $informations;
+        return $informationsHtml;
     }
 
     protected function addStringAsRecipeInformations(Recipe $recipe, string $informations) : bool
