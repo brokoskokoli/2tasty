@@ -21,9 +21,6 @@ class URLParserEssenUndTrinken extends URLParserAdvanced
 
     protected $titleFilter = 'h1';
 
-    protected $portionsText = ['Portionen'];
-
-
     protected $stepsFilter = [
         self::KEY => 'ul.preparation',
         self::SUBKEY => [
@@ -45,39 +42,6 @@ class URLParserEssenUndTrinken extends URLParserAdvanced
         self::SUBKEY => 'img',
         self::ATTRIBUTE => 'src',
     ];
-
-/*
-    public function readRecipeFromDom(Recipe $recipe, Crawler $dom)
-    {
-        $finalIngredientList = $this->guessIngredientList($dom, false,'section.ingredients ul', ['ingredients-list']);
-        $finalIngredientList = $this->generateRecipeIngredientList($finalIngredientList);
-        $this->addListStringRecursiveAsRecipeIngredients($recipe, $finalIngredientList);
-    }
-
-    protected function generateRecipeIngredientList(?Crawler $crawler)
-    {
-        if (!$crawler instanceof Crawler) {
-            return [];
-        }
-
-        $lastIndex = '';
-        $crawler->filter('li')->each(function (Crawler $finalIngredient, $i) use (&$result, &$lastIndex) {
-            $class = $finalIngredient->attr('class');
-            if ($class == 'ingredients-zwiti') {
-                $lastIndex = $this->cleanString($finalIngredient->html());
-                return null;
-            }
-            $ingredient = $finalIngredient->html();
-            $ingredient = $this->cleanString($ingredient, false);
-            if ($ingredient) {
-                $result[$lastIndex][] = preg_replace('!\s+!', ' ', $ingredient);
-            }
-        });
-
-        return $result;
-    }
-*/
-
 
     protected function getRecipeIngredientListFromNode(Crawler $crawler)
     {
