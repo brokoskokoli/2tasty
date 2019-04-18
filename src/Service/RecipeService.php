@@ -236,9 +236,11 @@ class RecipeService
         $recipe->setPortions($portions);
         $factor = $portions/$currentPortions;
 
-        foreach ($recipe->getRecipeIngredients() as &$recipeIngredient) {
-            if ($recipeIngredient->getAmount() !== null) {
-                $recipeIngredient->setAmount($recipeIngredient->getAmount() * $factor);
+        foreach ($recipe->getRecipeIngredientLists() as &$recipeIngredientList) {
+            foreach ($recipeIngredientList->getRecipeIngredients() as &$recipeIngredient) {
+                if ($recipeIngredient->getAmount() !== null) {
+                    $recipeIngredient->setAmount($recipeIngredient->getAmount() * $factor);
+                }
             }
         }
     }

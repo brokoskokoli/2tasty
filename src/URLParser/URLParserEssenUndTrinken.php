@@ -3,6 +3,7 @@
 namespace App\URLParser;
 
 use App\Entity\Recipe;
+use App\Entity\RecipeIngredientList;
 use Symfony\Component\DomCrawler\Crawler;
 
 class URLParserEssenUndTrinken extends URLParserAdvanced
@@ -23,12 +24,14 @@ class URLParserEssenUndTrinken extends URLParserAdvanced
     protected $portionsText = ['Portionen'];
 
 
-    protected $ingredientsFilter = [
+    protected $stepsFilter = [
         self::KEY => 'ul.preparation',
         self::SUBKEY => [
             'li.preparation-step > div > p',
         ],
     ];
+
+    protected $ingredientsFilter = 'ul.ingredients-list li';
 
     protected $informationsFilter = 'div.right-col';
     protected $baseURL = 'https://www.essen-und-trinken.de';
@@ -43,7 +46,7 @@ class URLParserEssenUndTrinken extends URLParserAdvanced
         self::ATTRIBUTE => 'src',
     ];
 
-
+/*
     public function readRecipeFromDom(Recipe $recipe, Crawler $dom)
     {
         $finalIngredientList = $this->guessIngredientList($dom, false,'section.ingredients ul', ['ingredients-list']);
@@ -72,6 +75,22 @@ class URLParserEssenUndTrinken extends URLParserAdvanced
         });
 
         return $result;
+    }
+*/
+
+
+    protected function getRecipeIngredientListFromNode(Crawler $crawler)
+    {
+
+        $class = $crawler->attr('class');
+        if ($class == 'ingredients-zwiti') {
+            $title = $this->cleanString($crawler->html());
+            $recipeIngredientsList = new RecipeIngredientList();
+            $recipeIngredientsList->setTitle($title);
+            return $recipeIngredientsList;
+        }
+
+        return null;
     }
 }
 

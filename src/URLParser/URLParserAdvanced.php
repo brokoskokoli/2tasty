@@ -26,12 +26,14 @@ class URLParserAdvanced extends URLParserBase
 
     protected $portionsText = [];
 
-    protected $ingredientsFilter = [
-        self::KEY => 'ol.ingredients, ul.ingredients',
+    protected $stepsFilter = [
+        self::KEY => 'ul.preparation',
         self::SUBKEY => [
             'li',
         ],
     ];
+
+    protected $ingredientsFilter = 'ul.ingredients li';
 
     protected $informationsFilter = '';
     protected $baseURL = '';
@@ -64,8 +66,12 @@ class URLParserAdvanced extends URLParserBase
                 $recipe->setPortions($portions);
             }
         }
-        if (isset($this->ingredientsFilter[self::KEY]) && isset($this->ingredientsFilter[self::SUBKEY])) {
+        if (isset($this->stepsFilter[self::KEY]) && isset($this->stepsFilter[self::SUBKEY])) {
             $this->guessRecipeStepsAndAddThem($recipe, $dom);
+        }
+
+        if (!empty($this->ingredientsFilter)) {
+            $this->guessIngredientListAndAddThem($recipe, $dom);
         }
         if (!empty($this->informationsFilter)) {
             $this->guessRecipeInformationsAndAddThem($recipe, $dom);
@@ -116,44 +122,50 @@ class URLParserAdvanced extends URLParserBase
     }
 
 
-    protected function guessIngredientList(Crawler $dom, $asText = true, string $tag = 'ul', array $classesToCheck = ['recipe-ingredients', 'ingredients'])
+    protected function getRecipeIngredientListFromNode(Crawler $crawler)
     {
-        $ingredientsLists = $dom->filter($tag);
-        $finalIngredientList = null;
-        $ingredientsLists->each(function (Crawler $ingredientsList, $i) use ($classesToCheck, &$finalIngredientList) {
-            $classes = $ingredientsList->attr('class');
-            foreach ($classesToCheck as $class) {
-                if (stripos($classes, $class) !== false) {
-                    $finalIngredientList = $ingredientsList;
-                    return null;
-                }
-            }
+        return null;
+    }
 
-            if ($finalIngredientList) {
+    protected function getRecipeIngredientFromNode(Crawler $crawler)
+    {
+        return $this->importService->parseStringToRecipeIngredient($this->cleanString($crawler->html()));
+    }
+
+
+    protected function guessIngredientListAndAddThem(Recipe $recipe, Crawler $dom, string $key = '')
+    {
+        if (!$key && !empty($this->ingredientsFilter)) {
+            $key = $this->ingredientsFilter;
+        }
+
+        if (!$key) {
+            return false;
+        }
+
+        $ingredientsNodes = $dom->filter($key);
+        $currentRecipeIngredientList = null;
+
+        $ingredientsNodes->each(function (Crawler $crawler, $i) use (&$recipe, &$currentRecipeIngredientList) {
+            $recipeIngredientList = $this->getRecipeIngredientListFromNode($crawler);
+            if ($recipeIngredientList) {
+                $recipe->addRecipeIngredientList($recipeIngredientList);
+                $currentRecipeIngredientList = $recipeIngredientList;
                 return null;
             }
-        });
 
-        if (!$asText) {
-            return $finalIngredientList;
-        }
+            if (!$currentRecipeIngredientList) {
+                $currentRecipeIngredientList = new RecipeIngredientList();
+                $recipe->addRecipeIngredientList($currentRecipeIngredientList);
+            }
 
-        if (!$finalIngredientList) {
-            return [];
-        }
-
-        $result = [];
-
-        /** @var $finalIngredientList Crawler */
-        $finalIngredientList->each(function (Crawler $finalIngredient, $i) use (&$result) {
-            $ingredient = trim(strip_tags($finalIngredient->html()));
-            $ingredient = $this->cleanString($ingredient);
-            if ($ingredient) {
-                $result[] = preg_replace('!\s+!', ' ', $ingredient);
+            $recipeIngredient = $this->getRecipeIngredientFromNode($crawler);
+            if ($recipeIngredient) {
+                $currentRecipeIngredientList->addRecipeIngredient($recipeIngredient);
             }
         });
 
-        return $result;
+        return true;
     }
 
     /**
@@ -239,29 +251,6 @@ class URLParserAdvanced extends URLParserBase
 
         $this->importService->storeImages($recipe);
     }
-
-    protected function addListStringRecursiveAsRecipeIngredients(Recipe $recipe, array &$ingredientStringLists)
-    {
-        $ingredients = [];
-        foreach ($ingredientStringLists as $index => &$ingredientStringList) {
-
-            $recipeIngredientList = new RecipeIngredientList();
-            $recipeIngredientList->setTitle($index);
-
-            foreach($ingredientStringList as $ingredientString) {
-
-                $ingredient = $this->importService->parseStringToRecipeIngredient($this->cleanString($ingredientString));
-                $ingredients[] = $ingredient;
-                if ($ingredient) {
-                    unset($ingredientStringList[$index]);
-                    $recipeIngredientList->addRecipeIngredient($ingredient);
-                }
-            }
-
-            $recipe->addRecipeIngredientList($recipeIngredientList);
-        }
-    }
-
 
     protected function guessRecipeInformationsAndAddThem(Recipe $recipe, Crawler $dom, $filter = '') : bool
     {
@@ -355,11 +344,11 @@ class URLParserAdvanced extends URLParserBase
 
     protected function guessRecipeStepsAndAddThem(Recipe $recipe, Crawler $dom, $key = '', $subkeys = []) : bool
     {
-        if (!$key && !empty($this->ingredientsFilter[self::KEY])) {
-            $key = $this->ingredientsFilter[self::KEY];
+        if (!$key && !empty($this->stepsFilter[self::KEY])) {
+            $key = $this->stepsFilter[self::KEY];
         }
-        if (!$subkeys && !empty($this->ingredientsFilter[self::SUBKEY])) {
-            $subkeys = $this->ingredientsFilter[self::SUBKEY];
+        if (!$subkeys && !empty($this->stepsFilter[self::SUBKEY])) {
+            $subkeys = $this->stepsFilter[self::SUBKEY];
         }
 
         $steps = $this->guessRecipeStepsList($dom, $key, $subkeys);
