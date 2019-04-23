@@ -38,6 +38,7 @@ final class Version20190406223022 extends AbstractMigration implements Container
                 $recipe_ingredient_list->setRecipe($em->getReference(Recipe::class, $recipe_ingredient['recipe_id']));
                 $recipe_ingredient_list->setTitle('');
                 $em->persist($recipe_ingredient_list);
+                $em->flush();
             }
 
             $query = $connection->prepare('UPDATE recipe_ingredient SET recipe_ingredient_list_id = :list WHERE recipe_id = :id');
