@@ -1,0 +1,253 @@
+title:
+  ingredients: Ingredients
+  edit_recipe: Edit recipe
+  recipes_new: Create new recipe
+  images: Images
+  steps: Preparation steps
+  hints: 'Help & Hints'
+  recipeAlternatives: 'Variations'
+  recipe_list: Recipe list
+  add_comment: Create comment
+  forgot_password: Forgot password
+  login: Login
+  recipeTags: Tags
+  ingredient_display: Display of ingredients
+  edit_profile: 'Modify profile'
+  ingredientDisplayPreferenceOverrides: Overrides for ingredient display parameters
+  profile: 'Cook'
+  links: Links
+  filter_recipes: Advances search
+  import_from_link: Import from Link
+  recipeLists: Recipe lists
+  edit_recipelist: Modify recipe list
+  recipes: Recipes
+
+
+label:
+  title: Title
+  alternative_text: Alternative text
+  summary: Summary
+  portions: Portions
+  ingredient: Ingredient
+  amount: Amount
+  unit: Unit
+  step: Description
+  duration: Duration
+  hint: Hint
+  private: Private recipe
+  create_recipe: Create recipe
+  recipe_image: ''
+  created_at: 'Created at:'
+  actions: Actions
+  content: Content
+  fullname: Full name
+  username: Username
+  password: Password
+  password_repeat: Repeat password
+  email: Email address
+  ingredient_display_preference: Zutatenanzeige
+  profile_image: Profilbild
+  link: Link
+  own_recipes: Nur eigene Rezepte
+  waiting_time: Wartezeit (in Minuten)
+  working_time: Arbeitszeit (in Minuten)
+  further_informations: Weitere Informationen
+  recipeLists: Rezeptlisten
+  recipes: Rezepte
+  personal_message: Persönliche Nachricht
+  searchText: Suchtext
+  rating: Bewertung
+  rating_minimum: Mindestbewertung
+  rate: Bewerten
+  rating_user: Meine Bewertung
+  rating_global: Gesamtbewertung
+  archived: Archiviert (wird nicht zur Auswahl angezeigt, ist aber einsehbar)
+  archived_short: Archiviert
+  active: aktiv
+  ingredients_must_have: Enthaltene Zutaten
+  ingredients_must_not_have: Ausgeschlossene Zutaten
+  daily_dish_recipe_list: Rezeptliste der Rezepte des Tages
+
+action:
+  back_to_list: Zurück zur Liste
+  show_recipe: Rezept anzeigen
+  edit_recipe: Rezept bearbeiten
+  cancel: Abbrechen
+  delete_recipe: Rezept löschen
+  create_recipe: Neues Rezept erstellen
+  rss: RSS Feed abonnieren
+  publish_comment: Kommentar veröffentlichen
+  sign_in: Einloggen
+  forgot_password: Passwort vergessen
+  request_password: Passwort anfordern
+  reset_password: Passwort zurücksetzen
+  save_and_create_new: Rezept speichern und danach noch eins erstellen!
+  download_recipe_pdf: Als PDF herunterladen
+  import_recipe_from_link: Importiere Rezept
+  import: Import
+  download_firefox_extension: Lade die Firefox Erweiterung herunter
+  download_chrome_extension: Lade die Chrome Erweiterung herunter
+  random_recipe: Zufallsrezept
+  create_recipeList: Erstelle Rezeptliste
+  edit_recipe_list: Rezeptliste bearbeiten
+  show_recipe_list: Zeige Rezeptliste
+  add_to_collection: Füge zur Sammlung hinzu
+  remove_from_collection: Entferne aus der Sammlung
+  send: Absenden!
+  share_mail: Per Mail teilen!
+  rate: Bewerten!
+  make_activ_recipelist: Aktivieren
+  remove_activ_recipelist: Deaktivieren
+  add_to_activ_recipelist: In aktive Rezeptliste
+  save_active: Speichere als aktive Rezeptliste
+  calculate: Berechnen
+  will_be_cooked_now: Wird jetzt gekocht
+  the_next_one: Was anderes
+  will_be_cooked_soon: Wird bald gekocht
+  has_been_cooked_recently: Wurde gerade gekocht
+
+dialogs:
+  delete_recipe:
+    title: Rezept löschen
+    body: Möchtest du dieses Rezept wirklich löschen?
+  share_email:
+    title: Per Mail teilen
+
+
+form:
+  defaultvalue:
+    ingredient: '-- Zutat wählen --'
+    unit: '-- Einheit wählen --'
+    ingredient_view: '-- Anzeige wählen --'
+    none: '-- Keine(r) --'
+
+menuentries:
+  addIngredients: Zutaten hinzufügen
+  admin:
+    easyadmin: Easyadmin
+
+rss:
+  title: RSS Feed abonnieren
+
+
+menu:
+  toggle_nav: ''
+  recipes: 'Rezepte'
+  recipe_list: 'Meine Rezepte'
+  homepage: News
+  admin_menu: Admin
+  search: ''
+  logout: 'Logout'
+  login: Login
+  choose_language: 'Sprache wählen'
+  recipe_of_the_day: Mein Rezept des Tages
+  new_quick: Ich möchte schnell ein Foto von einem Rezept hochladen
+  my_profile: 'Profileinstellungen'
+  filter_recipes: 'Erweiterte Suche'
+  recipes_to_cook: Rezepte von meiner ToCook Liste
+  recipelists_list: Rezeptlisten
+
+placeholder:
+  livesearch: Livesearch...
+
+help:
+  app_description: |
+    <strong>Version 1.0</strong> <br>
+    - Portionenumrechner<br>
+    - Besserer Import von Webseiten
+    <br>
+    <strong>Version 0.9</strong> <br>
+    - Rezeptlisten<br>
+    - Warenkorbfunktion<br>
+    - Schnellsuche<br>
+    - Tooltips und Shortcuts<br>
+    <br>
+    <strong>Version 0.8</strong> <br>
+    - Import von Links: Chefkoch<br>
+    <br>
+    <strong>Version 0.7</strong> <br>
+    - Import von Links hinzugefügt<br>
+    - Firefox Extension hinzugefügt<br>
+    <br>
+    <strong>Version 0.6</strong> <br>
+    - Umrechnung der Einheiten bei der Anzeige eingebaut<br>
+    <br>
+    <strong>Version 0.5</strong> <br>
+    - Seite zur Profilverwaltung<br>
+    <br>
+    <strong>Version 0.4</strong> <br>
+    - Quicklinks im Footer<br>
+    - Logo hinzugefügt und Aussehen optimiert<br>
+    - Bilder im PDF Export<br>
+    <br>
+    <strong>Version 0.3</strong> <br>
+    - PDF Download für Rezepte<br>
+    <br>
+
+  more_information: |
+    Bei Fehlern und Vorschlägen wende dich bitte an <a href="https://github.com/brokoskokoli/2cooks/issues">das Githubdirectory</a>
+  mit_license: MIT-Lizenz
+
+static:
+  durations:
+    minutes: Minute(n)
+
+messages:
+  recipe_modified: Die Änderungen wurden gespeichert
+  no_comments: Erstelle den ersten Kommentar!
+  register_to_comment: Logge dich ein, um einen Kommentar zu erstellen
+  password_not_equal: Die Passwörter sind nicht gleich
+  password_min_length: Das Passwort muss mindestens 8 Zeichen lang sein
+  password_no_number: Das Passwort muss mindestens eine Zahl enthalten
+  forgot_password_mail_send: Wir haben dir eine Email geschickt!
+  reset_password: Dein Password wurde erfolgreich geändert!
+  no_recipes_found: Keine Rezepte gefunden!
+  recipe_created: Rezept erstellt!
+  profile_modified: Profil geändert!
+  no_recipe_lists_found: Keine Rezeptlisten gefunden
+  recipe_list_modified: Die Rezeptliste wurde bearbeitet
+  recipe_added_to_collection: Das Rezept wurde zur Sammlung hinzugefügt
+  recipe_removed_from_collection: Das Rezept wurde aus der Sammlung entfernt
+  email_to_register: Zur Registrierungsanfrage sende bitte eine Mail mit deinem gewünschten Benutzenamen an <a href="mailto:%mail%">den Support</a>
+  recipelist_is_archived: Diese Rezeptliste ist archiviert!
+  recipe_deleted: Rezept gelöscht!
+  recipelist_make_activ: Rezeptliste aktiviert
+  recipelist_remove_activ: Rezeptliste deaktiviert
+  recipe_added: Rezept hinzugefügt
+  recipe_url_parsed: Rezept wurde von URL gelesen! Bitte überprüfen und speichern!
+  recipe_faulty: Das Rezept enthält Fehler und konnte nicht gespeichert werden! Bitte überprüfen.
+
+page:
+  forgot_password:
+    text: Bitte trage unten deine Emailadresse ein, damit wir dir die Anweisungen per Mail zuschicken können.
+  reset_password:
+    text: Bitte gebe dein neues Passwort unten zweimal ein.
+
+
+emails:
+  subjectprefix: '[2tasty] '
+  forgot_password:
+    subject: Passwort zurücksetzen
+    text: |
+      Hallo %name%,
+      Bitte klicke auf folgenden Link um dein Passwort zurückzusetzen:
+      <a href="%url%">%url%</a>
+
+      Dein treuer Server :-)
+  share:
+    subject: ''
+    text: |
+      Hallo,
+      %from_name% hat etwas mit dir geteilt: %title%
+
+      %message%
+
+      <a href="%url%">%url%</a>
+
+      Viel Erfolg beim Nachkochen!
+
+ingredient_preferences:
+  Native: Wie im Rezept
+  German: In Kilogramm und Litern
+  US: In Unzen und Cups
+  recipeTags: Tags
