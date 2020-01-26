@@ -13,7 +13,7 @@ namespace App\Form\Type;
 
 use App\Entity\RecipeTag;
 use App\Form\DataTransformer\TagArrayToStringTransformer;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Form\DataTransformer\CollectionToArrayTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -33,7 +33,7 @@ class  RecipeTagsInputType extends AbstractType
 {
     private $manager;
 
-    public function __construct(ObjectManager $manager)
+    public function __construct(EntityManagerInterface $manager)
     {
         $this->manager = $manager;
     }

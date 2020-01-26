@@ -13,8 +13,7 @@ namespace App\Form\Type;
 
 use App\Entity\RecipeList;
 use App\Form\DataTransformer\ListArrayToStringTransformer;
-use App\Form\DataTransformer\TagArrayToStringTransformer;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Form\DataTransformer\CollectionToArrayTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -22,7 +21,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Defines the custom form field type used to manipulate recipeTags values across
@@ -37,7 +36,7 @@ class  RecipeListsInputType extends AbstractType
     private $manager;
     private $translator;
 
-    public function __construct(ObjectManager $manager, TranslatorInterface $translator)
+    public function __construct(EntityManagerInterface $manager, TranslatorInterface $translator)
     {
         $this->manager = $manager;
         $this->translator = $translator;

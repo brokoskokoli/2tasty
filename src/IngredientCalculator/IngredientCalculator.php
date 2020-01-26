@@ -7,7 +7,7 @@ use App\Entity\RefIngredientDisplayPreference;
 use App\Entity\RefUnit;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class IngredientCalculator
 {

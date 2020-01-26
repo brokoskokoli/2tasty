@@ -13,14 +13,10 @@ namespace App\Form\DataTransformer;
 
 use App\Entity\Recipe;
 use App\Entity\RecipeList;
-use App\Entity\RecipeTag;
 use App\Entity\User;
-use App\Service\RecipeListService;
-use function Clue\StreamFilter\fun;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\DataTransformerInterface;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * This data transformer is used to translate the array of recipeTags into a comma separated format
@@ -40,7 +36,7 @@ class ListArrayToStringTransformer implements DataTransformerInterface
 
     private $archivedString = '';
 
-    public function __construct(TranslatorInterface $translator, ObjectManager $manager, ?User $user = null, ?Recipe $recipe = null)
+    public function __construct(TranslatorInterface $translator, EntityManagerInterface $manager, ?User $user = null, ?Recipe $recipe = null)
     {
         $this->manager = $manager;
         $this->user = $user;

@@ -8,7 +8,7 @@ use App\Entity\RecipeRating;
 use App\Entity\RecipeTag;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class RecipeRatingService
 {

@@ -5,7 +5,7 @@ namespace App\Service;
 use App\Entity\Ingredient;
 use App\Entity\RecipeTag;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class RecipeTagService
 {

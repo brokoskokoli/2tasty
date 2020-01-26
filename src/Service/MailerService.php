@@ -4,7 +4,7 @@ namespace App\Service;
 
 use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
 /**
@@ -23,7 +23,7 @@ class MailerService
     protected $templating;
 
     /**
-     * @var \Symfony\Component\Translation\TranslatorInterface
+     * @var \Symfony\Contracts\Translation\TranslatorInterface
      */
     protected $translator;
 
@@ -33,7 +33,7 @@ class MailerService
      * @param \Swift_Mailer $mailer
      *
      * @param Environment $templating
-     * @param \Symfony\Component\Translation\TranslatorInterface $translator
+     * @param \Symfony\Contracts\Translation\TranslatorInterface $translator
      * @param array $params
      */
     public function __construct(\Swift_Mailer $mailer, Environment $templating, TranslatorInterface $translator)

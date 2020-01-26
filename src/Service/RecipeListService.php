@@ -9,7 +9,7 @@ use App\Entity\RecipeTag;
 use App\Entity\User;
 use App\Utils\Slugger;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class RecipeListService
 {

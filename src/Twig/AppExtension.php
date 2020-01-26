@@ -19,7 +19,7 @@ use App\Service\RecipeService;
 use App\Utils\Markdown;
 use Symfony\Component\Intl\Intl;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;

@@ -11,20 +11,16 @@
 
 namespace App\Form\Type;
 
-use App\Entity\RecipeList;
 use App\Form\DataTransformer\IngredientArrayToStringTransformer;
-use App\Form\DataTransformer\ListArrayToStringTransformer;
-use App\Form\DataTransformer\TagArrayToStringTransformer;
 use App\Service\IngredientService;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Form\DataTransformer\CollectionToArrayTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
-use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Defines the custom form field type used to manipulate recipeTags values across
@@ -40,7 +36,7 @@ class  IngredientsInputType extends AbstractType
     private $translator;
     private $ingredientService;
 
-    public function __construct(ObjectManager $manager, TranslatorInterface $translator, IngredientService $ingredientService)
+    public function __construct(EntityManagerInterface $manager, TranslatorInterface $translator, IngredientService $ingredientService)
     {
         $this->manager = $manager;
         $this->translator = $translator;

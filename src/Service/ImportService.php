@@ -9,7 +9,7 @@ use App\Entity\RefUnit;
 use App\Entity\RefUnitName;
 use App\URLParser\URLParserBase;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Webit\Util\EvalMath\EvalMath;
 
 class ImportService

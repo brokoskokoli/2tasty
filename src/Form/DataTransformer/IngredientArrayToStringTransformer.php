@@ -17,7 +17,7 @@ use App\Service\IngredientService;
 use function Clue\StreamFilter\fun;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Form\DataTransformerInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * This data transformer is used to translate the array of recipeTags into a comma separated format

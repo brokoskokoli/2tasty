@@ -5,7 +5,7 @@ namespace App\Service;
 
 use App\Entity\Recipe;
 use Symfony\Component\Templating\EngineInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use TCPDF;
 use Twig\Environment;
 
@@ -18,7 +18,7 @@ class PDFExportService
     protected $templating;
 
     /**
-     * @var \Symfony\Component\Translation\TranslatorInterface
+     * @var \Symfony\Contracts\Translation\TranslatorInterface
      */
     protected $translator;
     private $webRoot;
@@ -29,7 +29,7 @@ class PDFExportService
      * @param \Swift_Mailer $mailer
      *
      * @param Environment $templating
-     * @param \Symfony\Component\Translation\TranslatorInterface $translator
+     * @param \Symfony\Contracts\Translation\TranslatorInterface $translator
      * @param array $params
      */
     public function __construct(\Swift_Mailer $mailer, Environment $templating, TranslatorInterface $translator, $rootDir)

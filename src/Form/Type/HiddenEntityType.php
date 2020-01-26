@@ -3,11 +3,10 @@
 namespace App\Form\Type;
 
 use App\Form\DataTransformer\EntityToIdStringTransformer;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -17,7 +16,7 @@ class HiddenEntityType extends AbstractType
 {
     private $manager;
 
-    public function __construct(ObjectManager $manager)
+    public function __construct(EntityManagerInterface $manager)
     {
         $this->manager = $manager;
     }

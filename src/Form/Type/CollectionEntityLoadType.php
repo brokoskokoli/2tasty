@@ -2,24 +2,18 @@
 
 namespace App\Form\Type;
 
-use App\Entity\RecipeTag;
 use App\Form\DataTransformer\CollectionEntityLoadTransformer;
-use App\Form\DataTransformer\TagArrayToStringTransformer;
-use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Bridge\Doctrine\Form\DataTransformer\CollectionToArrayTransformer;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class  CollectionEntityLoadType extends AbstractType
 {
     private $manager;
 
-    public function __construct(ObjectManager $manager)
+    public function __construct(EntityManagerInterface $manager)
     {
         $this->manager = $manager;
     }

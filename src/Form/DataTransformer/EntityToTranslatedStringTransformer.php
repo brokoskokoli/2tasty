@@ -9,7 +9,7 @@ use App\Service\TranslationService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class EntityToTranslatedStringTransformer implements DataTransformerInterface
 {

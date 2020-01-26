@@ -11,7 +11,7 @@ use App\Entity\User;
 use App\IngredientCalculator\IngredientCalculator;
 use App\IngredientCalculator\IngredientCalculatorBase;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class IngredientService
 {

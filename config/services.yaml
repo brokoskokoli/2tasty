@@ -39,7 +39,7 @@ services:
         arguments: ['@Doctrine\ORM\EntityManagerInterface',"%kernel.cache_dir%"]
 
     App\Service\PDFExportService:
-        arguments: ['@swiftmailer.mailer','@Twig\Environment','@Symfony\Component\Translation\TranslatorInterface',"%kernel.root_dir%"]
+        arguments: ['@swiftmailer.mailer','@Twig\Environment','@Symfony\Contracts\Translation\TranslatorInterface',"%kernel.root_dir%"]
 
     app.translations:
         alias: App\Service\TranslationService
