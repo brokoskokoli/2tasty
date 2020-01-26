@@ -57,7 +57,7 @@ class RecipesController extends AbstractController
      * Recipes overview.
      *
      * @Route("/", name="recipes_overview")
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      * @Method("GET")
      */
     public function myOverviewAction(RecipeListService $recipeListService): Response
@@ -78,7 +78,7 @@ class RecipesController extends AbstractController
      * Lists all Recipe entities.
      *
      * @Route("/my_recipes", name="recipes_list_my")
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      * @Method("GET")
      */
     public function listMyAction(Request $request, RecipeRepository $recipes, TranslatorInterface $translator): Response

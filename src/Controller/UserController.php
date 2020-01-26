@@ -35,7 +35,7 @@ use Symfony\Component\Translation\Translator;
 
 /**
  * @Route("/user")
- * @Security("has_role('ROLE_USER')")
+ * @Security("is_granted('ROLE_USER')")
  */
 class UserController extends AbstractController
 {

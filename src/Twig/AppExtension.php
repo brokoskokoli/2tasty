@@ -17,9 +17,8 @@ use App\Entity\User;
 use App\Service\IngredientService;
 use App\Service\RecipeService;
 use App\Utils\Markdown;
-use Symfony\Component\Intl\Intl;
+use Symfony\Component\Intl\Locales;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
@@ -129,7 +128,7 @@ class AppExtension extends AbstractExtension
 
         $this->locales = [];
         foreach ($this->localeCodes as $localeCode) {
-            $this->locales[] = ['code' => $localeCode, 'name' => Intl::getLocaleBundle()->getLocaleName($localeCode, $localeCode)];
+            $this->locales[] = ['code' => $localeCode, 'name' => Locales::getName($localeCode, $localeCode)];
         }
 
         return $this->locales;

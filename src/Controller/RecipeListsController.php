@@ -42,7 +42,7 @@ use Symfony\Component\Translation\Translator;
  * Controller used to manage blog contents in the public part of the site.
  *
  * @Route("/recipelists")
- * @Security("has_role('ROLE_USER')")
+ * @Security("is_granted('ROLE_USER')")
  *
  * @author Ryan Weaver <weaverryan@gmail.com>
  * @author Javier Eguiluz <javier.eguiluz@gmail.com>
@@ -54,7 +54,7 @@ class RecipeListsController extends AbstractController
      * Lists all RecipeLists.
      *
      * @Route("/", name="recipelists_list")
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      * @Method("GET")
      * @param RecipeListRepository $recipes
      * @return Response

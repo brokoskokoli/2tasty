@@ -47,7 +47,7 @@ class RecipeUserController extends AbstractController
 
     /**
      * @Route("/recipe_of_the_day", name="recipe_user_recipe_of_the_day")
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      * @Method("GET")
      */
     public function myRecipeOfTheDayAction(RecipeUserService $recipeUserService)
@@ -61,7 +61,7 @@ class RecipeUserController extends AbstractController
 
     /**
      * @Route("/{id}/cook_now", requirements={"id": "\d+"}, name="recipe_user_cook_now")
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      * @Method("GET")
      */
     public function cookNowAction(RecipeUserService $recipeUserService, Recipe $recipe): Response
@@ -73,7 +73,7 @@ class RecipeUserController extends AbstractController
 
     /**
      * @Route("/{id}/cook_soon", requirements={"id": "\d+"}, name="recipe_user_cook_soon")
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      * @Method("GET")
      */
     public function cookSoonAction(RecipeUserService $recipeUserService, Recipe $recipe): Response
@@ -85,7 +85,7 @@ class RecipeUserController extends AbstractController
 
     /**
      * @Route("/{id}/cooked_recently", requirements={"id": "\d+"}, name="recipe_user_cooked_recently")
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      * @Method("GET")
      */
     public function cookedRecentlyAction(RecipeUserService $recipeUserService, Recipe $recipe): Response

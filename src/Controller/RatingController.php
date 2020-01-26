@@ -33,7 +33,7 @@ class RatingController extends AbstractController
     /**
      * @Route("/rate", name="rating_rate")
      * @Method("POST")
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function rateAction(Request $request, EventDispatcherInterface $eventDispatcher, RecipeRatingService $recipeRatingService): Response
     {

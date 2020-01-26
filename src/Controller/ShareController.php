@@ -29,7 +29,7 @@ class ShareController extends AbstractController
     /**
      * @Route("/email", name="share_email")
      * @Method("POST")
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function shareEmailAction(Request $request, EventDispatcherInterface $eventDispatcher, MailerService $mailerService): Response
     {
