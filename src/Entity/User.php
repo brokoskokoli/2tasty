@@ -10,6 +10,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\Validator\Constraints as Assert;
+use Webauthn\PublicKeyCredentialUserEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
@@ -27,7 +28,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @author Ryan Weaver <weaverryan@gmail.com>
  * @author Javier Eguiluz <javier.eguiluz@gmail.com>
  */
-class User implements UserInterface, \Serializable
+class User extends PublicKeyCredentialUserEntity implements UserInterface, \Serializable
 {
     const DISPLAY_PREFERENCE_NATIVE = 1;
 
@@ -38,7 +39,7 @@ class User implements UserInterface, \Serializable
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
@@ -205,8 +206,10 @@ class User implements UserInterface, \Serializable
      */
     private $dailyDishRecipeList;
 
-    public function __construct()
+    public function __construct(string $id, string $name, string $displayName, array $roles)
     {
+        parent::__construct($name, $id, $displayName);
+        $this->roles = $roles;
         $this->setUpdatedAt(new \DateTime());
         $this->altText = '';
         $this->ingredientDisplayPreferenceOverrides = new ArrayCollection();
@@ -214,7 +217,6 @@ class User implements UserInterface, \Serializable
         $this->collected_recipes = new ArrayCollection();
         $this->recipes = new ArrayCollection();
     }
-
 
     /**
      * If manually uploading a file (i.e. not using Symfony Form) ensure an instance
@@ -242,9 +244,9 @@ class User implements UserInterface, \Serializable
     }
 
 
-    public function getId(): ?int
+    public function getId(): string
     {
-        return $this->id;
+        return strval($this->id);
     }
 
     public function setFullName(string $fullName): void

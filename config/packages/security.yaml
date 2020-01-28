@@ -53,7 +53,22 @@ security:
                 path:     /
                 always_remember_me: true
 
+
+            webauthn:
+                authentication:
+                    routes:
+                        result_path: /security/authentication/login
+                        options_path: /security/authentication/options
+
+                registration:
+                    routes:
+                        result_path: /security/registration/register
+                        options_path: /security/registration/options
+
+
     access_control:
         # this is a catch-all for the admin area
         # additional security lives in the controllers
         - { path: '^/(%app_locales%)/admin', roles: ROLE_ADMIN }
+        - { path: ^/security/authentication/login,  roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/security/authentication/options,  roles: IS_AUTHENTICATED_ANONYMOUSLY }
